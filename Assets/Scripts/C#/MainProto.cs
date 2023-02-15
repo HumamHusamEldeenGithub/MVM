@@ -23,14 +23,14 @@ public static partial class MainProtoReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "ChBtYWluX3Byb3RvLnByb3RvIisKCEtleXBvaW50EgkKAXgYASABKAISCQoB",
-          "eRgCIAEoAhIJCgF6GAMgASgCIjUKCUtleXBvaW50cxINCgVpbmRleBgBIAEo",
-          "BRIZCgZwb2ludHMYAiADKAsyCS5LZXlwb2ludCIYCgVFcnJvchIPCgdtZXNz",
-          "YWdlGAEgASgJYgZwcm90bzM="));
+          "eRgCIAEoAhIJCgF6GAMgASgCIiYKCUtleXBvaW50cxIZCgZwb2ludHMYAiAD",
+          "KAsyCS5LZXlwb2ludCIYCgVFcnJvchIPCgdtZXNzYWdlGAEgASgJYgZwcm90",
+          "bzM="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
           new pbr::GeneratedClrTypeInfo(typeof(global::Keypoint), global::Keypoint.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
-          new pbr::GeneratedClrTypeInfo(typeof(global::Keypoints), global::Keypoints.Parser, new[]{ "Index", "Points" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::Keypoints), global::Keypoints.Parser, new[]{ "Points" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::Error), global::Error.Parser, new[]{ "Message" }, null, null, null, null)
         }));
   }
@@ -335,7 +335,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public Keypoints(Keypoints other) : this() {
-    index_ = other.index_;
     points_ = other.points_.Clone();
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
@@ -344,18 +343,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public Keypoints Clone() {
     return new Keypoints(this);
-  }
-
-  /// <summary>Field number for the "index" field.</summary>
-  public const int IndexFieldNumber = 1;
-  private int index_;
-  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-  public int Index {
-    get { return index_; }
-    set {
-      index_ = value;
-    }
   }
 
   /// <summary>Field number for the "points" field.</summary>
@@ -384,7 +371,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
     if (ReferenceEquals(other, this)) {
       return true;
     }
-    if (Index != other.Index) return false;
     if(!points_.Equals(other.points_)) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
@@ -393,7 +379,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public override int GetHashCode() {
     int hash = 1;
-    if (Index != 0) hash ^= Index.GetHashCode();
     hash ^= points_.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
@@ -413,10 +398,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     output.WriteRawMessage(this);
   #else
-    if (Index != 0) {
-      output.WriteRawTag(8);
-      output.WriteInt32(Index);
-    }
     points_.WriteTo(output, _repeated_points_codec);
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
@@ -428,10 +409,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-    if (Index != 0) {
-      output.WriteRawTag(8);
-      output.WriteInt32(Index);
-    }
     points_.WriteTo(ref output, _repeated_points_codec);
     if (_unknownFields != null) {
       _unknownFields.WriteTo(ref output);
@@ -443,9 +420,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public int CalculateSize() {
     int size = 0;
-    if (Index != 0) {
-      size += 1 + pb::CodedOutputStream.ComputeInt32Size(Index);
-    }
     size += points_.CalculateSize(_repeated_points_codec);
     if (_unknownFields != null) {
       size += _unknownFields.CalculateSize();
@@ -458,9 +432,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
   public void MergeFrom(Keypoints other) {
     if (other == null) {
       return;
-    }
-    if (other.Index != 0) {
-      Index = other.Index;
     }
     points_.Add(other.points_);
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -478,10 +449,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
           break;
-        case 8: {
-          Index = input.ReadInt32();
-          break;
-        }
         case 18: {
           points_.AddEntriesFrom(input, _repeated_points_codec);
           break;
@@ -501,10 +468,6 @@ public sealed partial class Keypoints : pb::IMessage<Keypoints>
         default:
           _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
           break;
-        case 8: {
-          Index = input.ReadInt32();
-          break;
-        }
         case 18: {
           points_.AddEntriesFrom(ref input, _repeated_points_codec);
           break;

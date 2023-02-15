@@ -1,15 +1,13 @@
-import cv2
 import mediapipe as mp
+import cv2
 import Server
 import asyncio
-import struct
-
-from main_proto_pb2 import Keypoint
 from main_proto_pb2 import Keypoints
+
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
-count= 0
+
 async def FacemeshDetector(reader,writer):
     try:
         drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
@@ -37,9 +35,9 @@ async def FacemeshDetector(reader,writer):
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 if results.multi_face_landmarks:
                     for face_landmarks in results.multi_face_landmarks:
-                        
+
                         # Pack the serialized data and send it over the socket
-                        md_keypoints = encodeLandmarks(face_landmarks.landmark,count).SerializeToString()
+                        md_keypoints = encodeLandmarks(face_landmarks.landmark).SerializeToString()
                         writer.write(md_keypoints)
                         await asyncio.sleep(0.01) # wait for 33ms (30fps)
 
@@ -73,7 +71,7 @@ async def FacemeshDetector(reader,writer):
         print(e)
         Server.SendError("ERROR FOUND")
 
-def encodeLandmarks(landmarks,count):
+def encodeLandmarks(landmarks):
     keypoints = Keypoints()
     for landmark in landmarks :
         keypoint = keypoints.points.add()

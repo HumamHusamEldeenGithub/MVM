@@ -7,7 +7,6 @@ message Keypoint {
 }
 
 message Keypoints{
-  int32 index = 1;
   repeated Keypoint points= 2;
 }
 
