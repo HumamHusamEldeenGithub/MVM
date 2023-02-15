@@ -35,11 +35,11 @@ async def FacemeshDetector(reader,writer):
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 if results.multi_face_landmarks:
                     for face_landmarks in results.multi_face_landmarks:
-
-                        # Pack the serialized data and send it over the socket
-                        md_keypoints = encodeLandmarks(face_landmarks.landmark).SerializeToString()
-                        writer.write(md_keypoints)
-                        await asyncio.sleep(0.01) # wait for 33ms (30fps)
+                        if (len(face_landmarks.landmark) > 0) : 
+                            # Pack the serialized data and send it over the socket
+                            md_keypoints = encodeLandmarks(face_landmarks.landmark).SerializeToString()
+                            writer.write(md_keypoints)
+                            await asyncio.sleep(0.01) # wait for 33ms (30fps)
 
                         mp_drawing.draw_landmarks(
                             image=image,
