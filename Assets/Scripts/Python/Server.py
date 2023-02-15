@@ -1,36 +1,21 @@
 # protoc --csharp_out=../C# --python_out=../Python main_proto.proto
 
-import socket
-import sys
-from main_proto_pb2 import Keypoint
+import mediapipe_facemesh
+import asyncio
 
 IP = "localhost"  
-PORT = 5000  
+PORT = 5004
 
-def RunServer() :
-    global server
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((IP, PORT))
-    server.listen()
-    print(f"Server started at IP {IP} and PORT {PORT}")
-
-def WaitForSocketConnection():
-    global client ,address
-    client, address = server.accept()
-    print(f"Connection from {address} has been established.")
-
-def SendKeyPoint(x,y) :
-    message = Keypoint()
-    message.x = x
-    message.y = y
-    client.send(message.SerializeToString())
-    print(f"Sent: X = {message.x} Y = {message.y}")
-
-def main():
-    RunServer()
-    WaitForSocketConnection()
-    SendKeyPoint(10,20)
+async def main():
+    server = await asyncio.start_server(mediapipe_facemesh.FacemeshDetector, IP, PORT)
+    addr = server.sockets[0].getsockname()
+    print(f'Serving on {addr}')
+    async with server:
+        await server.serve_forever()
+    
 
 if __name__ == '__main__':
-    print(sys.executable)
-    main()
+    try:
+        asyncio.run(main())
+    except :
+        pass

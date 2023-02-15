@@ -1,7 +1,16 @@
 syntax = "proto3";
 
 message Keypoint {
-  string index = 1;
-  int64 x = 2;
-  int64 y = 3;
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Keypoints{
+  int32 index = 1;
+  repeated Keypoint points= 2;
+}
+
+message Error {
+  string message=1;
 }

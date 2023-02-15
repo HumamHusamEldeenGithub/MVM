@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10main_proto.proto\"/\n\x08Keypoint\x12\r\n\x05index\x18\x01 \x01(\t\x12\t\n\x01x\x18\x02 \x01(\x03\x12\t\n\x01y\x18\x03 \x01(\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10main_proto.proto\"+\n\x08Keypoint\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\t\n\x01z\x18\x03 \x01(\x02\"5\n\tKeypoints\x12\r\n\x05index\x18\x01 \x01(\x05\x12\x19\n\x06points\x18\x02 \x03(\x0b\x32\t.Keypoint\"\x18\n\x05\x45rror\x12\x0f\n\x07message\x18\x01 \x01(\tb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'main_proto_pb2', globals())
@@ -21,5 +21,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _KEYPOINT._serialized_start=20
-  _KEYPOINT._serialized_end=67
+  _KEYPOINT._serialized_end=63
+  _KEYPOINTS._serialized_start=65
+  _KEYPOINTS._serialized_end=118
+  _ERROR._serialized_start=120
+  _ERROR._serialized_end=144
 # @@protoc_insertion_point(module_scope)

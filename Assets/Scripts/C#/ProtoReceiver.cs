@@ -1,41 +1,57 @@
-
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using System.Threading;
 
 public class ProtoReceiver : MonoBehaviour
 {
     TcpClient client;
     NetworkStream stream;
     string pyPath = @"C:\Users\Humam\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\python.exe";
-    
+    System.Diagnostics.Process pyProcess;
+    string projectPath = "";
+    bool stopThread ;
 
     void Start()
     {
-        StartPythonServer();
-        ConnectToServer();
+        projectPath = Application.dataPath;
+        new Thread(() =>
+        {
+            StartPythonServer();
+            ConnectToServer();
+            ReceiveMessage();
+
+        }).Start();
+
+    }
+
+    private void OnDestroy()
+    {
+        stopThread = true;
+        pyProcess.Kill();
     }
 
     void StartPythonServer()
     {
-        System.Diagnostics.Process process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = pyPath;
-        process.StartInfo.Arguments = Application.dataPath + @"/Scripts/Python/Server.py";
-        process.StartInfo.UseShellExecute = false;
-        process.StartInfo.RedirectStandardOutput = true;
-        process.StartInfo.CreateNoWindow = true;
-        process.Start();
+        Debug.Log("Starting the python process");
+        pyProcess = new System.Diagnostics.Process();
+        pyProcess.StartInfo.FileName = pyPath;
+        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py"; ;
+        pyProcess.StartInfo.UseShellExecute = false;
+        pyProcess.StartInfo.RedirectStandardOutput = true;
+        pyProcess.StartInfo.CreateNoWindow = true;
+        pyProcess.Start();
+        Debug.Log("Python process has been started");
     }
-
     void ConnectToServer()
     {
         try
         {
-            client = new TcpClient("localhost", 5000);
+            Debug.Log("Connecting to server");
+            client = new TcpClient("localhost", 5004);
             stream = client.GetStream();
-            StartCoroutine(ReceiveLoop());
+            Debug.Log("Connected");
+           
         }
         catch(Exception err)
         {
@@ -43,26 +59,22 @@ public class ProtoReceiver : MonoBehaviour
         }
     }
 
-    IEnumerator ReceiveLoop()
+    void ReceiveMessage()
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.05f);
-            ReceiveMessage();
+            if (stopThread) break;
+
+            // Read the response from the python script
+            byte[] messageData = new byte[9000];
+
+            int bytes = stream.Read(messageData, 0, messageData.Length);
+            if (bytes == 0) return;
+
+            Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
+
+            Debug.Log("Received:  = " + response.ToString());
         }
-    }
-
-    void ReceiveMessage()
-    {
-        // Read the response from the python script
-        byte[] messageData = new byte[4096];
-        
-        int bytes = stream.Read(messageData, 0, messageData.Length);
-        if (bytes == 0) return;
-
-        Keypoint response = Keypoint.Parser.ParseFrom(messageData, 0, bytes);
-
-        Debug.Log("Received: X = " + response.X + " Y = " + response.Y);
     }
 
 }
