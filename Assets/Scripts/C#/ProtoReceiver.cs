@@ -5,15 +5,66 @@ using System.Threading;
 
 public class ProtoReceiver : MonoBehaviour
 {
+    #region Static
+
+    string projectPath = "";
+    string pyPath = @"";
+
+    #endregion
+
+    #region Network
+
     TcpClient client;
     NetworkStream stream;
-    string pyPath = @"";
-    System.Diagnostics.Process pyProcess;
-    string projectPath = "";
-    bool stopThread ;
 
-    void FindPython()
+    #endregion
+
+    #region Process
+
+    System.Diagnostics.Process pyProcess;
+
+    Thread mainThread = null;
+
+    #endregion
+
+    #region Monobehaviour
+
+
+    private void Awake()
     {
+        projectPath = Application.dataPath;
+        if (!InitPaths())
+            throw new Exception("Python path was not found!");
+
+        mainThread = new Thread(() =>
+        {
+            StartPythonServer();
+            ConnectToServer();
+            ReceiveMessage();
+        });
+    }
+
+    void Start()
+    {
+        mainThread?.Start();
+    }
+
+    private void OnDestroy()
+    {
+        mainThread?.Abort();
+        client?.Close();
+        stream?.Close();
+        pyProcess?.Kill();
+    }
+
+    #endregion
+
+    #region Methods
+
+    bool InitPaths()
+    {
+        projectPath = Application.dataPath;
+
         string pathVariable = Environment.GetEnvironmentVariable("PATH");
         string[] paths = pathVariable.Split(';');
 
@@ -26,31 +77,10 @@ public class ProtoReceiver : MonoBehaviour
             {
                 Debug.Log($"Python executable found in path: {path}");
                 pyPath = @path + "\\python.exe";
-                break;
+                return true;
             }
         }
-    }
-
-    void Start()
-    {
-        FindPython();
-        if(pyPath == @"")
-            throw new Exception("Python path was not found!");
-        projectPath = Application.dataPath;
-        new Thread(() =>
-        {
-            StartPythonServer();
-            ConnectToServer();
-            ReceiveMessage();
-
-        }).Start();
-
-    }
-
-    private void OnDestroy()
-    {
-        stopThread = true;
-        pyProcess.Kill();
+        return false;
     }
 
     void StartPythonServer()
@@ -65,6 +95,7 @@ public class ProtoReceiver : MonoBehaviour
         pyProcess.Start();
         Debug.Log("Python process has been started");
     }
+
     void ConnectToServer()
     {
         try
@@ -85,18 +116,21 @@ public class ProtoReceiver : MonoBehaviour
     {
         while (true)
         {
-            if (stopThread) break;
+            if (stream.DataAvailable)
+            {
+                // Read the response from the python script
+                byte[] messageData = new byte[9000];
 
-            // Read the response from the python script
-            byte[] messageData = new byte[9000];
+                int bytes = stream.Read(messageData, 0, messageData.Length);
+                if (bytes == 0) return;
 
-            int bytes = stream.Read(messageData, 0, messageData.Length);
-            if (bytes == 0) return;
+                Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
 
-            Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
-
-            Debug.Log("Received:  = " + response.ToString());
+                Debug.Log("Received:  = " + response.ToString());
+            }
         }
     }
+
+    #endregion
 
 }
