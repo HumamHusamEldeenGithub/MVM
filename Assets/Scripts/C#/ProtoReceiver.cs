@@ -9,7 +9,6 @@ public class ProtoReceiver : MonoBehaviour
 
     string projectPath = "";
     string pyPath = @"";
-    int camIndex = 0;
 
     #endregion
 
@@ -131,7 +130,13 @@ public class ProtoReceiver : MonoBehaviour
 
                 Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
 
-                Debug.Log("Received: = " + response.ToString());
+                var pt = response.Points[200];
+
+                pt.X = 2 * pt.X - 1;
+                pt.Y = 2 * pt.Y - 1;
+
+                GeneralManager.point = new Vector2(-pt.X, -pt.Y);
+
             }
             else
             {
