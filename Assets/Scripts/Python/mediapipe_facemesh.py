@@ -2,6 +2,7 @@ import mediapipe as mp
 import cv2
 import Server
 import asyncio
+import sys
 from main_proto_pb2 import Keypoints
 
 mp_drawing = mp.solutions.drawing_utils
@@ -11,7 +12,7 @@ mp_face_mesh = mp.solutions.face_mesh
 async def FacemeshDetector(reader,writer):
     try:
         drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(int(sys.argv[1]))
         with mp_face_mesh.FaceMesh(
             max_num_faces=1,
             refine_landmarks=True,

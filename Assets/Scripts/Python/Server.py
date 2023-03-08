@@ -2,12 +2,15 @@
 
 import mediapipe_facemesh
 import asyncio
+import sys
 
 IP = "localhost"  
 PORT = 5004
 
 async def main():
-    server = await asyncio.start_server(mediapipe_facemesh.FacemeshDetector, IP, PORT)
+    facemesh_detector = mediapipe_facemesh.FacemeshDetector
+    facemesh_detector.arg = sys.argv[1]
+    server = await asyncio.start_server(facemesh_detector, IP, PORT)
     addr = server.sockets[0].getsockname()
     print(f'Serving on {addr}')
     async with server:
@@ -17,6 +20,6 @@ async def main():
 if __name__ == '__main__':
     try:
         asyncio.run(main())
-    except e:
+    except Exception as e:
         print(e)
         pass

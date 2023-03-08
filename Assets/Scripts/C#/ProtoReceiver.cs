@@ -9,6 +9,7 @@ public class ProtoReceiver : MonoBehaviour
 
     string projectPath = "";
     string pyPath = @"";
+    int camIndex = 0;
 
     #endregion
 
@@ -92,7 +93,7 @@ public class ProtoReceiver : MonoBehaviour
         Debug.Log("Starting the python process");
         pyProcess = new System.Diagnostics.Process();
         pyProcess.StartInfo.FileName = pyPath;
-        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py"; ;
+        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {GeneralManager.cameraIndex}";
         pyProcess.StartInfo.UseShellExecute = false;
         pyProcess.StartInfo.RedirectStandardOutput = true;
         pyProcess.StartInfo.CreateNoWindow = true;
