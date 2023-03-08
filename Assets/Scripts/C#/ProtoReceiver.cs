@@ -2,6 +2,7 @@ using System;
 using System.Net.Sockets;
 using UnityEngine;
 using System.Threading;
+using System.Collections.Generic;
 
 public class ProtoReceiver : MonoBehaviour
 {
@@ -130,13 +131,7 @@ public class ProtoReceiver : MonoBehaviour
 
                 Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
 
-                var pt = response.Points[200];
-
-                pt.X = 2 * pt.X - 1;
-                pt.Y = 2 * pt.Y - 1;
-
-                GeneralManager.point = new Vector2(-pt.X, -pt.Y);
-
+                OrientationProcessor.SetPoints(response);
             }
             else
             {
