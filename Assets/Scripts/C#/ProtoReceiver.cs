@@ -24,6 +24,7 @@ public class ProtoReceiver : MonoBehaviour
     System.Diagnostics.Process pyProcess;
 
     Thread mainThread = null;
+    bool threadRunning = false;
 
     #endregion
 
@@ -46,12 +47,15 @@ public class ProtoReceiver : MonoBehaviour
 
     void Start()
     {
+        threadRunning = true;
         mainThread?.Start();
     }
 
     private void OnDestroy()
     {
-        mainThread?.Abort();
+        threadRunning = false;
+        mainThread?.Join();
+
         client?.Close();
         stream?.Close();
         pyProcess?.Kill();
@@ -114,7 +118,7 @@ public class ProtoReceiver : MonoBehaviour
 
     void ReceiveMessage()
     {
-        while (true)
+        while (threadRunning)
         {
             if (stream.DataAvailable)
             {
@@ -126,7 +130,11 @@ public class ProtoReceiver : MonoBehaviour
 
                 Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
 
-                Debug.Log("Received:  = " + response.ToString());
+                Debug.Log("Received: = " + response.ToString());
+            }
+            else
+            {
+                Debug.Log("No Data Available.");
             }
         }
     }
