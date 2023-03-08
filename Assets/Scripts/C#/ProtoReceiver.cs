@@ -7,13 +7,35 @@ public class ProtoReceiver : MonoBehaviour
 {
     TcpClient client;
     NetworkStream stream;
-    string pyPath = @"C:\Users\Humam\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\python.exe";
+    string pyPath = @"";
     System.Diagnostics.Process pyProcess;
     string projectPath = "";
     bool stopThread ;
 
+    void FindPython()
+    {
+        string pathVariable = Environment.GetEnvironmentVariable("PATH");
+        string[] paths = pathVariable.Split(';');
+
+        string pythonExecutable = "python.exe"; // or "python3.exe" for Python 3.x
+
+        foreach (string path in paths)
+        {
+            string fullPath = System.IO.Path.Combine(path, pythonExecutable);
+            if (System.IO.File.Exists(fullPath))
+            {
+                Debug.Log($"Python executable found in path: {path}");
+                pyPath = @path + "\\python.exe";
+                break;
+            }
+        }
+    }
+
     void Start()
     {
+        FindPython();
+        if(pyPath == @"")
+            throw new Exception("Python path was not found!");
         projectPath = Application.dataPath;
         new Thread(() =>
         {
