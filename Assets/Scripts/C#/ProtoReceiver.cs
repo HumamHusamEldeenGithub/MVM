@@ -142,7 +142,7 @@ public class ProtoReceiver : MonoBehaviour
 
             // Create a new instance of ClientWebSocket
             webSocket = new ClientWebSocket();
-            webSocket.Options.SetRequestHeader("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODE4NTk1ODgsInVzZXJpZCI6IjRkMWMyOGFlLTU1ZmEtNDhhMS1iMTU1LTQxZWM5MGY5ZjA4MSIsInJvbGUiOiIxIn0.Xb45kh0fvBuE7KBVUuDXJtx7yDQljkq-MDO8QAmszNI");
+            webSocket.Options.SetRequestHeader("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODI0NTQzNjAsInVzZXJpZCI6IjRkMWMyOGFlLTU1ZmEtNDhhMS1iMTU1LTQxZWM5MGY5ZjA4MSIsInJvbGUiOiIxIn0.SI1xjMoaVXGJw9zFHP2GCCoiz7QxdpQOWju3URKdAWo");
             
             // Connect to the server
             await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
