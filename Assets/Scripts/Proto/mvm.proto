@@ -1,0 +1,184 @@
+// protoc --go_out=./internal/pkg/generated  api/mvm.proto
+syntax = "proto3";
+package mvm;
+
+option go_package = "./mvmPb";
+
+message Empty {}
+
+message LoginUserRequest{
+    string username = 1 ;
+    string password = 2;
+}
+
+message LoginUserResponse{
+    string token = 1;
+    string refresh_token = 2;
+}
+
+message LoginByRefreshTokenRequest {
+    string refresh_token = 1;
+}
+
+message LoginByRefreshTokenResponse {
+    string token = 1;
+    string refresh_token = 2;
+}
+
+message CreateUserRequest {
+    string username = 1 ; 
+    string email = 2 ; 
+    string password = 3 ;
+}
+
+message CreateUserResponse {
+    string id = 1 ;
+}
+
+message GetProfileRequest {}
+
+message GetProfileResponse {
+    UserProfile profile = 1;
+}
+
+message GetUserByUsernameRequest {
+    string username = 1 ;
+}
+
+message GetUserByUsernameResponse {
+    UserProfile profile = 1;
+}
+
+message CreateFriendRequestRequest {
+    string friend_id = 1 ; 
+}
+
+message CreateFriendRequestResponse {}
+
+message DeleteFriendRequestRequest {
+    string friend_id = 1 ; 
+}
+
+message DeleteFriendRequestResponse {}
+
+message AddFriendRequest {
+    string friend_id = 1 ; 
+}
+
+message AddFriendResponse {}
+
+message DeleteFriendRequest{
+    string friend_id = 1 ; 
+}
+
+message DeleteFriendResponse {}
+
+message GetFriendsRequest {}
+
+message GetFriendsReposnes {
+    repeated string ids = 1;
+}
+
+message SearchForUsersRequest {
+    string search_input = 1 ;
+}
+
+message SearchForUsersResponse {
+    repeated UserProfile users = 1 ;
+}
+
+message CreateRoomRequest{
+    string title  = 1 ; 
+    bool is_private = 2; 
+    bool friends_only = 3;
+}
+
+message CreateRoomResponse{
+    Room room = 1;
+}
+
+message GetRoomRequest {}
+
+message GetRoomsResponse {
+    repeated Room rooms = 1 ; 
+}
+
+message DeleteRoomRequest {
+    string room_id = 1 ; 
+}
+
+message DeleteRoomResponse {
+    string room_id = 1 ; 
+}
+
+message CreateRoomInvitationRequest {
+    string room_id = 1 ;
+    string user_id = 2 ;
+}
+
+message CreateRoomInvitationResponse {}
+
+message DeleteRoomInvitationRequest {
+    string room_id = 1 ;
+    string user_id = 2 ;
+}
+
+message DeleteRoomInvitationResponse {}
+
+message UserProfile {
+    string id = 1 ; 
+    string username = 2;
+    string email = 3;
+}
+
+message Room {
+    string id = 1;
+    string owner_id = 2 ; 
+    string title  = 3 ; 
+    repeated string users = 4;
+    bool is_private = 5; 
+    bool friends_only = 6 ;
+    repeated string invitations = 7 ;
+}
+
+message SocketMessage  {
+    SocketMessageType type = 1;
+    oneof data {
+        RoomMessage room_message = 2 ;
+        ErrorMessage error_message = 3;
+    }
+}
+
+enum SocketMessageType {
+    ROOM_MESSAGE = 0;
+    USER_JOINED = 1;
+    ERROR = 2;
+}
+
+message RoomMessage {
+    optional string message = 2 ;   
+    repeated Keypoint keypoints = 3 ; 
+}
+
+message ErrorMessage {
+    int64 status_code = 1 ; 
+    string error = 2 ;
+}
+
+message SimpleSocketMessage {
+    optional string message = 2 ;   
+    repeated Keypoint keypoints = 3 ; 
+}
+
+message SocketMessage2{
+    string room_id = 1 ; 
+    string user_id = 2 ;
+    optional string message = 3 ;   
+    repeated Keypoint keypoints = 4 ; 
+}
+
+message Keypoint {
+    float x = 1 ;
+    float y = 2 ;
+    float z = 3 ;
+}
