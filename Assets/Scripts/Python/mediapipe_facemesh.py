@@ -41,7 +41,7 @@ async def FacemeshDetector(reader,writer):
                             md_keypoints = encodeLandmarks(face_landmarks.landmark).SerializeToString()
                             writer.write(md_keypoints)
                             await asyncio.sleep(0.01) # wait for 33ms (30fps)
-
+                        """
                         mp_drawing.draw_landmarks(
                             image=image,
                             landmark_list=face_landmarks,
@@ -63,6 +63,7 @@ async def FacemeshDetector(reader,writer):
                             landmark_drawing_spec=None,
                             connection_drawing_spec=mp_drawing_styles
                             .get_default_face_mesh_iris_connections_style())
+                            """
                         # # Flip the image horizontally for a selfie-view display.
                         cv2.imshow('MediaPipe Face Mesh', cv2.flip(image, 1))
                         if cv2.waitKey(1) == 27:

@@ -40,7 +40,7 @@ public class ProtoReceiver : MonoBehaviour
 
         mainThread = new Thread(() =>
         {
-            StartPythonServer();
+            //StartPythonServer();
             ConnectToServer();
             ReceiveMessage();
         });
@@ -123,15 +123,25 @@ public class ProtoReceiver : MonoBehaviour
         {
             if (stream.DataAvailable)
             {
-                // Read the response from the python script
-                byte[] messageData = new byte[9000];
+                try
+                {
+                    // Read the response from the python script
+                    byte[] messageData = new byte[9000];
 
-                int bytes = stream.Read(messageData, 0, messageData.Length);
-                if (bytes == 0) return;
+                    int bytes = stream.Read(messageData, 0, messageData.Length);
+                    if (bytes == 0) return;
 
-                Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
+                    Debug.Log(bytes);
+                    Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
 
-                OrientationProcessor.SetPoints(response);
+                    OrientationProcessor.SetPoints(response);
+
+                    Debug.Log("blyat");
+                }
+                catch
+                {
+
+                }
             }
             else
             {
