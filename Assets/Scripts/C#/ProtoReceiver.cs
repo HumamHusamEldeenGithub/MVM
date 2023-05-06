@@ -5,6 +5,7 @@ using System.Threading;
 using Mvm;
 using Google.Protobuf;
 using System.Net.WebSockets;
+using Newtonsoft.Json;
 
 public class ProtoReceiver : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class ProtoReceiver : MonoBehaviour
     TcpClient pyClient ;
     NetworkStream pyStream ;
     ClientWebSocket webSocket;
+    WebRTC_Client webRTC; 
 
     #endregion
 
@@ -28,7 +30,6 @@ public class ProtoReceiver : MonoBehaviour
     System.Diagnostics.Process pyProcess;
 
     Thread mainThread = null;
-    Thread serverThread = null;
     bool threadRunning = false;
 
     #endregion
@@ -48,29 +49,22 @@ public class ProtoReceiver : MonoBehaviour
             ConnectToPyServer();
             ReceivePyMessages();
         });
-        serverThread = new Thread(()=> {
-            ConnectToMVMServer();
-            ReceiveServerMessagesAsync();
-        });
     }
 
     void Start()
     {
         threadRunning = true;
         mainThread?.Start();
-        serverThread?.Start();
+        webRTC = GameObject.Find("C1").GetComponent<WebRTC_Client>();
     }
 
     private void OnDestroy()
     {
         threadRunning = false;
         mainThread?.Join();
-        serverThread?.Join();
 
         pyClient?.Close();
         pyStream?.Close();
-
-        webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
 
         pyProcess?.Kill();
     }
@@ -130,32 +124,7 @@ public class ProtoReceiver : MonoBehaviour
         }
     }
 
-    async void ConnectToMVMServer()
-    {
-        try
-        {
-            Debug.Log("Connecting to MVM server ...");
-
-            string host = "ws://ec2-16-170-170-2.eu-north-1.compute.amazonaws.com:3000";
-
-            string url = host+ "/websocket?room=8fc3e523-42ec-4154-b341-44bf35a559c2";
-
-            // Create a new instance of ClientWebSocket
-            webSocket = new ClientWebSocket();
-            webSocket.Options.SetRequestHeader("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODI0NTQzNjAsInVzZXJpZCI6IjRkMWMyOGFlLTU1ZmEtNDhhMS1iMTU1LTQxZWM5MGY5ZjA4MSIsInJvbGUiOiIxIn0.SI1xjMoaVXGJw9zFHP2GCCoiz7QxdpQOWju3URKdAWo");
-            
-            // Connect to the server
-            await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
-
-            Debug.Log("Connected to MVM server");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Exception: {0}", e);
-        }
-    }
-
-    async void ReceivePyMessages()
+    void ReceivePyMessages()
     {
         while (threadRunning)
         {
@@ -187,9 +156,8 @@ public class ProtoReceiver : MonoBehaviour
                     }
 
 
-                    byte[] messageBytes = socketMessage.ToByteArray();
-                    var messageSegment = new ArraySegment<byte>(messageBytes);
-                    await webSocket.SendAsync(messageSegment, WebSocketMessageType.Binary, true, CancellationToken.None);
+                    // Testing ...
+                    webRTC.SendMsg(JsonConvert.SerializeObject(socketMessage));
 
                     //OrientationProcessor.SetPoints(response);
                 }
@@ -203,38 +171,6 @@ public class ProtoReceiver : MonoBehaviour
             }
         }
     }
-    async void ReceiveServerMessagesAsync()
-    {
-        while (threadRunning)
-        {
-            try
-            {
-                byte[] responseBuffer = new byte[9000];
-                WebSocketReceiveResult responseResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(responseBuffer), CancellationToken.None);
-
-                // Create a Protobuf message instance and deserialize the response message into it
-                SocketMessage2 responseMessage = SocketMessage2.Parser.ParseFrom(responseBuffer, 0, responseResult.Count);
-
-                Keypoints response = new Keypoints();
-
-                foreach (Mvm.Keypoint point in responseMessage.Keypoints)
-                {
-                    response.Points.Add(new Keypoint
-                    {
-                        X = point.X,
-                        Y = point.Y,
-                        Z = point.Z,
-                    });
-                }
-                OrientationProcessor.SetPoints(response);
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(e);
-            }
-        }
-    }
-
     #endregion
 
 }
