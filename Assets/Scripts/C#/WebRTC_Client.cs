@@ -15,7 +15,7 @@ using Mvm;
 public class WebRTC_Client : MonoBehaviour
 {
     #region Static
-    readonly string serverUrl = "localhost:3000";
+    readonly string serverUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com:3000";
     ClientWebSocket webSocket;
     RTCPeerConnection pc;
     RTCDataChannel dataChannel;
@@ -68,7 +68,7 @@ public class WebRTC_Client : MonoBehaviour
     {
         threadRunning = true; 
         serverThread?.Start();
-        StartCoroutine(SendOffer());
+        //StartCoroutine(SendOffer());
     }
 
     // Update is called once per frame
@@ -190,7 +190,7 @@ public class WebRTC_Client : MonoBehaviour
             do
             {
                 await Task.Delay(1000);
-                HttpResponseMessage response = await client.GetAsync("http://localhost:3000/ice?id=" + userId);
+                HttpResponseMessage response = await client.GetAsync("http://" +serverUrl +"/ice?id=" + userId);
                 response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
 
                 responseContent = await response.Content.ReadAsStringAsync();
