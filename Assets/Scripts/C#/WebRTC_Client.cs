@@ -57,6 +57,7 @@ public class WebRTC_Client : MonoBehaviour
     private void Awake()
     {
         syncContext = SynchronizationContext.Current;
+        
         serverThread = new Thread(() => {
             ConnectToMVMServer(token);
             InitPeerConnection();
@@ -68,7 +69,6 @@ public class WebRTC_Client : MonoBehaviour
     {
         threadRunning = true; 
         serverThread?.Start();
-        //StartCoroutine(SendOffer());
     }
 
     // Update is called once per frame
@@ -229,7 +229,6 @@ public class WebRTC_Client : MonoBehaviour
         Debug.Log($"Created local peer connection object user {userId}");
 
         pc.OnIceCandidate = OnIceCandidate;
-
         pc.OnIceConnectionChange = OnIceConnectionChange;
     }
 
@@ -239,9 +238,16 @@ public class WebRTC_Client : MonoBehaviour
     IEnumerator SendOffer()
     {
         Debug.Log($"pc {userId} SendOffer start");
-        RTCOfferAnswerOptions opt = new RTCOfferAnswerOptions { iceRestart = true };
-        var op = pc.CreateOffer(ref opt);
+
+        RTCDataChannelInit conf = new RTCDataChannelInit();
+        dataChannel = pc.CreateDataChannel("data", conf);
+        dataChannel.OnOpen = OnDataChannelOpened;
+        dataChannel.OnMessage = OnDataChannelMessage;
+
+        Debug.Log("pc1 createOffer start");
+        var op = pc.CreateOffer();
         yield return op;
+        Debug.Log(op.Desc.sdp);
 
         if (op.IsError)
         {
@@ -252,11 +258,6 @@ public class WebRTC_Client : MonoBehaviour
         
         else
         {
-            RTCDataChannelInit conf = new RTCDataChannelInit();
-            dataChannel = pc.CreateDataChannel("data", conf);
-            dataChannel.OnOpen = OnDataChannelOpened;
-            dataChannel.OnMessage = OnDataChannelMessage;
-
             var message = new Message
             {
                 Type = "offer",
@@ -314,8 +315,7 @@ public class WebRTC_Client : MonoBehaviour
         // Since the 'remote' side has no media stream we need
         // to pass in the right constraints in order for it to
         // accept the incoming offer of audio and video.
-        RTCOfferAnswerOptions opt = new RTCOfferAnswerOptions { iceRestart = true };
-        var op2 = pc.CreateAnswer(ref opt);
+        var op2 = pc.CreateAnswer();
         yield return op2;
 
         if (op2.IsError)
