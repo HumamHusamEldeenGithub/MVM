@@ -1,4 +1,4 @@
-// protoc --go_out=./internal/pkg/generated  api/mvm.proto
+// protoc --csharp_out=../C# mvm.proto
 syntax = "proto3";
 package mvm;
 
