@@ -11,21 +11,23 @@ using Newtonsoft.Json;
 
 using System.Net.Http;
 using Mvm;
+using System.Linq;
 
 public class WebRTC_Client : MonoBehaviour
 {
     #region Static
-    readonly string serverUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com";
+    Thread serverThread = null;
+    readonly string serverUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com:3000";
+    bool threadRunning;
+
     ClientWebSocket webSocket;
     RTCPeerConnection pc;
     RTCDataChannel dataChannel;
-    Thread serverThread = null;
     SynchronizationContext syncContext;
-    bool threadRunning;
-    private AudioStreamTrack audioStreamTrack;
     UserProfile userProfile;
-    [SerializeField] private AudioSource sourceAudio;
-    [SerializeField] private AudioSource receiveAudio;
+    AudioStreamTrack localAudioStream;
+    MediaStream audioStream;
+    [SerializeField] GameObject audioSourcePrefab;
 
     public string userId ;
     public bool ConnectToWebRTC;
@@ -63,11 +65,18 @@ public class WebRTC_Client : MonoBehaviour
         syncContext = SynchronizationContext.Current;
         userProfile = GetComponent<UserProfile>();
         userId = userProfile.username;
+
         serverThread = new Thread(() => {
             ConnectToMVMServer();
             InitPeerConnection();
             ReceiveServerMessagesAsync();
         });
+
+        audioStream = new MediaStream
+        {
+            OnAddTrack = OnAddTrack
+        };
+        CaptureAudio();
     }
 
     // Update is called once per frame
@@ -79,6 +88,7 @@ public class WebRTC_Client : MonoBehaviour
             ConncetToRoom();
         }
     }
+
     async void OnDestroy()
     {
         Debug.Log("Start OnDestroy");
@@ -148,7 +158,7 @@ public class WebRTC_Client : MonoBehaviour
                 switch (socketMessage.Type)
                 {
                     case "offer":
-                        Debug.LogWarning("Received Offer from " + socketMessage.FromId);
+                        Debug.Log("Received Offer from " + socketMessage.FromId);
                         syncContext.Post(new SendOrPostCallback(o =>
                         {
                             // Access UI controls or do other work in the main thread
@@ -157,7 +167,7 @@ public class WebRTC_Client : MonoBehaviour
                         break;
 
                     case "answer":
-                        Debug.LogWarning("Received answer from " + socketMessage.FromId);
+                        Debug.Log("Received answer from " + socketMessage.FromId);
                         syncContext.Post(new SendOrPostCallback(o =>
                         {
                             // Access UI controls or do other work in the main thread
@@ -166,14 +176,14 @@ public class WebRTC_Client : MonoBehaviour
                         break;
 
                     case "ice":
-                        Debug.LogWarning("Received Ice for " + socketMessage.ToId);
+                        Debug.Log("Received Ice for " + socketMessage.ToId);
                         syncContext.Post(new SendOrPostCallback(o =>
                         {
                             OnReceiveIce(socketMessage);
                         }), null);
                         break;
                     case "user_enter":
-                        Debug.LogWarning("user enter with id " + socketMessage.FromId);
+                        Debug.Log("user enter with id " + socketMessage.FromId);
                         syncContext.Post(new SendOrPostCallback(o =>
                         {
                             StartCoroutine(SendOffer(socketMessage.FromId));
@@ -212,34 +222,40 @@ public class WebRTC_Client : MonoBehaviour
         pc.OnIceCandidate = OnIceCandidate;
         pc.OnIceConnectionChange = OnIceConnectionChange;
 
-        pc.OnTrack= e =>
-        {
-            /*   if (e.Track is VideoStreamTrack video)
-               {
-                   video.OnVideoReceived += tex =>
-                   {
-                       receiveImage.texture = tex;
-                   };
-               }*/
-
-            if (e.Track is AudioStreamTrack audioTrack)
-            {
-                receiveAudio.SetTrack(audioTrack);
-                receiveAudio.loop = true;
-                receiveAudio.Play();
-            }
-        };
-
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            CaptureAudioStart();
+            pc.AddTrack(localAudioStream);
         }), null);
-        
+
+        pc.OnTrack = e =>
+        {
+            if (e.Track.Kind == TrackKind.Audio)
+            {
+                audioStream.AddTrack(e.Track);
+            }
+        };
     }
 
-    private void CaptureAudioStart()
+    void OnAddTrack(MediaStreamTrackEvent e)
     {
+        if (e.Track is AudioStreamTrack track)
+        {
+            syncContext.Post(new SendOrPostCallback(o =>
+            {
+                GameObject newAudioSource = Instantiate(audioSourcePrefab);
+                newAudioSource.name = track.Id;
+                
+                AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
+                audioSource.SetTrack(track);
+                audioSource.loop = true;
+                audioSource.Play();
+            }), null);
+        }
+    }
 
+    private void CaptureAudio()
+    {
+        AudioSource localAudioSource = GetComponent<AudioSource>();
         var deviceName = Microphone.devices[0];
         Microphone.GetDeviceCaps(deviceName, out int minFreq, out int maxFreq);
         var micClip = Microphone.Start(deviceName, true, 1, 48000);
@@ -247,17 +263,16 @@ public class WebRTC_Client : MonoBehaviour
         // set the latency to “0” samples before the audio starts to play.
         while (!(Microphone.GetPosition(deviceName) > 0)) { }
 
-        sourceAudio.clip = micClip;
-        sourceAudio.loop = true;
-        sourceAudio.Play();
-        audioStreamTrack = new AudioStreamTrack(sourceAudio);
-        pc.AddTrack(audioStreamTrack);
+        localAudioSource.clip = micClip;
+        localAudioSource.loop = true;
+        localAudioSource.Play();
+        localAudioStream = new AudioStreamTrack(localAudioSource);
     }
 
-    #endregion  
+    #endregion
 
     #region Offer
-IEnumerator SendOffer(string toPeerId)
+    IEnumerator SendOffer(string toPeerId)
     {
         Debug.Log($"pc {userId} SendOffer start");
 
@@ -267,7 +282,12 @@ IEnumerator SendOffer(string toPeerId)
         dataChannel.OnMessage = OnDataChannelMessage;
 
         Debug.Log("pc1 createOffer start");
-        var op = pc.CreateOffer();
+        RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions
+        {
+            iceRestart = false,
+            voiceActivityDetection = true,
+        };
+        var op = pc.CreateOffer(ref offerOptions);
         yield return op;
         Debug.Log(op.Desc.sdp);
 
@@ -329,7 +349,12 @@ IEnumerator SendOffer(string toPeerId)
         Debug.Log($"pc {userId} SetRemoteDescription end");
 
         Debug.Log($"pc {userId} CreateAnswer start");
-        var op2 = pc.CreateAnswer();
+        RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions
+        {
+            iceRestart = false,
+            voiceActivityDetection = true,
+        };
+        var op2 = pc.CreateAnswer(ref offerOptions);
         yield return op2;
 
         if (op2.IsError)
@@ -433,22 +458,6 @@ IEnumerator SendOffer(string toPeerId)
 
             var candidate = new RTCIceCandidate(iceCandidateInit);
             pc.AddIceCandidate(candidate);
-            return;
-/*            PeerICEs ices = JsonConvert.DeserializeObject<PeerICEs>(message.Data);
-
-            foreach (string ice in ices.ices)
-            {
-                var iceCandidate = JsonConvert.DeserializeObject<PeerICE>(ice);
-                RTCIceCandidateInit iceCandidateInit = new RTCIceCandidateInit
-                {
-                    candidate = iceCandidate.Candidate,
-                    sdpMid = iceCandidate.SdpMid,
-                    sdpMLineIndex = iceCandidate.SdpMLineIndex
-                };
-
-                var candidate = new RTCIceCandidate(iceCandidateInit);
-                pc.AddIceCandidate(candidate);
-            }*/
         }
         catch (Exception e)
         {
@@ -505,8 +514,6 @@ IEnumerator SendOffer(string toPeerId)
 
     public void OnDataChannelMessage(byte[] bytes)
     {
-
-        Debug.Log("Recieved :" + bytes.Length);
         // Testing ...
         SocketMessage2 responseMessage = JsonConvert.DeserializeObject<SocketMessage2>(Encoding.UTF8.GetString(bytes));
         Debug.Log(responseMessage.Message);
