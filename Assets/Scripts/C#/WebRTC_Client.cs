@@ -6,12 +6,9 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
-
 using Newtonsoft.Json;
-
-using System.Net.Http;
 using Mvm;
-using System.Linq;
+using System.Collections.Generic;
 
 public class WebRTC_Client : MonoBehaviour
 {
@@ -22,12 +19,13 @@ public class WebRTC_Client : MonoBehaviour
 
     ClientWebSocket webSocket;
     RTCPeerConnection pc;
-    RTCDataChannel dataChannel;
+    List<RTCDataChannel> dataChannels = new List<RTCDataChannel>();
     SynchronizationContext syncContext;
     UserProfile userProfile;
     AudioStreamTrack localAudioStream;
     MediaStream audioStream;
     [SerializeField] GameObject audioSourcePrefab;
+    [SerializeField] GameObject avatarPrefab;
 
     public string userId ;
     public bool ConnectToWebRTC;
@@ -51,12 +49,6 @@ public class WebRTC_Client : MonoBehaviour
         public string SdpMid { get; set; }
         public int? SdpMLineIndex { get; set; }
     }
-
-    class PeerICEs
-    {
-        public string[] ices { get; set; }
-    }
-
     #endregion
 
     #region MonoBehaviour
@@ -98,6 +90,13 @@ public class WebRTC_Client : MonoBehaviour
         serverThread?.Join();
         await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
         Debug.Log("Finished OnDestroy");
+    }
+
+    void CreateNewAvatar(string peerId , RTCDataChannel dataChannel)
+    {
+        GameObject newAvatar = Instantiate(avatarPrefab);
+        newAvatar.transform.name = peerId;
+        newAvatar.GetComponent<PeerController>().SetPeerController(peerId, dataChannel);
     }
 
     #endregion
@@ -277,9 +276,14 @@ public class WebRTC_Client : MonoBehaviour
         Debug.Log($"pc {userId} SendOffer start");
 
         RTCDataChannelInit conf = new RTCDataChannelInit();
-        dataChannel = pc.CreateDataChannel("data", conf);
+        RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
-        dataChannel.OnMessage = OnDataChannelMessage;
+
+        // TODO: add this component to game object 
+        CreateNewAvatar(toPeerId, dataChannel);
+
+        dataChannels.Add(dataChannel);
+        
 
         Debug.Log("pc1 createOffer start");
         RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions
@@ -289,7 +293,6 @@ public class WebRTC_Client : MonoBehaviour
         };
         var op = pc.CreateOffer(ref offerOptions);
         yield return op;
-        Debug.Log(op.Desc.sdp);
 
         if (op.IsError)
         {
@@ -333,8 +336,9 @@ public class WebRTC_Client : MonoBehaviour
 
         pc.OnDataChannel = channel =>
         {
-            dataChannel = channel;
-            dataChannel.OnMessage = OnDataChannelMessage;
+            // TODO: add this component to game object 
+            CreateNewAvatar(socketMessage.FromId, channel);
+            dataChannels.Add(channel);
         };
 
         Debug.Log($"pc {userId} SetRemoteDescription start");
@@ -504,40 +508,23 @@ public class WebRTC_Client : MonoBehaviour
     #region Data Channel
     public void SendMsg(string message)
     {
-        dataChannel.Send(message);
+        foreach(RTCDataChannel channel in dataChannels)
+        {
+            channel.Send(message);
+        }
     }
 
     public void SendMsg(byte[] message)
     {
-        dataChannel.Send(message);
-    }
-
-    public void OnDataChannelMessage(byte[] bytes)
-    {
-        // Testing ...
-        SocketMessage2 responseMessage = JsonConvert.DeserializeObject<SocketMessage2>(Encoding.UTF8.GetString(bytes));
-        Debug.Log(responseMessage.Message);
-
-        Keypoints response = new Keypoints();
-        
-
-        foreach (Mvm.Keypoint point in responseMessage.Keypoints)
+        foreach (RTCDataChannel channel in dataChannels)
         {
-            response.Points.Add(new Keypoint
-            {
-                X = point.X,
-                Y = point.Y,
-                Z = point.Z,
-            });
+            channel.Send(message);
         }
-        OrientationProcessor.SetPoints(response);
-
     }
 
     public void OnDataChannelOpened()
     {
         Debug.Log($"{userId} Opened a dataChannel");
-        dataChannel.Send("TEST");
     }
 
     #endregion

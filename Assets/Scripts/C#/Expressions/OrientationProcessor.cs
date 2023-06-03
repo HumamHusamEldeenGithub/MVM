@@ -74,7 +74,7 @@ public static class OrientationProcessor
             }
         }
         FaceArea = Vector3.Distance(points[10], points[152]);
-        Debug.Log("Area is " + FaceArea);
+        //Debug.Log("Area is " + FaceArea);
     }
 
     public static Vector3 NosePoint

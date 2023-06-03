@@ -155,8 +155,6 @@ public class ProtoReceiver : MonoBehaviour
                         });
                     }
 
-
-                    // Testing ...
                     webRTC.SendMsg(JsonConvert.SerializeObject(socketMessage));
 
                     //OrientationProcessor.SetPoints(response);

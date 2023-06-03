@@ -170,9 +170,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSourcePrefab: {fileID: 4058095923496747409, guid: f05e69312cb39734faff3bd1d89faddc, type: 3}
+  avatarPrefab: {fileID: 1521394723215645467, guid: 19098ba77d8cab2428b1c3f20ebce385, type: 3}
   userId: 1
   ConnectToWebRTC: 0
-  openMic: 1
   peerId: 
   roomId: 8fc3e523-42ec-4154-b341-44bf35a559c2
 --- !u!82 &14688952
@@ -2348,9 +2348,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSourcePrefab: {fileID: 4058095923496747409, guid: f05e69312cb39734faff3bd1d89faddc, type: 3}
+  avatarPrefab: {fileID: 1521394723215645467, guid: 19098ba77d8cab2428b1c3f20ebce385, type: 3}
   userId: 2
   ConnectToWebRTC: 0
-  openMic: 1
   peerId: 
   roomId: 8fc3e523-42ec-4154-b341-44bf35a559c2
 --- !u!224 &1602598235
@@ -3091,7 +3091,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Welcome to VMeet!
+  m_text: 'Welcome to MVM!
 
     Please select a camera to continue!
 
