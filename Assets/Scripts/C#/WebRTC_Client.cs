@@ -14,7 +14,6 @@ public class WebRTC_Client : MonoBehaviour
 {
     #region Static
     Thread serverThread = null;
-    readonly string serverUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com:3000";
     bool threadRunning;
 
     ClientWebSocket webSocket;
@@ -26,6 +25,7 @@ public class WebRTC_Client : MonoBehaviour
     MediaStream audioStream;
     [SerializeField] GameObject audioSourcePrefab;
     [SerializeField] GameObject avatarPrefab;
+    private DelegateOnTrack pc2Ontrack;
 
     public string userId ;
     public bool ConnectToWebRTC;
@@ -63,12 +63,7 @@ public class WebRTC_Client : MonoBehaviour
             InitPeerConnection();
             ReceiveServerMessagesAsync();
         });
-
-        audioStream = new MediaStream
-        {
-            OnAddTrack = OnAddTrack
-        };
-        CaptureAudio();
+        
     }
 
     // Update is called once per frame
@@ -117,7 +112,7 @@ public class WebRTC_Client : MonoBehaviour
         {
             Debug.Log("Connecting to MVM server (WebRTC) ...");
 
-            string url = "ws://" + serverUrl + "/wsrtc?room=" + roomId;
+            string url = "ws://" + Server.ServerUrl + ":" + Server.Port + "/wsrtc?room=" + roomId;
 
             // Create a new instance of ClientWebSocket
             webSocket = new ClientWebSocket();
@@ -221,35 +216,39 @@ public class WebRTC_Client : MonoBehaviour
         pc.OnIceCandidate = OnIceCandidate;
         pc.OnIceConnectionChange = OnIceConnectionChange;
 
+
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            pc.AddTrack(localAudioStream);
+
+                Debug.Log($"Add Tracks from {userProfile.username}");
+                CaptureAudio();
+                pc.AddTrack(localAudioStream);
+            
         }), null);
 
-        pc.OnTrack = e =>
+        pc2Ontrack = e =>
         {
-            if (e.Track.Kind == TrackKind.Audio)
+            if (e.Track is AudioStreamTrack audioTrack)
             {
-                audioStream.AddTrack(e.Track);
+                OnAddTrack(audioTrack);
             }
         };
+
+        pc.OnTrack = pc2Ontrack;  
     }
 
-    void OnAddTrack(MediaStreamTrackEvent e)
+    void OnAddTrack(AudioStreamTrack track)
     {
-        if (e.Track is AudioStreamTrack track)
+        syncContext.Post(new SendOrPostCallback(o =>
         {
-            syncContext.Post(new SendOrPostCallback(o =>
-            {
-                GameObject newAudioSource = Instantiate(audioSourcePrefab);
-                newAudioSource.name = track.Id;
+            GameObject newAudioSource = Instantiate(audioSourcePrefab);
+            newAudioSource.name = userProfile.name+"-audio";
                 
-                AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
-                audioSource.SetTrack(track);
-                audioSource.loop = true;
-                audioSource.Play();
-            }), null);
-        }
+            AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
+            audioSource.SetTrack(track);
+            audioSource.loop = true;
+            audioSource.Play();
+        }), null);
     }
 
     private void CaptureAudio()
@@ -279,18 +278,13 @@ public class WebRTC_Client : MonoBehaviour
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
 
-        // TODO: add this component to game object 
         CreateNewAvatar(toPeerId, dataChannel);
 
         dataChannels.Add(dataChannel);
         
 
         Debug.Log("pc1 createOffer start");
-        RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions
-        {
-            iceRestart = false,
-            voiceActivityDetection = true,
-        };
+        RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
         var op = pc.CreateOffer(ref offerOptions);
         yield return op;
 
@@ -353,11 +347,7 @@ public class WebRTC_Client : MonoBehaviour
         Debug.Log($"pc {userId} SetRemoteDescription end");
 
         Debug.Log($"pc {userId} CreateAnswer start");
-        RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions
-        {
-            iceRestart = false,
-            voiceActivityDetection = true,
-        };
+        RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
         var op2 = pc.CreateAnswer(ref offerOptions);
         yield return op2;
 
@@ -452,6 +442,7 @@ public class WebRTC_Client : MonoBehaviour
         Debug.Log("Call OnReceiveIce");
         try
         {
+            Debug.Log((string)message.Data);
             var iceCandidate = JsonConvert.DeserializeObject<PeerICE>((string)message.Data);
             RTCIceCandidateInit iceCandidateInit = new RTCIceCandidateInit
             {

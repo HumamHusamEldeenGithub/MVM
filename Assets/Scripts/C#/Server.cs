@@ -10,8 +10,8 @@ using System.Text;
 public class Server : MonoBehaviour
 {
     #region Static
-    const string ServerUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com";
-    const string Port = "3000";
+    public static string ServerUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com";
+    public static string Port = "3000";
     #endregion
 
     #region POST - GET
