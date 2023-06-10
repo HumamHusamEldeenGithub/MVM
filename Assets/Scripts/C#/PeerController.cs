@@ -1,16 +1,29 @@
 using Mvm;
 using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
-using Unity.VisualScripting;
 using Unity.WebRTC;
 using UnityEngine;
 
 public class PeerController : MonoBehaviour
 {
+
+    [SerializeField]
+    GameObject peerPrefab;
+
+    #region CachedVars
+
     string peerId;
     RTCDataChannel dataChannel;
+    OrientationProcessor orProcessor;
+    WebRTC_Client webRTC_Client;
+
+    #endregion
+
+    private void Awake()
+    {
+        orProcessor = GetComponent<OrientationProcessor>();
+        webRTC_Client = GetComponent<WebRTC_Client>();
+    }
 
     public void SetPeerController(string peerId, RTCDataChannel dataChannel)
     {
@@ -34,6 +47,6 @@ public class PeerController : MonoBehaviour
                 Z = point.Z,
             });
         }
-        OrientationProcessor.SetPoints(response);
+        orProcessor.SetPoints(response);
     }
 }

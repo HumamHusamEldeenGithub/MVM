@@ -10,7 +10,7 @@ PORT = 5004
 async def main():
     facemesh_detector = mediapipe_facemesh.FacemeshDetector
     facemesh_detector.arg = sys.argv[1]
-    server = await asyncio.start_server(facemesh_detector, IP, PORT)
+    server = await asyncio.start_server(facemesh_detector, IP, int(sys.argv[2]))
     addr = server.sockets[0].getsockname()
     print(f'Serving on {addr}')
     async with server:

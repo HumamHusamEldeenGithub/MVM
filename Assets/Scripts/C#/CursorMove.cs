@@ -1,8 +1,11 @@
+using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CursorMove : MonoBehaviour
 {
+    [SerializeField]
+    OrientationProcessor orProcessor;
     float width, height;
 
     Canvas canvas;
@@ -15,13 +18,15 @@ public class CursorMove : MonoBehaviour
         width = canvas.GetComponent<RectTransform>().rect.width;
         height = canvas.GetComponent<RectTransform>().rect.height;
     }
+
     private void Update()
     {
-        if (!OrientationProcessor.isReady)
+        if (!orProcessor?.isReady == false)
             return;
+
         transform.localPosition = new Vector2(
-            OrientationProcessor.NosePoint.x * width,
-            OrientationProcessor.NosePoint.y * height);
-        img.color = OrientationProcessor.MouthOpened ? Color.red : Color.white;
+            orProcessor.NosePoint.x * width,
+            orProcessor.NosePoint.y * height);
+        img.color = orProcessor.MouthOpened ? Color.red : Color.white;
     }
 }

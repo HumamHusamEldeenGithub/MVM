@@ -38,7 +38,6 @@ public class Server : MonoBehaviour
         using HttpClient client = new HttpClient();
         try
         {
-            Debug.Log(body);
             var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + ServerUrl + ":" + Port + route , jsonBody);
             response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
@@ -60,7 +59,8 @@ public class Server : MonoBehaviour
     public static async Task<LoginUserResponse> Login(LoginUserRequest req)
     {
         string res = await createPostCall("/login", req);
-        return JsonConvert.DeserializeObject<LoginUserResponse>(res);
+
+        return res != null ? JsonConvert.DeserializeObject<LoginUserResponse>(res) : null;
     }
     #endregion
 }

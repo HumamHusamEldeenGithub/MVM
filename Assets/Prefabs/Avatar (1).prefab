@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 2186151119160099233}
   - component: {fileID: 6918784946961075235}
   - component: {fileID: -4303172979179406707}
+  - component: {fileID: 1321442950480515835}
   m_Layer: 0
   m_Name: Avatar (1)
   m_TagString: Untagged
@@ -191,8 +192,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1521394723215645467}
-  m_LocalRotation: {x: 0, y: -0.2461532, z: 0, w: 0.96923095}
-  m_LocalPosition: {x: -1.25, y: 0.46, z: 4.78}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -201,7 +202,7 @@ Transform:
   - {fileID: 2064724109582112320}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -28.5, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &6918784946961075235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +228,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5c79d39edda374eab0aa6d9c3a2b85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peerPrefab: {fileID: 0}
+--- !u!114 &1321442950480515835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521394723215645467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d86de7674f3124882a9ecd0dc014ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2118363638866584044

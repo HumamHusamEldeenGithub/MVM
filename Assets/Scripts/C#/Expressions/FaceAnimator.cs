@@ -12,24 +12,27 @@ public class FaceAnimator : MonoBehaviour
     Dictionary<MouthExpression, Sprite> mouthExpressions = new Dictionary<MouthExpression, Sprite>();
 
     private Quaternion originalRotation;
+    private OrientationProcessor orProcessor;
 
     private void Awake()
     {
         originalRotation = bone.rotation;
+
+        orProcessor = GetComponent<OrientationProcessor>();
     }
 
     private void Update()
     {
-        if (!OrientationProcessor.isReady)
+        if (!orProcessor.isReady)
             return;
 
         bone.rotation = Quaternion.Lerp(bone.rotation, originalRotation * Quaternion.Euler(
-            OrientationProcessor.X_ANGLE,
-            OrientationProcessor.Y_ANGLE,
+            orProcessor.X_ANGLE,
+            orProcessor.Y_ANGLE,
             0), 0.75f);
 
-        eye_Right.transform.localScale = OrientationProcessor.Eye_Right_Open ? Vector3.one : Vector3.Lerp(eye_Right.localScale, new Vector3(1, 1, 0.1f), 0.8f);
-        eye_Left.transform.localScale = OrientationProcessor.Eye_Left_Open ? Vector3.one : Vector3.Lerp(eye_Left.localScale, new Vector3(1, 1, 0.1f), 0.8f);
+        eye_Right.transform.localScale = orProcessor.Eye_Right_Open ? Vector3.one : Vector3.Lerp(eye_Right.localScale, new Vector3(1, 1, 0.1f), 0.8f);
+        eye_Left.transform.localScale = orProcessor.Eye_Left_Open ? Vector3.one : Vector3.Lerp(eye_Left.localScale, new Vector3(1, 1, 0.1f), 0.8f);
 
     }
 }

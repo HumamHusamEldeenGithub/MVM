@@ -1,32 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mvm;
-using System.Threading.Tasks;
+using System;
+using System.Threading;
 
-public class UserProfile : MonoBehaviour
+public class UserProfile : Singleton<UserProfile>
 {
     public UserData userData;
-    [SerializeField] public string username;
-    [SerializeField] string password;
 
-    public bool login;
-
-    public async Task LoginUser()
+    public string Username
     {
-        LoginUserResponse res = await Server.Login(new LoginUserRequest { Username = username, Password=password });
-        if (res == null) return;
-        Debug.Log($"Login in succeeded for {username}");
-        userData = new UserData
-        {
-            Username = username,
-            Password = password,
-            Token = res.Token,
-            RefreshToken = res.RefreshToken
-        };
+        get; private set;
+    }
+    public string Password
+    {
+        get; private set;
     }
 
-    [SerializeField]
+    private void LoginUser(string username, string password)
+    {
+        this.Username = username;
+        this.Password = password;
+
+        var runner = TaskPool.Instance;
+
+        async void login(string username, string password)
+        {
+            LoginUserResponse res = await Server.Login(new LoginUserRequest { Username = username, Password = password });
+
+            if (res == null)
+            {
+                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false); 
+                return;
+            }
+            Debug.Log($"Login in succeeded for {username}");
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+            userData = new UserData
+            {
+                Username = username,
+                Password = password,
+                Token = res.Token,
+                RefreshToken = res.RefreshToken
+            };
+        }
+
+        runner.AddTasks(new List<Action<CancellationToken>>
+            {
+                token => login(username, password),
+            },
+            out _
+        );
+    }
     public class UserData
     {
         public string Username { get; set; }
@@ -35,12 +59,8 @@ public class UserProfile : MonoBehaviour
         public string RefreshToken { get; set; }
     }
 
-    private async void Update()
+    override protected void Awake()
     {
-        if (login)
-        {
-            login = false;
-            await LoginUser();
-        }
+        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string>(LoginUser));
     }
 }

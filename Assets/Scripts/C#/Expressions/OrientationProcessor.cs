@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,23 +14,23 @@ public enum MouthExpression
 
 }
 
-public static class OrientationProcessor
+public class OrientationProcessor : MonoBehaviour
 {
     [Range(0.1f, 1.0f)]
-    public static float AveragingValue = 0.5f;
+    private float AveragingValue = 0.5f;
 
-    public static List<Vector3> points;
+    private List<Vector3> points;
 
-    public static float FaceArea;
+    private float FaceArea;
 
-    private static float maxDistance = 0.05f;
+    private float maxDistance = 0.05f;
 
-    public static bool isReady
+    public bool isReady
     {
         get { return points != null; }
     }
 
-    public static void SetPoints(Keypoints kpoints)
+    public void SetPoints(Keypoints kpoints)
     {
         if (points == null)
         {
@@ -77,7 +76,7 @@ public static class OrientationProcessor
         //Debug.Log("Area is " + FaceArea);
     }
 
-    public static Vector3 NosePoint
+    public Vector3 NosePoint
     {
         get
         {
@@ -85,7 +84,7 @@ public static class OrientationProcessor
         }
     }
 
-    public static float Y_ANGLE
+    public float Y_ANGLE
     {
         get
         {
@@ -99,7 +98,7 @@ public static class OrientationProcessor
         }
     }
 
-    public static float X_ANGLE
+    public float X_ANGLE
     {
         get
         {
@@ -113,7 +112,7 @@ public static class OrientationProcessor
         }
     }
 
-    public static bool Eye_Left_Open
+    public bool Eye_Left_Open
     {
         get
         {
@@ -121,7 +120,7 @@ public static class OrientationProcessor
             return (points[159] - points[145]).magnitude / FaceArea > 0.02f;
         }
     }
-    public static bool Eye_Right_Open
+    public bool Eye_Right_Open
     {
         get
         {
@@ -130,7 +129,7 @@ public static class OrientationProcessor
         }
     }
 
-    public static bool MouthOpened
+    public bool MouthOpened
     {
         get
         {
