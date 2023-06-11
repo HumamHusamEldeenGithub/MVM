@@ -165,5 +165,17 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<GetRoomsResponse>(res) : null;
     }
+    public static async Task<GetFriendsReposnes> GetFriends()
+    {
+        string res = await CreateGetCall("/friends");
+
+        return res != null ? JsonConvert.DeserializeObject<GetFriendsReposnes>(res) : null;
+    }
+    public static async Task<GetUserByUsernameResponse> GetUserByUsername(GetUserByUsernameRequest req)
+    {
+        string res = await CreatePostCall("/user/get" , req);
+
+        return res != null ? JsonConvert.DeserializeObject<GetUserByUsernameResponse>(res) : null;
+    }
     #endregion
 }
