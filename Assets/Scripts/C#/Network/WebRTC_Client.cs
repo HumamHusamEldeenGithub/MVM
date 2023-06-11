@@ -33,11 +33,8 @@ public class WebRTC_Client : MonoBehaviour
     SynchronizationContext syncContext;
     UserProfile userProfile;
     AudioStreamTrack localAudioStream;
-    MediaStream audioStream;
     [SerializeField] GameObject audioSourcePrefab;
     [SerializeField] GameObject avatarPrefab;
-    private DelegateOnTrack pc2Ontrack;
-
     
     [Serializable]
     class Message
@@ -227,15 +224,13 @@ public class WebRTC_Client : MonoBehaviour
             
         }), null);
 
-        pc2Ontrack = e =>
+        pc.OnTrack = e =>
         {
             if (e.Track is AudioStreamTrack audioTrack)
             {
                 OnAddTrack(audioTrack);
             }
-        };
-
-        pc.OnTrack = pc2Ontrack;  
+        }; ;  
     }
 
     void OnAddTrack(AudioStreamTrack track)

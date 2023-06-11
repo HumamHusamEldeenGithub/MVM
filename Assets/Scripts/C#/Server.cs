@@ -14,8 +14,8 @@ public class Server : MonoBehaviour
     public static string Port = "3000";
     #endregion
 
-    #region POST - GET
-    private static async Task<string> createGetCall(string route)
+    #region POST - GET - Delete
+    private static async Task<string> CreateGetCall(string route)
     {
         using HttpClient client = new HttpClient();
         try
@@ -33,7 +33,7 @@ public class Server : MonoBehaviour
             return null;
         }
     }
-    private static async Task<string> createPostCall(string route,System.Object body)
+    private static async Task<string> CreatePostCall(string route,System.Object body)
     {
         using HttpClient client = new HttpClient();
         try
@@ -53,14 +53,117 @@ public class Server : MonoBehaviour
             return null;
         }
     }
+    private static async Task<string> CreateDeleteCall(string route, System.Object body)
+    {
+        using HttpClient client = new HttpClient();
+        try
+        {
+            var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Delete, "http://" + ServerUrl + ":" + Port + route)
+            {
+                Content = jsonBody
+            };
+
+            HttpResponseMessage response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
+
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Debug.Log(responseContent);
+            return responseContent;
+        }
+        catch (HttpRequestException ex)
+        {
+            // handle exception
+            Debug.LogError($"Error retrieving data from API: {ex.Message}");
+            return null;
+        }
+    }
     #endregion
 
     #region API
     public static async Task<LoginUserResponse> Login(LoginUserRequest req)
     {
-        string res = await createPostCall("/login", req);
+        string res = await CreatePostCall("/login", req);
 
         return res != null ? JsonConvert.DeserializeObject<LoginUserResponse>(res) : null;
+    }
+    public static async Task<LoginByRefreshTokenResponse> LoginByRefreshToken(LoginByRefreshTokenRequest req)
+    {
+        string res = await CreatePostCall("/refresh_token", req);
+
+        return res != null ? JsonConvert.DeserializeObject<LoginByRefreshTokenResponse>(res) : null;
+    }
+    public static async Task<CreateUserResponse>CreateUser(CreateUserRequest req)
+    {
+        string res = await CreatePostCall("/create", req);
+
+        return res != null ? JsonConvert.DeserializeObject<CreateUserResponse>(res) : null;
+    }
+    public static async Task<CreateFriendRequestResponse> CreateFriendRequest(CreateFriendRequestRequest req)
+    {
+        string res = await CreatePostCall("/friends/send", req);
+
+        return res != null ? JsonConvert.DeserializeObject<CreateFriendRequestResponse>(res) : null;
+    }
+    public static async Task<DeleteFriendRequestResponse> DeleteFriendRequest(DeleteFriendRequestRequest req)
+    {
+        string res = await CreatePostCall("/friends/ignore", req);
+
+        return res != null ? JsonConvert.DeserializeObject<DeleteFriendRequestResponse>(res) : null;
+    }
+    public static async Task<AddFriendResponse> AddFriend(AddFriendRequest req)
+    {
+        string res = await CreatePostCall("/friends/accept", req);
+
+        return res != null ? JsonConvert.DeserializeObject<AddFriendResponse>(res) : null;
+    }
+    public static async Task<DeleteFriendResponse> DeleteFriend(DeleteFriendRequest req)
+    {
+        string res = await CreatePostCall("/friends/delete", req);
+
+        return res != null ? JsonConvert.DeserializeObject<DeleteFriendResponse>(res) : null;
+    }
+    public static async Task<CreateRoomResponse> CreateRoom(CreateRoomRequest req)
+    {
+        string res = await CreatePostCall("/rooms", req);
+
+        return res != null ? JsonConvert.DeserializeObject<CreateRoomResponse>(res) : null;
+    }
+    public static async Task<DeleteRoomResponse> DeleteRoom(DeleteRoomRequest req)
+    {
+        string res = await CreateDeleteCall("/rooms", req);
+
+        return res != null ? JsonConvert.DeserializeObject<DeleteRoomResponse>(res) : null;
+    }
+    public static async Task<CreateRoomInvitationResponse> CreateRoomInvitation(CreateRoomInvitationRequest req)
+    {
+        string res = await CreatePostCall("/rooms/invitations", req);
+
+        return res != null ? JsonConvert.DeserializeObject<CreateRoomInvitationResponse>(res) : null;
+    }
+    public static async Task<DeleteRoomInvitationResponse> DeleteRoomInvitation(DeleteRoomInvitationRequest req)
+    {
+        string res = await CreateDeleteCall("/rooms/invitations", req);
+
+        return res != null ? JsonConvert.DeserializeObject<DeleteRoomInvitationResponse>(res) : null;
+    }
+    public static async Task<SearchForUsersResponse> SearchForUsers(SearchForUsersRequest req)
+    {
+        string res = await CreatePostCall("/user/search", req);
+
+        return res != null ? JsonConvert.DeserializeObject<SearchForUsersResponse>(res) : null;
+    }
+    public static async Task<GetProfileResponse> GetProfile()
+    {
+        string res = await CreateGetCall("/user");
+
+        return res != null ? JsonConvert.DeserializeObject<GetProfileResponse>(res) : null;
+    }
+    public static async Task<GetRoomsResponse> GetRooms()
+    {
+        string res = await CreateGetCall("/rooms");
+
+        return res != null ? JsonConvert.DeserializeObject<GetRoomsResponse>(res) : null;
     }
     #endregion
 }
