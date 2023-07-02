@@ -15,9 +15,8 @@ public class WebRTC_Client : MonoBehaviour
     #region Attributes
 
     public string userId;
-    public bool ConnectToWebRTC;
     public string peerId;
-    public string roomId = "8fc3e523-42ec-4154-b341-44bf35a559c2";
+    public string static_roomId = "8fc3e523-42ec-4154-b341-44bf35a559c2";
     public RTCSessionDescription pcOffer, pcAnsewer;
     private ClientController clientController;
 
@@ -61,22 +60,14 @@ public class WebRTC_Client : MonoBehaviour
         userProfile = GetComponent<UserProfile>();
         userId = userProfile.Username;
 
+        EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
+        new Action<bool>(InitWebSocketConnection));
+
         serverThread = new Thread(() => {
             ConnectToMVMServer();
-            InitPeerConnection();
             ReceiveServerMessagesAsync();
         });
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (ConnectToWebRTC)
-        {
-            ConnectToWebRTC = false;
-            ConncetToRoom();
-        }
     }
 
     async void OnDestroy()
@@ -95,10 +86,21 @@ public class WebRTC_Client : MonoBehaviour
     #endregion
 
     #region Websocket
-    public void ConncetToRoom()
+
+    public void InitWebSocketConnection(bool isLoggedIn)
     {
-        threadRunning = true;
-        serverThread?.Start();
+        if (isLoggedIn)
+        {
+            threadRunning = true;
+            serverThread?.Start();
+        }
+    }
+    public void ConnectToRoom(string roomId)
+    {
+        roomId = static_roomId;
+        InitPeerConnection();
+        // async
+        SendJoinRoomEvent(roomId);
     }
     async void ConnectToMVMServer()
     {
@@ -110,7 +112,7 @@ public class WebRTC_Client : MonoBehaviour
         {
             Debug.Log("Connecting to MVM server (WebRTC) ...");
 
-            string url = "ws://" + Server.ServerUrl + ":" + Server.Port + "/wsrtc?room=" + roomId;
+            string url = "ws://" + Server.ServerUrl + ":" + Server.Port + "/wsrtc";
 
             // Create a new instance of ClientWebSocket
             webSocket = new ClientWebSocket();
@@ -124,7 +126,7 @@ public class WebRTC_Client : MonoBehaviour
         catch (Exception e)
         {
             Console.WriteLine("Exception: {0}", e);
-        }
+        }  
     }
 
     async Task SendMessageToServerAsync(Message message)
@@ -181,6 +183,13 @@ public class WebRTC_Client : MonoBehaviour
                             StartCoroutine(SendOffer(socketMessage.FromId));
                         }), null);
                         break;
+                    case "leave_room":
+                        localAudioStream?.Dispose();
+                        localAudioStream = null;
+                        pc?.Dispose();
+                        pc = null;
+                        break;
+
                 }
             }
             catch (Exception e)
@@ -189,6 +198,17 @@ public class WebRTC_Client : MonoBehaviour
             }
         }
     }
+
+    public async void SendJoinRoomEvent(string roomId)
+    {
+        var message = new Message
+        {
+            Type = "join_room",
+            Data = roomId,
+        };
+        await SendMessageToServerAsync(message);
+    }
+
     #endregion
 
     #region Init Peer
