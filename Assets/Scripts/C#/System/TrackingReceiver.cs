@@ -98,10 +98,12 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 if (pyStream.DataAvailable)
                 {
                     // Read the response from the python script
-                    byte[] messageData = new byte[9000];
+                    byte[] messageData = new byte[20000];
 
                     int bytes = pyStream.Read(messageData, 0, messageData.Length);
                     if (bytes == 0) return;
+
+                    Debug.Log(bytes);
 
                     Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
 
@@ -119,6 +121,8 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                             Z = point.Z,
                         });
                     }
+
+                Debug.Log(response.Points[0]);
 
                     selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
                     selfOrProcessor.SetPoints(response);

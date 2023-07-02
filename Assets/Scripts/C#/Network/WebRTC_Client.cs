@@ -61,7 +61,7 @@ public class WebRTC_Client : MonoBehaviour
         userId = userProfile.Username;
 
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
-        new Action<bool>(InitWebSocketConnection));
+            new Action<bool>(InitWebSocketConnection));
 
         serverThread = new Thread(() => {
             ConnectToMVMServer();

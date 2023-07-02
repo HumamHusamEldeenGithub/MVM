@@ -21,7 +21,6 @@ async def FacemeshDetector(reader,writer):
             while cap.isOpened():
                 success, image = cap.read()
                 if not success:
-                    print("Ignoring empty camera frame.")
                     # If loading a video, use 'break' instead of 'continue'.
                     continue
 

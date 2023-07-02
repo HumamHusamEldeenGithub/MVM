@@ -53,22 +53,22 @@ public class ProcessManager : Singleton<ProcessManager>
     private void Initialize()
     {
         void initPath()
+        {
+            string pathVariable = Environment.GetEnvironmentVariable("PATH");
+            string[] paths = pathVariable.Split(';');
+
+            string pythonExecutable = "python.exe"; // or "python3.exe" for Python 3.x
+
+            foreach (string path in paths)
             {
-                string pathVariable = Environment.GetEnvironmentVariable("PATH");
-                string[] paths = pathVariable.Split(';');
-
-                string pythonExecutable = "python.exe"; // or "python3.exe" for Python 3.x
-
-                foreach (string path in paths)
+                string fullPath = System.IO.Path.Combine(path, pythonExecutable);
+                if (System.IO.File.Exists(fullPath))
                 {
-                    string fullPath = System.IO.Path.Combine(path, pythonExecutable);
-                    if (System.IO.File.Exists(fullPath))
-                    {
-                        UnityEngine.Debug.Log("Python found at " +  fullPath);
-                        pyPath = @path + "\\python.exe";
-                        break;
-                    }
+                    UnityEngine.Debug.Log("Python found at " +  fullPath);
+                    pyPath = @path + "\\python.exe";
+                    break;
                 }
+            }
         }
         void initMediapipe()
         {

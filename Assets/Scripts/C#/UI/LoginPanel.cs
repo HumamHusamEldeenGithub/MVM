@@ -41,6 +41,8 @@ public class LoginPanel : MonoBehaviour
         EventsPool.Instance.InvokeEvent(typeof(SubmitLoginEvent),
             new object[] { usernameInp.text, passwordInp.text });
 
+        loginBtn.interactable = false;
+
     }
 
     private void OnLogin(bool success)
@@ -50,6 +52,7 @@ public class LoginPanel : MonoBehaviour
             Debug.Log("Active");
             errorMsgGO.gameObject.SetActive(true);
         }
+        loginBtn.interactable = true;
     }
 
 }
