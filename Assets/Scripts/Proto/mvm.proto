@@ -182,3 +182,13 @@ message Keypoint {
     float y = 2 ;
     float z = 3 ;
 }
+
+message BlendShape {
+    int64 index = 1 ; 
+    float score = 2 ; 
+    string category_name = 3 ;
+}
+  
+message BlendShapes {
+repeated BlendShape blend_shapes = 1 ; 
+}
