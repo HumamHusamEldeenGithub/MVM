@@ -34,9 +34,10 @@ public class PeerController : MonoBehaviour
 
     void OnDataChannelMessage(byte[] bytes)
     {
-        SocketMessage2 responseMessage = JsonConvert.DeserializeObject<SocketMessage2>(Encoding.UTF8.GetString(bytes));
+        BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
+        Debug.Log(responseMessage);
 
-        Keypoints response = new Keypoints();
+/*        Keypoints response = new Keypoints();
 
         foreach (Mvm.Keypoint point in responseMessage.Keypoints)
         {
@@ -46,7 +47,8 @@ public class PeerController : MonoBehaviour
                 Y = point.Y,
                 Z = point.Z,
             });
-        }
-        orProcessor.SetPoints(response);
+        }*/
+        // TODO: modify SetPoints in order to take blendShapes 
+        //orProcessor.SetPoints(responseMessage);
     }
 }

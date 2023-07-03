@@ -170,6 +170,11 @@ message SimpleSocketMessage {
     repeated Keypoint keypoints = 3 ; 
 }
 
+message SimpleSocketMessage2 {
+    optional string message = 2 ;   
+    repeated BlendShapes blendShapes = 3 ; 
+}
+
 message SocketMessage2{
     string room_id = 1 ; 
     string user_id = 2 ;
