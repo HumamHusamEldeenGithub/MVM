@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Threading;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 
 public class ProcessManager : Singleton<ProcessManager>
 {
@@ -30,6 +31,7 @@ public class ProcessManager : Singleton<ProcessManager>
 
     Process pyProcess;
     TaskPool runner;
+    TcpClient pyClient;
     NetworkStream pyStream;
 
     #endregion
@@ -128,23 +130,30 @@ public class ProcessManager : Singleton<ProcessManager>
         DestroyPythonServer();
         pyProcess = new Process();
         pyProcess.StartInfo.FileName = pyPath;
-        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {GeneralManager.cameraIndex}" + $" {localPort}";
+        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {0}" + $" {localPort}";
         pyProcess.StartInfo.UseShellExecute = false;
-        pyProcess.StartInfo.RedirectStandardOutput = true;
+        pyProcess.StartInfo.RedirectStandardOutput = false;
         pyProcess.StartInfo.CreateNoWindow = true;
         pyProcess.Start();
 
-        var pyClient = new TcpClient("localhost", localPort);
+        pyClient = new TcpClient("localhost", localPort);
         pyStream = pyClient.GetStream();
         return pyStream;
     }
 
     private void DestroyPythonServer()
     {
-        if(!pyProcess?.HasExited == true)
-            pyProcess.Close();
-
+        pyStream?.Dispose();
         pyStream?.Close();
+
+        pyClient?.Dispose();
+        pyClient?.Close();
+
+        if (!pyProcess?.HasExited == true)
+        {
+            pyProcess?.Kill();
+        }
+
     }
 
     #endregion

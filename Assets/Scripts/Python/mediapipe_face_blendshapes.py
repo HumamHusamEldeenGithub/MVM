@@ -9,18 +9,17 @@ from mvm_pb2 import BlendShapes
 
 async def BlendShapesDetector (reader,writer) :
     try:
-        base_options = python.BaseOptions(model_asset_path='./model/face_landmarker.task')
+        base_options = python.BaseOptions(model_asset_path='./Assets/Scripts/Python/model/face_landmarker.task')
         options = vision.FaceLandmarkerOptions(base_options=base_options,
                                             output_face_blendshapes=True,
                                             output_facial_transformation_matrixes=True,
                                             num_faces=1)
         detector = vision.FaceLandmarker.create_from_options(options)
-
         cap = cv2.VideoCapture(int(sys.argv[1]))
         while cap.isOpened():
             success, image = cap.read()
             image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image)
-
+            print("hi")
             detection_result = detector.detect(image)
             if (len(detection_result.face_blendshapes) > 0) : 
                 # Pack the serialized data and send it over the socket

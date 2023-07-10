@@ -95,45 +95,44 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         Debug.Log(@"Listening now on Python server on port " + $"{localPort}");
         while (threadRunning && pyStream.CanRead)
         {
-                if (pyStream.DataAvailable)
-                {
-                    // Read the response from the python script
-                    byte[] messageData = new byte[20000];
+            if (pyStream.DataAvailable)
+            {
+                // Read the response from the python script
+                byte[] messageData = new byte[20000];
 
-                    int bytes = pyStream.Read(messageData, 0, messageData.Length);
-                    if (bytes == 0) return;
+                int bytes = pyStream.Read(messageData, 0, messageData.Length);
+                if (bytes == 0) return;
 
-                    Debug.Log(bytes);
+                Debug.Log(bytes);
 
-                    //Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
-                    BlendShapes response2 = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
-                    Debug.Log(response2.BlendShapes_[0]);
+                //Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
+                BlendShapes response2 = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
+                Debug.Log(response2.BlendShapes_[0]);
 
-                   /* SimpleSocketMessage socketMessage = new SimpleSocketMessage {
-                        Message = "test",
+                /* SimpleSocketMessage socketMessage = new SimpleSocketMessage {
+                    Message = "test",
                         
-                    };
+                };
 
-                   foreach (Blend point in response.Points)
+                foreach (Blend point in response.Points)
+                {
+                    socketMessage.Keypoints.Add(new Mvm.Keypoint
                     {
-                        socketMessage.Keypoints.Add(new Mvm.Keypoint
-                        {
-                            X = point.X,
-                            Y = point.Y,
-                            Z = point.Z,
-                        });
-                    }*/
+                        X = point.X,
+                        Y = point.Y,
+                        Z = point.Z,
+                    });
+                }*/
 
 /*                    Debug.Log(response.Points[0]);
 
-                    selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
-                    selfOrProcessor.SetPoints(response);*/
-                }
-                else
-                {
-                    //Debug.Log("No Data Available.");
-                }
-            
+                selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
+                selfOrProcessor.SetPoints(response);*/
+            }
+            else
+            {
+                Debug.Log("No Data Available.");
+            }
         }
     }
     
