@@ -16,7 +16,7 @@ def get_module_version(module_name):
     return metadata.version(module_name)
 
 module_name = 'mediapipe'
-desired_version = '10.0'
+desired_version = '0.10.0'
 
 if not check_module(module_name):
     install_module(module_name)

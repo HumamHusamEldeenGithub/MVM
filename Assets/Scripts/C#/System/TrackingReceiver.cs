@@ -8,6 +8,19 @@ using System.Collections;
 
 public class TrackingReceiver : Singleton<TrackingReceiver>
 {
+    static public float jawWeight;
+    static public float eyeLeftDown;
+    static public float eyeLeftUp;
+    static public float eyeLeftOut;
+    static public float eyeLeftIn;
+
+    static public float eyeRightDown;
+    static public float eyeRightUp;
+    static public float eyeRightOut;
+    static public float eyeRightIn;
+
+    static public float mouthSmile;
+
     #region Attributes
 
     [SerializeField]
@@ -107,7 +120,21 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
                 //Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
                 BlendShapes response2 = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
-                Debug.Log(response2.BlendShapes_[0]);
+                Debug.Log(response2.BlendShapes_[25]);
+
+                jawWeight = response2.BlendShapes_[25].Score;
+
+                eyeLeftDown = response2.BlendShapes_[11].Score;
+                eyeLeftUp = response2.BlendShapes_[17].Score;
+                eyeLeftIn = response2.BlendShapes_[13].Score;
+                eyeLeftOut = response2.BlendShapes_[15].Score;
+
+                eyeRightDown = response2.BlendShapes_[12].Score;
+                eyeRightUp = response2.BlendShapes_[18].Score;
+                eyeRightIn = response2.BlendShapes_[14].Score;
+                eyeRightOut = response2.BlendShapes_[16].Score;
+
+                mouthSmile = response2.BlendShapes_[44].Score;
 
                 /* SimpleSocketMessage socketMessage = new SimpleSocketMessage {
                     Message = "test",
@@ -124,10 +151,10 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                     });
                 }*/
 
-/*                    Debug.Log(response.Points[0]);
+                /*                    Debug.Log(response.Points[0]);
 
-                selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
-                selfOrProcessor.SetPoints(response);*/
+                                selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
+                                selfOrProcessor.SetPoints(response);*/
             }
             else
             {
