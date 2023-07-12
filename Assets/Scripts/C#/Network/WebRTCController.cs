@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Mvm;
 using System.Collections.Generic;
 
-public class WebRTC_Client : MonoBehaviour
+public class WebRTCController : MonoBehaviour
 {
     #region Attributes
 
@@ -18,7 +18,6 @@ public class WebRTC_Client : MonoBehaviour
     public string peerId;
     public string static_roomId = "8fc3e523-42ec-4154-b341-44bf35a559c2";
     public RTCSessionDescription pcOffer, pcAnsewer;
-    private ClientController clientController;
 
     #endregion
 
@@ -294,10 +293,9 @@ public class WebRTC_Client : MonoBehaviour
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
 
-        clientController.CreateNewAvatar(toPeerId, dataChannel);
+        ClientsManager.Instance.CreateNewFace(toPeerId, dataChannel);
 
         dataChannels.Add(dataChannel);
-        
 
         Debug.Log("pc1 createOffer start");
         RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
@@ -346,8 +344,7 @@ public class WebRTC_Client : MonoBehaviour
 
         pc.OnDataChannel = channel =>
         {
-            // TODO: add this component to game object 
-            clientController.CreateNewAvatar(socketMessage.FromId, channel);
+            ClientsManager.Instance.CreateNewFace(socketMessage.FromId, channel);
             dataChannels.Add(channel);
         };
 

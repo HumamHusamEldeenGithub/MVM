@@ -11,7 +11,6 @@ public enum MouthExpression
 
     Upset_Closed,
     Upset_Open
-
 }
 
 public class OrientationProcessor : MonoBehaviour

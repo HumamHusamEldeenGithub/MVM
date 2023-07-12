@@ -1,54 +1,48 @@
 using Mvm;
 using Newtonsoft.Json;
+using System;
 using System.Text;
 using Unity.WebRTC;
 using UnityEngine;
 
 public class PeerController : MonoBehaviour
 {
+    #region Private
 
-    [SerializeField]
-    GameObject peerPrefab;
+    private string peerID;
+    private RTCDataChannel channel;
 
-    #region CachedVars
-
-    string peerId;
-    RTCDataChannel dataChannel;
-    OrientationProcessor orProcessor;
-    WebRTC_Client webRTC_Client;
+    private BlendShapeAnimator blendshapeAnimator;
+    private OrientationProcessor orProcessor;
 
     #endregion
 
     private void Awake()
     {
         orProcessor = GetComponent<OrientationProcessor>();
-        webRTC_Client = GetComponent<WebRTC_Client>();
+        blendshapeAnimator = GetComponent<BlendShapeAnimator>();
     }
 
-    public void SetPeerController(string peerId, RTCDataChannel dataChannel)
+    public void Initialize(string peerID, RTCDataChannel dataChannel)
     {
-        this.peerId = peerId; 
-        this.dataChannel = dataChannel;
-        dataChannel.OnMessage = OnDataChannelMessage;
-    }
+        this.peerID = peerID;
+        this.channel = dataChannel;
 
-    void OnDataChannelMessage(byte[] bytes)
-    {
-        BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
-        Debug.Log(responseMessage);
+        BlendShapesReadyEvent evnt = new BlendShapesReadyEvent();
 
-/*        Keypoints response = new Keypoints();
-
-        foreach (Mvm.Keypoint point in responseMessage.Keypoints)
+        void OnDataChannelMessage(byte[] bytes)
         {
-            response.Points.Add(new Keypoint
-            {
-                X = point.X,
-                Y = point.Y,
-                Z = point.Z,
-            });
-        }*/
-        // TODO: modify SetPoints in order to take blendShapes 
-        //orProcessor.SetPoints(responseMessage);
+            BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
+            evnt.Invoke(responseMessage);
+        }
+
+        dataChannel.OnMessage += OnDataChannelMessage;
+
+        Initialize(ref evnt);
     }
+    public void Initialize(ref BlendShapesReadyEvent evnt)
+    {
+        evnt.AddListener(blendshapeAnimator.SetBlendShapes);
+    }
+
 }

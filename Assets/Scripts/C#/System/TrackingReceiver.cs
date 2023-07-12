@@ -5,40 +5,32 @@ using System.Threading;
 using Mvm;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Linq;
 
 public class TrackingReceiver : Singleton<TrackingReceiver>
 {
-    static public float jawWeight;
-    static public float eyeLeftDown;
-    static public float eyeLeftUp;
-    static public float eyeLeftOut;
-    static public float eyeLeftIn;
-
-    static public float eyeRightDown;
-    static public float eyeRightUp;
-    static public float eyeRightOut;
-    static public float eyeRightIn;
-
-    static public float mouthSmile;
-
     #region Attributes
 
     [SerializeField]
     private int localPort = 5004;
+
+    [SerializeField]
+    private BlendShapeAnimator faceAnimator;
 
     #endregion
 
     #region CachedVars
 
     NetworkStream pyStream;
-    WebRTC_Client selfClient;
-    ClientController selfController;
+    WebRTCController selfClient;
+    ClientsManager selfController;
     OrientationProcessor selfOrProcessor;
 
     #endregion
 
     #region Private
 
+    BlendShapesReadyEvent blendShapesReadyEvent;
     ProcessManager processManager;
     Thread mainThread = null;
     bool threadRunning = false;
@@ -68,9 +60,11 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
     void Initialize()
     {
+
+        blendShapesReadyEvent = new BlendShapesReadyEvent();
         selfOrProcessor = GetComponentInChildren<OrientationProcessor>();
-        selfClient = GetComponentInChildren<WebRTC_Client>();
-        selfController = GetComponentInChildren<ClientController>();
+        selfClient = GetComponentInChildren<WebRTCController>();
+        selfController = GetComponentInChildren<ClientsManager>();
 
         processManager = ProcessManager.Instance;
 
@@ -86,26 +80,30 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
             yield return null;
         }
         if (processManager.SetupComplete != ProcessManager.Status.Ready)
+        {
             yield break;
+        }
 
         // Create Python Server and Stream
         processManager.CreatePythonServer(localPort);
+
         pyStream = processManager.PythonStream;
 
         // Start Recieving
         mainThread = new Thread(() =>
         {
+            Debug.Log("Thread?");
             threadRunning = true;
-            EventsPool.Instance.InvokeEvent(typeof(CreateAvatarEvent));
             ReceivePyMessages();
         });
+
+        ClientsManager.Instance.CreateNewFace(ref blendShapesReadyEvent);
         mainThread?.Start();
         yield return null;
     }
 
     void ReceivePyMessages()
     {
-        Debug.Log(@"Listening now on Python server on port " + $"{localPort}");
         while (threadRunning && pyStream.CanRead)
         {
             if (pyStream.DataAvailable)
@@ -116,25 +114,9 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 int bytes = pyStream.Read(messageData, 0, messageData.Length);
                 if (bytes == 0) return;
 
-                Debug.Log(bytes);
-
                 //Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
-                BlendShapes response2 = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
-                Debug.Log(response2.BlendShapes_[25]);
-
-                jawWeight = response2.BlendShapes_[25].Score;
-
-                eyeLeftDown = response2.BlendShapes_[11].Score;
-                eyeLeftUp = response2.BlendShapes_[17].Score;
-                eyeLeftIn = response2.BlendShapes_[13].Score;
-                eyeLeftOut = response2.BlendShapes_[15].Score;
-
-                eyeRightDown = response2.BlendShapes_[12].Score;
-                eyeRightUp = response2.BlendShapes_[18].Score;
-                eyeRightIn = response2.BlendShapes_[14].Score;
-                eyeRightOut = response2.BlendShapes_[16].Score;
-
-                mouthSmile = response2.BlendShapes_[44].Score;
+                BlendShapes response = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
+                blendShapesReadyEvent.Invoke(response);
 
                 /* SimpleSocketMessage socketMessage = new SimpleSocketMessage {
                     Message = "test",
