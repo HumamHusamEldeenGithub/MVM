@@ -100,6 +100,7 @@ public class WebRTCController : MonoBehaviour
         InitPeerConnection();
         // async
         SendJoinRoomEvent(roomId);
+        EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
     }
     async void ConnectToMVMServer()
     {
@@ -293,7 +294,7 @@ public class WebRTCController : MonoBehaviour
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
 
-        ClientsManager.Instance.CreateNewFace(toPeerId, dataChannel);
+        ClientsManager.Instance.CreateNewRoomSpace(toPeerId, dataChannel);
 
         dataChannels.Add(dataChannel);
 
@@ -344,7 +345,7 @@ public class WebRTCController : MonoBehaviour
 
         pc.OnDataChannel = channel =>
         {
-            ClientsManager.Instance.CreateNewFace(socketMessage.FromId, channel);
+            ClientsManager.Instance.CreateNewRoomSpace(socketMessage.FromId, channel);
             dataChannels.Add(channel);
         };
 

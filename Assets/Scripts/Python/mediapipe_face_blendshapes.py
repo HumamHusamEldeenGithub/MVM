@@ -19,7 +19,6 @@ async def BlendShapesDetector (reader,writer) :
         while cap.isOpened():
             success, image = cap.read()
             image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image)
-            print("hi")
             detection_result = detector.detect(image)
             if (len(detection_result.face_blendshapes) > 0) : 
                 # Pack the serialized data and send it over the socket

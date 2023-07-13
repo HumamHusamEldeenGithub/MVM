@@ -125,20 +125,25 @@ public class ProcessManager : Singleton<ProcessManager>
         );
     }
 
-    public NetworkStream CreatePythonServer(int localPort)
+    public void CreatePythonServer(int localPort)
     {
         DestroyPythonServer();
         pyProcess = new Process();
         pyProcess.StartInfo.FileName = pyPath;
         pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {0}" + $" {localPort}";
         pyProcess.StartInfo.UseShellExecute = false;
-        pyProcess.StartInfo.RedirectStandardOutput = false;
+        pyProcess.StartInfo.RedirectStandardOutput = true;
         pyProcess.StartInfo.CreateNoWindow = true;
         pyProcess.Start();
 
+        runner.AddTask(new Action<CancellationToken>(token => StartPythonStream(localPort)));
+    }
+
+    private void StartPythonStream(int localPort)
+    {
+
         pyClient = new TcpClient("localhost", localPort);
         pyStream = pyClient.GetStream();
-        return pyStream;
     }
 
     private void DestroyPythonServer()

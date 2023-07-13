@@ -1,27 +1,31 @@
-using Mono.Cecil;
+using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CustomGridLayout : MonoBehaviour
+public class RoomPanel : MonoBehaviour
 {
     [SerializeField] private GridLayoutGroup[] rows;
 
-    [Range(0, 9)]
-    [SerializeField] int participantCount;
-
-    private List<Transform> screens;
+    private int participantCount;
+    private List<Image> screens = new List<Image>();
+    private List<RenderTexture> renderTextures = new List<RenderTexture>();
     private int n_rows, n_cols;
 
-    private void Start()
+    private void CreateNewScreen(RoomSpaceController.RoomRenderTexture rt)
     {
-        // Call this method whenever the participant count changes
+        renderTextures.Add(rt.renderTexture);
+        participantCount++;
         ArrangeParticipantViews(Screen.width, Screen.height);
+    }
+    private void Awake()
+    {
+        EventsPool.Instance.AddListener(typeof(CreateNewScreenEvent), new Action<RoomSpaceController.RoomRenderTexture>(CreateNewScreen));
     }
 
     private void ArrangeParticipantViews(int screenWidth, int screenHeight)
     {
+        Initialize();
         TurnOffScreens();
 
         if (participantCount == 0)
@@ -34,13 +38,14 @@ public class CustomGridLayout : MonoBehaviour
         int height = screenHeight / n_rows;
 
         int cnt = 0;
-        for(int i = 0;i < n_rows && cnt < participantCount; i++)
+        for (int i = 0; i < n_rows && cnt < participantCount; i++)
         {
             rows[i].gameObject.SetActive(true);
             rows[i].cellSize = new Vector2(width, height);
-            for(int j = 0;j < n_cols && cnt < participantCount;j++)
+            for (int j = 0; j < n_cols && cnt < participantCount; j++)
             {
                 rows[i].transform.GetChild(j).gameObject.SetActive(true);
+                rows[i].transform.GetChild(j).GetComponent<Image>().material.mainTexture = renderTextures[cnt];
                 cnt++;
             }
         }
@@ -53,26 +58,24 @@ public class CustomGridLayout : MonoBehaviour
         {
             element.gameObject.SetActive(false);
         }
-        foreach(var el in rows)
+        foreach (var el in rows)
         {
             el.gameObject.SetActive(false);
         }
 
     }
 
-    private void OnValidate()
+    private void Initialize()
     {
-        if(rows.Length > 0)
+        if (rows.Length > 0 && screens.Count == 0)
         {
-            screens = new List<Transform>();
-            foreach(var element in rows)
+            foreach (var element in rows)
             {
-                for(int i = 0;i < element.transform.childCount; i++)
+                for (int i = 0; i < element.transform.childCount; i++)
                 {
-                    screens.Add(element.transform.GetChild(i).transform);
+                    screens.Add(element.transform.GetChild(i).GetComponent<Image>());
                 }
             }
         }
-        ArrangeParticipantViews((int)Handles.GetMainGameViewSize().x, (int)Handles.GetMainGameViewSize().y);
     }
 }

@@ -14,9 +14,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     [SerializeField]
     private int localPort = 5004;
 
-    [SerializeField]
-    private BlendShapeAnimator faceAnimator;
-
     #endregion
 
     #region CachedVars
@@ -43,6 +40,8 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     {
         base.Awake();
         Initialize();
+
+        EventsPool.Instance.AddListener(typeof(RoomConnectedStatusEvent), new Action<bool>(StartReceiving));
     }
 
     override protected void OnDestroy()
@@ -60,19 +59,23 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
     void Initialize()
     {
-
         blendShapesReadyEvent = new BlendShapesReadyEvent();
+        processManager = ProcessManager.Instance;
+
         selfOrProcessor = GetComponentInChildren<OrientationProcessor>();
         selfClient = GetComponentInChildren<WebRTCController>();
         selfController = GetComponentInChildren<ClientsManager>();
-
-        processManager = ProcessManager.Instance;
-
-        // Start Python server
-        StartCoroutine(StartRecieving());
     }
 
-    IEnumerator StartRecieving()
+    public void StartReceiving(bool success)
+    {
+        if (!success)
+            return;
+        // Start Python server
+        StartCoroutine(startReceivingCoroutine());
+    }
+
+    IEnumerator startReceivingCoroutine()
     {
         // Wait for Process Manager to finish
         while (processManager.SetupComplete == ProcessManager.Status.Waiting)
@@ -87,6 +90,11 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         // Create Python Server and Stream
         processManager.CreatePythonServer(localPort);
 
+        while(processManager.PythonStream == null)
+        {
+            yield return null;
+        }
+
         pyStream = processManager.PythonStream;
 
         // Start Recieving
@@ -97,9 +105,8 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
             ReceivePyMessages();
         });
 
-        ClientsManager.Instance.CreateNewFace(ref blendShapesReadyEvent);
+        ClientsManager.Instance.CreateNewRoomSpace(ref blendShapesReadyEvent);
         mainThread?.Start();
-        yield return null;
     }
 
     void ReceivePyMessages()
@@ -114,16 +121,17 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 int bytes = pyStream.Read(messageData, 0, messageData.Length);
                 if (bytes == 0) return;
 
-                //Keypoints response = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
                 BlendShapes response = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
                 blendShapesReadyEvent.Invoke(response);
 
-                /* SimpleSocketMessage socketMessage = new SimpleSocketMessage {
+                /* Keypoints Code
+                
+                Keypoints keypoints = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
+                SimpleSocketMessage socketMessage = new SimpleSocketMessage {
                     Message = "test",
-                        
                 };
 
-                foreach (Blend point in response.Points)
+                foreach (Blend point in keypoints.Points)
                 {
                     socketMessage.Keypoints.Add(new Mvm.Keypoint
                     {
@@ -131,12 +139,12 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                         Y = point.Y,
                         Z = point.Z,
                     });
-                }*/
+                }
 
-                /*                    Debug.Log(response.Points[0]);
+                selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
+                selfOrProcessor.SetPoints(keypoints);
 
-                                selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
-                                selfOrProcessor.SetPoints(response);*/
+                */
             }
             else
             {

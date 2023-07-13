@@ -10,7 +10,7 @@ public class PeerController : MonoBehaviour
     #region Private
 
     private string peerID;
-    private RTCDataChannel channel;
+    private RTCDataChannel dataChannel;
 
     private BlendShapeAnimator blendshapeAnimator;
     private OrientationProcessor orProcessor;
@@ -26,7 +26,7 @@ public class PeerController : MonoBehaviour
     public void Initialize(string peerID, RTCDataChannel dataChannel)
     {
         this.peerID = peerID;
-        this.channel = dataChannel;
+        this.dataChannel = dataChannel;
 
         BlendShapesReadyEvent evnt = new BlendShapesReadyEvent();
 
