@@ -9,7 +9,7 @@ public class PeerController : MonoBehaviour
 {
     #region Private
 
-    private string peerID;
+    public string peerID;
     private RTCDataChannel dataChannel;
 
     private BlendShapeAnimator blendshapeAnimator;

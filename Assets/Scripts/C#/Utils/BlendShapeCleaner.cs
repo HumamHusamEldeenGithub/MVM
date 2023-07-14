@@ -27,7 +27,6 @@ public static class BlendShapeCleaner
 
     private static void SmoothBlendShapeValues(List<BlendShape> blendshapes, float smoothingFactor)
     {
-        UnityEngine.Debug.Log(blendshapes.Count);
         for (int i = 0; i < blendshapes.Count; i++)
         {
             var blendshape = blendshapes[i];

@@ -65,6 +65,8 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         selfOrProcessor = GetComponentInChildren<OrientationProcessor>();
         selfClient = GetComponentInChildren<WebRTCController>();
         selfController = GetComponentInChildren<ClientsManager>();
+
+        selfClient.SetBlendShapesReadyEvent(blendShapesReadyEvent);
     }
 
     public void StartReceiving(bool success)

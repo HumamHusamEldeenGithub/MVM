@@ -9,6 +9,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Mvm;
 using System.Collections.Generic;
+using Google.Protobuf;
 
 public class WebRTCController : MonoBehaviour
 {
@@ -96,7 +97,6 @@ public class WebRTCController : MonoBehaviour
     }
     public void ConnectToRoom(string roomId)
     {
-        roomId = static_roomId;
         InitPeerConnection();
         // async
         SendJoinRoomEvent(roomId);
@@ -217,7 +217,7 @@ public class WebRTCController : MonoBehaviour
         RTCConfiguration config = default;
         config.iceServers = new RTCIceServer[]
         {
-            new RTCIceServer { urls = new string[] { "stun:stun.l.google.com:19302" } }
+            new RTCIceServer { urls = new string[] { "stun:74.125.197.127:19302" } }
         };
 
         return config;
@@ -511,6 +511,19 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Data Channel
+
+    public void SetBlendShapesReadyEvent(BlendShapesReadyEvent evnt)
+    {
+        void SendBlendShapes(BlendShapes blendShapes)
+        {
+            syncContext.Post(new SendOrPostCallback(o =>
+            {
+                SendMsg(blendShapes.ToByteArray());
+            }), null);
+        }
+
+        evnt.AddListener(SendBlendShapes);
+    }
     public void SendMsg(string message)
     {
         foreach(RTCDataChannel channel in dataChannels)
