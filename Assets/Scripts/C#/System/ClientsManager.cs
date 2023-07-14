@@ -18,6 +18,7 @@ public class ClientsManager : Singleton<ClientsManager>
     override protected void Awake()
     {
         base.Awake();
+        EventsPool.Instance.AddListener(typeof(RemoveScreenEvent), new Action<RoomSpaceController.RoomRenderTexture>(RemovePeer));
     }
 
     public void CreateNewRoomSpace(string peerID, RTCDataChannel dataChannel)
@@ -41,6 +42,10 @@ public class ClientsManager : Singleton<ClientsManager>
         var roomSpace = Instantiate(roomPrefab);
         participantsRoomSpaces.Add(id, roomSpace);
         return roomSpace;
+    }
+    private void RemovePeer(RoomSpaceController.RoomRenderTexture rt)
+    {
+        participantsRoomSpaces.Remove(rt.renderTexture.name);
     }
 
 }
