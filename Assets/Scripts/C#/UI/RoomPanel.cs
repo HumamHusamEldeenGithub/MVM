@@ -13,6 +13,14 @@ public class RoomPanel : MonoBehaviour
     private List<RenderTexture> renderTextures = new List<RenderTexture>();
     private int n_rows, n_cols;
 
+    private void Awake()
+    {
+        EventsPool.Instance.AddListener(typeof(CreateNewScreenEvent),
+            new Action<RoomSpaceController.RoomRenderTexture>(CreateNewScreen));
+
+        EventsPool.Instance.AddListener(typeof(RemoveScreenEvent),
+            new Action<RoomSpaceController.RoomRenderTexture>(RemoveScreen));
+    }
     private void CreateNewScreen(RoomSpaceController.RoomRenderTexture rt)
     {
         renderTextures.Add(rt.renderTexture);
@@ -21,9 +29,18 @@ public class RoomPanel : MonoBehaviour
         participantCount++;
         ArrangeParticipantViews(Screen.width, Screen.height);
     }
-    private void Awake()
+    private void RemoveScreen(RoomSpaceController.RoomRenderTexture rt)
     {
-        EventsPool.Instance.AddListener(typeof(CreateNewScreenEvent), new Action<RoomSpaceController.RoomRenderTexture>(CreateNewScreen));
+        if (rt.renderTexture != null)
+        {
+            var screen = screens.Find((img) =>
+            {
+                return img.material.mainTexture.name == rt.renderTexture.name;
+            });
+            renderTextures.Remove(rt.renderTexture);
+            participantCount--;
+            ArrangeParticipantViews(Screen.width, Screen.height);
+        }
     }
 
     private void ArrangeParticipantViews(int screenWidth, int screenHeight)
