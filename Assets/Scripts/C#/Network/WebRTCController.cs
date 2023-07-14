@@ -17,8 +17,8 @@ public class WebRTCController : MonoBehaviour
 
     public string userId;
     public string peerId;
-    public string static_roomId = "8fc3e523-42ec-4154-b341-44bf35a559c2";
     public RTCSessionDescription pcOffer, pcAnsewer;
+    public bool testing1v1 = false; 
 
     #endregion
 
@@ -33,7 +33,9 @@ public class WebRTCController : MonoBehaviour
     UserProfile userProfile;
     AudioStreamTrack localAudioStream;
     [SerializeField] GameObject audioSourcePrefab;
-    
+    #endregion
+
+    #region Messages 
     [Serializable]
     class Message
     {
@@ -50,7 +52,14 @@ public class WebRTCController : MonoBehaviour
         public string SdpMid { get; set; }
         public int? SdpMLineIndex { get; set; }
     }
+    [Serializable]
+    class  OnlineStatus  {
+
+        public string ID { get; set; }
+        public bool IsOnline { get; set; }
+    }
     #endregion
+
 
     #region MonoBehaviour
     private void Awake()
@@ -188,7 +197,16 @@ public class WebRTCController : MonoBehaviour
                         pc?.Dispose();
                         pc = null;
                         break;
-
+                    case "get_user_online_status_list":
+                        List<OnlineStatus> onlineStatuses = socketMessage.Data as List<OnlineStatus>;
+                        foreach (OnlineStatus onlineStatus in onlineStatuses)
+                        {
+                            Debug.Log(onlineStatus.ID + "--" + onlineStatus.IsOnline);
+                        }
+                        break; 
+                    default:
+                        Debug.Log("Received message type : " + socketMessage.Type +" No events assigned to this type");
+                        break;
                 }
             }
             catch (Exception e)
@@ -517,13 +535,13 @@ public class WebRTCController : MonoBehaviour
         {
             syncContext.Post(new SendOrPostCallback(o =>
             {
-                SendMsg(blendShapes.ToByteArray());
+                SendMessageToDataChannels(blendShapes.ToByteArray());
             }), null);
         }
 
         evnt.AddListener(SendBlendShapes);
     }
-    public void SendMsg(string message)
+    public void SendMessageToDataChannels(string message)
     {
         foreach(RTCDataChannel channel in dataChannels)
         {
@@ -534,7 +552,7 @@ public class WebRTCController : MonoBehaviour
         }
     }
 
-    public void SendMsg(byte[] message)
+    public void SendMessageToDataChannels(byte[] message)
     {
         foreach (RTCDataChannel channel in dataChannels)
         {
