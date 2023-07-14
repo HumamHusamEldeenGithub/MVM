@@ -33,7 +33,6 @@ public class WebRTCController : MonoBehaviour
     UserProfile userProfile;
     AudioStreamTrack localAudioStream;
     [SerializeField] GameObject audioSourcePrefab;
-    [SerializeField] GameObject avatarPrefab;
     
     [Serializable]
     class Message

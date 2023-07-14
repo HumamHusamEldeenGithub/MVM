@@ -1,8 +1,4 @@
-using Mvm;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+using Unity.VisualScripting;
 using Unity.WebRTC;
 using UnityEngine;
 
@@ -25,18 +21,20 @@ public class RoomSpaceController : MonoBehaviour
 
     public RoomRenderTexture CurrentRoomRenderTexture
     {
-        get; private set;
+        get; set;
     }
 
     public void Initialize(string peerID, RTCDataChannel dataChannel)
     {
         SelfInitialize();
         peerController.Initialize(peerID, dataChannel);
+        CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
     }
     public void Initialize(ref BlendShapesReadyEvent evnt)
     {
         SelfInitialize();
         peerController.Initialize(ref evnt);
+        CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
     }
 
     private void SelfInitialize()

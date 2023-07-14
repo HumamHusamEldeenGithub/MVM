@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ public class RoomPanel : MonoBehaviour
     private void CreateNewScreen(RoomSpaceController.RoomRenderTexture rt)
     {
         renderTextures.Add(rt.renderTexture);
+
+        Debug.Log(rt.renderTexture.name);
         participantCount++;
         ArrangeParticipantViews(Screen.width, Screen.height);
     }
@@ -45,7 +48,9 @@ public class RoomPanel : MonoBehaviour
             for (int j = 0; j < n_cols && cnt < participantCount; j++)
             {
                 rows[i].transform.GetChild(j).gameObject.SetActive(true);
-                rows[i].transform.GetChild(j).GetComponent<Image>().material.mainTexture = renderTextures[cnt];
+                Material mat = new Material(rows[i].transform.GetChild(j).GetComponent<Image>().material);
+                mat.mainTexture = renderTextures[cnt];
+                rows[i].transform.GetChild(j).GetComponent<Image>().material = mat;
                 cnt++;
             }
         }

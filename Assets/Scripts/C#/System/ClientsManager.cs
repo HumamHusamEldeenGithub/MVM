@@ -23,9 +23,9 @@ public class ClientsManager : Singleton<ClientsManager>
     public void CreateNewRoomSpace(string peerID, RTCDataChannel dataChannel)
     {
         RoomSpaceController newPeer = InstantiateRoomSpace(peerID);
-        newPeer.transform.position = pos;
         pos += new Vector3(50, 0, 0);
         newPeer.Initialize(peerID, dataChannel);
+        newPeer.transform.position = pos;
         EventsPool.Instance.InvokeEvent(typeof(CreateNewScreenEvent), newPeer.CurrentRoomRenderTexture);
     }
 

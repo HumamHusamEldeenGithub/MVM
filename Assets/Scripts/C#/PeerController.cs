@@ -32,8 +32,15 @@ public class PeerController : MonoBehaviour
 
         void OnDataChannelMessage(byte[] bytes)
         {
-            BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
-            evnt.Invoke(responseMessage);
+            try
+            {
+                BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
+                evnt.Invoke(responseMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
         }
 
         dataChannel.OnMessage += OnDataChannelMessage;

@@ -13,7 +13,7 @@ public static class BlendShapeCleaner
     {
         var result = blendShapes.BlendShapes_.ToList();
 
-        if (previousBlendShapes.Count > 0)
+        if (previousBlendShapes.Count == result.Count)
             SmoothBlendShapeValues(result, 0.5f);
 
         LimitExtremeValues(result);
