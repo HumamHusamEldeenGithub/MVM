@@ -14,221 +14,22 @@ using System.Net.Http;
 
 public class WebRTCController : MonoBehaviour
 {
-    #region Attributes
+    #region Properties
+    public RTCPeerConnection pc;
 
-    public string userId;
-    public string peerId;
-    public RTCSessionDescription pcOffer, pcAnsewer;
-    public bool testing1v1 = false; 
-
-    #endregion
-
-    #region Static
-    Thread serverThread = null;
-    bool threadRunning;
-
-    ClientWebSocket webSocket;
-    RTCPeerConnection pc;
-    List<RTCDataChannel> dataChannels = new List<RTCDataChannel>();
-    SynchronizationContext syncContext;
     UserProfile userProfile;
+
+    Dictionary<string , RTCDataChannel> dataChannelsDict = new Dictionary<string,RTCDataChannel>();
+
     AudioStreamTrack localAudioStream;
     [SerializeField] GameObject audioSourcePrefab;
-    List<OnlineStatus> OnlineStatuses = new List<OnlineStatus>();
+
     #endregion
-
-    #region Messages 
-    [Serializable]
-    class Message
-    {
-        public string Type { get; set; }
-        public object Data { get; set; }
-        public string ToId { get; set; }
-        public string FromId { get; set; }
-        public string[] IceCandidates { get; set; }
-    }
-    [Serializable]
-    class PeerICE
-    {
-        public string Candidate { get; set; }
-        public string SdpMid { get; set; }
-        public int? SdpMLineIndex { get; set; }
-    }
-    [Serializable]
-    class  OnlineStatus  {
-
-        public string ID { get; set; }
-        public bool IsOnline { get; set; }
-    }
-    #endregion
-
 
     #region MonoBehaviour
     private void Awake()
     {
-        syncContext = SynchronizationContext.Current;
-        userProfile = GetComponent<UserProfile>();
-        userId = userProfile.Username;
-
-        EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
-            new Action<bool>(InitWebSocketConnection));
-
-        serverThread = new Thread(() => {
-            ConnectToMVMServer();
-            ReceiveServerMessagesAsync();
-        });
-        
-    }
-
-    async void OnDestroy()
-    {
-        threadRunning = false; 
-        pc?.Close();
-        pc = null;
-
-        if(serverThread?.IsAlive == true)
-            serverThread?.Join();
-
-        if(webSocket != null && webSocket?.State != WebSocketState.Closed)
-            await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
-    }
-
-    #endregion
-
-    #region Websocket
-
-    public void InitWebSocketConnection(bool isLoggedIn)
-    {
-        if (isLoggedIn)
-        {
-            threadRunning = true;
-            serverThread?.Start();
-        }
-    }
-    public void ConnectToRoom(string roomId)
-    {
-        InitPeerConnection();
-        // async
-        SendJoinRoomEvent(roomId);
-        EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
-    }
-    async void ConnectToMVMServer()
-    {
-        // TODO throw err 
-        string token = userProfile.userData.Token;
-        if (token == null || token == "") return;
-
-        try
-        {
-            Debug.Log("Connecting to MVM server (WebRTC) ...");
-
-            string url = "ws://" + Server.ServerUrl + ":" + Server.Port + "/wsrtc";
-
-            // Create a new instance of ClientWebSocket
-            webSocket = new ClientWebSocket();
-            webSocket.Options.SetRequestHeader("Authorization", token);
-
-            // Connect to the server
-            await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
-
-            Debug.Log("Connected to MVM server");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Exception: {0}", e);
-        }  
-    }
-
-    async Task SendMessageToServerAsync(Message message)
-    {
-        byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-        await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-
-    async void ReceiveServerMessagesAsync()
-    {
-        while (threadRunning)
-        {
-            if (webSocket.State != WebSocketState.Open) continue;
-            try
-            {
-                byte[] responseBuffer = new byte[9000];
-                WebSocketReceiveResult responseResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(responseBuffer), CancellationToken.None);
-
-                string message = Encoding.UTF8.GetString(responseBuffer, 0, responseResult.Count);
-                // Create a Protobuf message instance and deserialize the response message into it
-                Message socketMessage = JsonConvert.DeserializeObject<Message>(message);
-
-                switch (socketMessage.Type)
-                {
-                    case "offer":
-                        Debug.Log("Received Offer from " + socketMessage.FromId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            // Access UI controls or do other work in the main thread
-                            StartCoroutine(OnReceiveOfferSuccess(socketMessage));
-                        }), null);
-                        break;
-
-                    case "answer":
-                        Debug.Log("Received answer from " + socketMessage.FromId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            // Access UI controls or do other work in the main thread
-                            StartCoroutine(OnReceiveAnswerSuccess(socketMessage));
-                        }), null);
-                        break;
-
-                    case "ice":
-                        Debug.Log("Received Ice for " + socketMessage.ToId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            OnReceiveIce(socketMessage);
-                        }), null);
-                        break;
-                    case "user_enter":
-                        Debug.Log("user enter with id " + socketMessage.FromId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            StartCoroutine(SendOffer(socketMessage.FromId));
-                        }), null);
-                        break;
-                    case "leave_room":
-                        localAudioStream?.Dispose();
-                        localAudioStream = null;
-                        pc?.Dispose();
-                        pc = null;
-                        break;
-                    case "get_users_online_status_list":
-                        OnlineStatuses = socketMessage.Data as List<OnlineStatus>;
-                        foreach (OnlineStatus onlineStatus in OnlineStatuses)
-                        {
-                            Debug.Log(onlineStatus.ID + "--" + onlineStatus.IsOnline);
-                        }
-                        break;
-                    case "user_status_changed":
-                        Debug.Log($"User {socketMessage.FromId} has changed his status to {(bool)socketMessage.Data}");
-                        break; 
-                    default:
-                        Debug.Log("Received message type : " + socketMessage.Type +" No events assigned to this type");
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(e.ToString());
-            }
-        }
-    }
-
-    public async void SendJoinRoomEvent(string roomId)
-    {
-        var message = new Message
-        {
-            Type = "join_room",
-            Data = roomId,
-        };
-        await SendMessageToServerAsync(message);
+        userProfile = GetComponent<UserProfile>(); 
     }
 
     #endregion
@@ -236,36 +37,29 @@ public class WebRTCController : MonoBehaviour
     #region Init Peer
     RTCConfiguration GetSelectedSdpSemantics()
     {
+        Debug.Log("GetSelectedSdpSemantics");
         RTCConfiguration config = default;
         config.iceServers = new RTCIceServer[]
         {
-            new RTCIceServer { urls = new string[] { "stun:74.125.197.127:19302" } }
+            new RTCIceServer { urls = new string[] { "stun:stun.l.google.com:19302" } }
         };
 
         return config;
     }
 
-    void InitPeerConnection()
+    public void InitPeerConnection()
     {
-        Debug.Log("GetSelectedSdpSemantics");
-
         var configuration = GetSelectedSdpSemantics();
         pc = new RTCPeerConnection(ref configuration);
-        Debug.Log($"Created local peer connection object user {userId}");
+        Debug.Log($"Created local peer connection object user {userProfile.Username}");
 
         pc.OnIceCandidate = OnIceCandidate;
         pc.OnIceConnectionChange = OnIceConnectionChange;
 
-
-        syncContext.Post(new SendOrPostCallback(o =>
-        {
-
-                Debug.Log($"Add Tracks from {userProfile.Username}");
-                CaptureAudio();
-                pc.AddTrack(localAudioStream);
+        Debug.Log($"Add Tracks from {userProfile.Username}");
+        CaptureAudio();
+        pc.AddTrack(localAudioStream);
             
-        }), null);
-
         pc.OnTrack = e =>
         {
             if (e.Track is AudioStreamTrack audioTrack)
@@ -277,16 +71,13 @@ public class WebRTCController : MonoBehaviour
 
     void OnAddTrack(AudioStreamTrack track)
     {
-        syncContext.Post(new SendOrPostCallback(o =>
-        {
-            GameObject newAudioSource = Instantiate(audioSourcePrefab);
-            newAudioSource.name = userProfile.name+"-audio";
+        GameObject newAudioSource = Instantiate(audioSourcePrefab);
+        newAudioSource.name = userProfile.name+"-audio";
                 
-            AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
-            audioSource.SetTrack(track);
-            audioSource.loop = true;
-            audioSource.Play();
-        }), null);
+        AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
+        audioSource.SetTrack(track);
+        audioSource.loop = true;
+        audioSource.Play();
     }
 
     private void CaptureAudio()
@@ -308,17 +99,15 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Offer
-    IEnumerator SendOffer(string toPeerId)
+    public IEnumerator SendOffer(string toPeerId)
     {
-        Debug.Log($"pc {userId} SendOffer start");
+        Debug.Log($"pc {userProfile.Username} SendOffer start");
 
         RTCDataChannelInit conf = new RTCDataChannelInit();
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
 
-        ClientsManager.Instance.CreateNewRoomSpace(toPeerId, dataChannel);
-
-        dataChannels.Add(dataChannel);
+        dataChannelsDict.Add(toPeerId, dataChannel);
 
         Debug.Log("pc1 createOffer start");
         RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
@@ -327,14 +116,14 @@ public class WebRTCController : MonoBehaviour
 
         if (op.IsError)
         {
-            Debug.LogError("Error in creating offer in user " + userId);
+            Debug.LogError("Error in creating offer in user " + userProfile.Username);
             Debug.LogError(op.Error);
             yield return null;
         }
         
         else
         {
-            var message = new Message
+            var message = new SignalingMessage
             {
                 Type = "offer",
                 ToId = toPeerId,
@@ -342,54 +131,54 @@ public class WebRTCController : MonoBehaviour
             };
 
             yield return OnCreateOfferSuccess(op.Desc);
-            yield return SendMessageToServerAsync(message);
+            EventsPool.Instance.InvokeEvent(typeof(SignalingMessage), message);
         }
-        Debug.Log($"pc {userId} SendOffer end");
+        Debug.Log($"pc {userProfile.Username} SendOffer end");
     }
 
     IEnumerator OnCreateOfferSuccess(RTCSessionDescription desc)
     {
-        Debug.Log($"pc {userId} OnCreateOfferSuccess start");
+        Debug.Log($"pc {userProfile.Username} OnCreateOfferSuccess start");
         var op = pc.SetLocalDescription(ref desc);
         yield return op;
 
         if (op.IsError)
         {
-            Debug.LogError("Error in SetLocalDescription in user " + userId);
+            Debug.LogError("Error in SetLocalDescription in user " + userProfile.Username);
             Debug.LogError(op.Error);
         }
-        Debug.Log($"pc {userId} OnCreateOfferSuccess end");
+        Debug.Log($"pc {userProfile.Username} OnCreateOfferSuccess end");
     }
 
-    IEnumerator OnReceiveOfferSuccess(Message socketMessage)
+    public IEnumerator OnReceiveOfferSuccess(SignalingMessage socketMessage)
     {
         RTCSessionDescription desc = JsonConvert.DeserializeObject<RTCSessionDescription>(socketMessage.Data.ToString());
 
         pc.OnDataChannel = channel =>
         {
             ClientsManager.Instance.CreateNewRoomSpace(socketMessage.FromId, channel);
-            dataChannels.Add(channel);
+            dataChannelsDict.Add(socketMessage.FromId, channel);
         };
 
-        Debug.Log($"pc {userId} SetRemoteDescription start");
+        Debug.Log($"pc {userProfile.Username} SetRemoteDescription start");
         var op = pc.SetRemoteDescription(ref desc);
         yield return op;
         if (op.IsError)
         {
-            Debug.LogError("Error in SetRemoteDescription in user " + userId);
+            Debug.LogError("Error in SetRemoteDescription in user " + userProfile.Username);
             Debug.LogError(op.Error);
             yield return null;
         }
-        Debug.Log($"pc {userId} SetRemoteDescription end");
+        Debug.Log($"pc {userProfile.Username} SetRemoteDescription end");
 
-        Debug.Log($"pc {userId} CreateAnswer start");
+        Debug.Log($"pc {userProfile.Username} CreateAnswer start");
         RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
         var op2 = pc.CreateAnswer(ref offerOptions);
         yield return op2;
 
         if (op2.IsError)
         {
-            Debug.LogError("Error in CreateAnswer in user " + userId);
+            Debug.LogError("Error in CreateAnswer in user " + userProfile.Username);
             Debug.LogError(op2.Error);
             yield return null;
 
@@ -398,7 +187,7 @@ public class WebRTCController : MonoBehaviour
         {
             yield return OnCreateAnswerSuccess(op2.Desc, socketMessage.FromId);
         }
-        Debug.Log($"pc {userId} CreateAnswer start");
+        Debug.Log($"pc {userProfile.Username} CreateAnswer start");
     }
 
     #endregion
@@ -406,13 +195,13 @@ public class WebRTCController : MonoBehaviour
     #region Answer
     IEnumerator OnCreateAnswerSuccess(RTCSessionDescription desc,string peerId)
     {
-        Debug.Log($"pc {userId} OnCreateAnswerSuccess start");
+        Debug.Log($"pc {userProfile.Username} OnCreateAnswerSuccess start");
         var op2 = pc.SetLocalDescription(ref desc);
         yield return op2;
 
         if (op2.IsError)
         {
-            Debug.LogError("Error in SetLocalDescription in user " + userId);
+            Debug.LogError("Error in SetLocalDescription in user " + userProfile.Username);
             Debug.LogError(op2.Error);
             yield return null;
         }
@@ -423,21 +212,23 @@ public class WebRTCController : MonoBehaviour
                 type = RTCSdpType.Answer,
                 sdp = desc.sdp
             };
-            var message = new Message
+            var message = new SignalingMessage
             {
                 Type = "answer",
                 ToId = peerId,
                 Data = answer
 
             };
-            yield return SendMessageToServerAsync(message);
+            EventsPool.Instance.InvokeEvent(typeof(SignalingMessage), message);
         }
-        Debug.Log($"pc {userId} OnCreateAnswerSuccess end");
+        Debug.Log($"pc {userProfile.Username} OnCreateAnswerSuccess end");
     }
 
-    IEnumerator OnReceiveAnswerSuccess(Message socketMessage)
+    public IEnumerator OnReceiveAnswerSuccess(SignalingMessage socketMessage)
     {
         RTCSessionDescription desc = JsonConvert.DeserializeObject<RTCSessionDescription>(socketMessage.Data.ToString());
+
+        ClientsManager.Instance.CreateNewRoomSpace(socketMessage.FromId, dataChannelsDict[socketMessage.FromId]);
 
         Debug.Log("pc setRemoteDescription start");
         var op = pc.SetRemoteDescription(ref desc);
@@ -445,7 +236,7 @@ public class WebRTCController : MonoBehaviour
 
         if (op.IsError)
         {
-            Debug.LogError("Error in SetRemoteDescription in user " + userId);
+            Debug.LogError("Error in SetRemoteDescription in user " + userProfile.Username);
             Debug.LogError(op.Error);
             yield return null;
         }
@@ -455,7 +246,7 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region ICE
-    async void OnIceCandidate(RTCIceCandidate iceCandidate)
+    void OnIceCandidate(RTCIceCandidate iceCandidate)
     {
         PeerICE peerIce = new PeerICE
         {
@@ -464,16 +255,16 @@ public class WebRTCController : MonoBehaviour
             SdpMLineIndex = iceCandidate.SdpMLineIndex
         };
 
-        Message iceMessage = new Message
+        SignalingMessage iceMessage = new SignalingMessage
         {
             Type = "ice",
             Data = JsonConvert.SerializeObject(peerIce),
         };
-        Debug.Log($"Send ICE from {userId}");
-        await SendMessageToServerAsync(iceMessage);
+        Debug.Log($"Send ICE from {userProfile.Username}");
+        EventsPool.Instance.InvokeEvent(typeof(SignalingMessage), iceMessage);
     }
 
-    void OnReceiveIce(Message message)
+    public void OnReceiveIce(SignalingMessage message)
     {
         Debug.Log("Call OnReceiveIce");
         try
@@ -502,28 +293,28 @@ public class WebRTCController : MonoBehaviour
         switch (state)
         {
             case RTCIceConnectionState.New:
-                Debug.Log($"{userId} IceConnectionState: New");
+                Debug.Log($"{userProfile.Username} IceConnectionState: New");
                 break;
             case RTCIceConnectionState.Checking:
-                Debug.Log($"{userId} IceConnectionState: Checking");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Checking");
                 break;
             case RTCIceConnectionState.Closed:
-                Debug.Log($"{userId} IceConnectionState: Closed");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Closed");
                 break;
             case RTCIceConnectionState.Completed:
-                Debug.Log($"{userId} IceConnectionState: Completed");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Completed");
                 break;
             case RTCIceConnectionState.Connected:
-                Debug.Log($"{userId} IceConnectionState: Connected");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Connected");
                 break;
             case RTCIceConnectionState.Disconnected:
-                Debug.Log($"{userId} IceConnectionState: Disconnected");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Disconnected");
                 break;
             case RTCIceConnectionState.Failed:
-                Debug.Log($"{userId} IceConnectionState: Failed");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Failed");
                 break;
             case RTCIceConnectionState.Max:
-                Debug.Log($"{userId} IceConnectionState: Max");
+                Debug.Log($"{userProfile.Username} IceConnectionState: Max");
                 break;
             default:
                 break;
@@ -538,40 +329,37 @@ public class WebRTCController : MonoBehaviour
     {
         void SendBlendShapes(BlendShapes blendShapes)
         {
-            syncContext.Post(new SendOrPostCallback(o =>
-            {
-                var json = JsonConvert.SerializeObject(blendShapes);
-                SendMessageToDataChannels(json);
-            }), null);
+            var json = JsonConvert.SerializeObject(blendShapes);
+            SendMessageToDataChannels(json);
         }
 
         evnt.AddListener(SendBlendShapes);
     }
     public void SendMessageToDataChannels(string message)
     {
-        foreach(RTCDataChannel channel in dataChannels)
+        foreach (KeyValuePair<string, RTCDataChannel> channel in dataChannelsDict)
         {
-            if (channel.ReadyState == RTCDataChannelState.Open)
+            if (channel.Value.ReadyState == RTCDataChannelState.Open)
             {
-                channel.Send(message);
+                channel.Value.Send(message);
             }
         }
     }
 
     public void SendMessageToDataChannels(byte[] message)
     {
-        foreach (RTCDataChannel channel in dataChannels)
+        foreach (KeyValuePair<string, RTCDataChannel> channel in dataChannelsDict)
         {
-            if (channel.ReadyState == RTCDataChannelState.Open)
+            if (channel.Value.ReadyState == RTCDataChannelState.Open)
             {
-                channel.Send(message);
+                channel.Value.Send(message);
             }
         }
     }
 
     public void OnDataChannelOpened()
     {
-        Debug.Log($"{userId} Opened a dataChannel");
+        Debug.Log($"{userProfile.Username} Opened a dataChannel");
     }
 
     #endregion
