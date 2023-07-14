@@ -102,7 +102,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         // Start Recieving
         mainThread = new Thread(() =>
         {
-            Debug.Log("Thread?");
             threadRunning = true;
             ReceivePyMessages();
         });
@@ -125,32 +124,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
                 BlendShapes response = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
                 blendShapesReadyEvent.Invoke(response);
-
-                /* Keypoints Code
-                
-                Keypoints keypoints = Keypoints.Parser.ParseFrom(messageData, 0, bytes);
-                SimpleSocketMessage socketMessage = new SimpleSocketMessage {
-                    Message = "test",
-                };
-
-                foreach (Blend point in keypoints.Points)
-                {
-                    socketMessage.Keypoints.Add(new Mvm.Keypoint
-                    {
-                        X = point.X,
-                        Y = point.Y,
-                        Z = point.Z,
-                    });
-                }
-
-                selfClient.SendMsg(JsonConvert.SerializeObject(socketMessage));
-                selfOrProcessor.SetPoints(keypoints);
-
-                */
-            }
-            else
-            {
-                Debug.Log("No Data Available.");
             }
         }
     }

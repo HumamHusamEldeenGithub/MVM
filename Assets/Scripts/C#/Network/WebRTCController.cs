@@ -527,7 +527,10 @@ public class WebRTCController : MonoBehaviour
     {
         foreach(RTCDataChannel channel in dataChannels)
         {
-            channel.Send(message);
+            if (channel.ReadyState == RTCDataChannelState.Open)
+            {
+                channel.Send(message);
+            }
         }
     }
 
@@ -535,7 +538,10 @@ public class WebRTCController : MonoBehaviour
     {
         foreach (RTCDataChannel channel in dataChannels)
         {
-            channel.Send(message);
+            if (channel.ReadyState == RTCDataChannelState.Open)
+            {
+                channel.Send(message);
+            }
         }
     }
 
