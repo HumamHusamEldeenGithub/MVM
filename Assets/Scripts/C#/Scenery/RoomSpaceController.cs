@@ -59,5 +59,6 @@ public class RoomSpaceController : MonoBehaviour
     {
         CurrentRoomRenderTexture.renderTexture.Release();
         EventsPool.Instance.InvokeEvent(typeof(RemoveScreenEvent), CurrentRoomRenderTexture);
+        Destroy(gameObject);
     }
 }
