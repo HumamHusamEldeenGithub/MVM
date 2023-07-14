@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Mvm;
 using System.Collections.Generic;
 using Google.Protobuf;
+using System.Net.Http;
 
 public class WebRTCController : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class WebRTCController : MonoBehaviour
     UserProfile userProfile;
     AudioStreamTrack localAudioStream;
     [SerializeField] GameObject audioSourcePrefab;
+    List<OnlineStatus> OnlineStatuses = new List<OnlineStatus>();
     #endregion
 
     #region Messages 
@@ -197,12 +199,15 @@ public class WebRTCController : MonoBehaviour
                         pc?.Dispose();
                         pc = null;
                         break;
-                    case "get_user_online_status_list":
-                        List<OnlineStatus> onlineStatuses = socketMessage.Data as List<OnlineStatus>;
-                        foreach (OnlineStatus onlineStatus in onlineStatuses)
+                    case "get_users_online_status_list":
+                        OnlineStatuses = socketMessage.Data as List<OnlineStatus>;
+                        foreach (OnlineStatus onlineStatus in OnlineStatuses)
                         {
                             Debug.Log(onlineStatus.ID + "--" + onlineStatus.IsOnline);
                         }
+                        break;
+                    case "user_status_changed":
+                        Debug.Log($"User {socketMessage.FromId} has changed his status to {(bool)socketMessage.Data}");
                         break; 
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type +" No events assigned to this type");
@@ -535,7 +540,8 @@ public class WebRTCController : MonoBehaviour
         {
             syncContext.Post(new SendOrPostCallback(o =>
             {
-                SendMessageToDataChannels(blendShapes.ToByteArray());
+                var json = JsonConvert.SerializeObject(blendShapes);
+                SendMessageToDataChannels(json);
             }), null);
         }
 
