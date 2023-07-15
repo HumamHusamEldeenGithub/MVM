@@ -1607,8 +1607,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 756717182}
-        m_TargetAssemblyTypeName: WebRTCController, Assembly-CSharp
+      - m_Target: {fileID: 756717187}
+        m_TargetAssemblyTypeName: SignalingServerController, Assembly-CSharp
         m_MethodName: ConnectToRoom
         m_Mode: 5
         m_Arguments:
@@ -1668,10 +1668,11 @@ GameObject:
   - component: {fileID: 756717180}
   - component: {fileID: 756717179}
   - component: {fileID: 756717181}
-  - component: {fileID: 756717182}
   - component: {fileID: 756717184}
   - component: {fileID: 756717185}
+  - component: {fileID: 756717186}
   - component: {fileID: 756717183}
+  - component: {fileID: 756717187}
   m_Layer: 0
   m_Name: SelfManager
   m_TagString: Untagged
@@ -1719,22 +1720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c3e27d48c05554990f78e2c45b6f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &756717182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756717178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006163d4067b2a4499aacb47bbce6ca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  userId: 
-  peerId: 
-  testing1v1: 0
-  audioSourcePrefab: {fileID: 4058095923496747409, guid: f05e69312cb39734faff3bd1d89faddc, type: 3}
 --- !u!82 &756717183
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1856,6 +1841,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d86de7674f3124882a9ecd0dc014ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &756717186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756717178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e27bc91fa6fc94c9fa582a8471bee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &756717187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756717178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982a762c43766264f8df259eba8abf1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  webRTCManager: {fileID: 756717186}
 --- !u!1 &788052406
 GameObject:
   m_ObjectHideFlags: 0

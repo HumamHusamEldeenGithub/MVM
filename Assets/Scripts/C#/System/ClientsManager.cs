@@ -25,14 +25,16 @@ public class ClientsManager : Singleton<ClientsManager>
     {
         RoomSpaceController newPeer = InstantiateRoomSpace(peerID);
         pos += new Vector3(50, 0, 0);
-        newPeer.Initialize(peerID, dataChannel);
         newPeer.transform.position = pos;
+        newPeer.Initialize(peerID, dataChannel);
         EventsPool.Instance.InvokeEvent(typeof(CreateNewScreenEvent), newPeer.CurrentRoomRenderTexture);
     }
 
     public void CreateNewRoomSpace(ref BlendShapesReadyEvent evnt, string peerID = "self")
     {
         RoomSpaceController newPeer = InstantiateRoomSpace(peerID);
+        pos += new Vector3(50, 0, 0);
+        newPeer.transform.position = pos;
         newPeer.Initialize(ref evnt);
         EventsPool.Instance.InvokeEvent(typeof(CreateNewScreenEvent), newPeer.CurrentRoomRenderTexture);
     }
