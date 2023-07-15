@@ -41,6 +41,12 @@ public class WebRTCController : MonoBehaviour
 
         pc.OnIceCandidate = OnIceCandidate;
         pc.OnIceConnectionChange = OnIceConnectionChange;
+        pc.OnDataChannel = channel =>
+        {
+            Debug.Log("Call onDataChannel");
+            this.peerDataChannel = channel;
+            ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
+        };
 
         Debug.Log($"Add Tracks ");
         pc.AddTrack(localAudioStream);
@@ -122,12 +128,6 @@ public class WebRTCController : MonoBehaviour
     public IEnumerator OnReceiveOfferSuccess(SignalingMessage socketMessage)
     {
         RTCSessionDescription desc = JsonConvert.DeserializeObject<RTCSessionDescription>(socketMessage.Data.ToString());
-
-        // TODO 
-        pc.OnDataChannel = channel =>
-        {
-            peerDataChannel = channel;
-        };
 
         Debug.Log($"pc SetRemoteDescription start");
         var op = pc.SetRemoteDescription(ref desc);
@@ -273,7 +273,10 @@ public class WebRTCController : MonoBehaviour
                 break;
             case RTCIceConnectionState.Connected:
                 Debug.Log($"IceConnectionState: Connected");
-                ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
+                if (peerDataChannel != null)
+                {
+                    ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
+                }
                 break;
             case RTCIceConnectionState.Disconnected:
                 Debug.Log($"IceConnectionState: Disconnected");
