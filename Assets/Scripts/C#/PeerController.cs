@@ -11,6 +11,7 @@ public class PeerController : MonoBehaviour
 {
     #region Private
 
+    private float stTime = -1;
     public string peerID;
     private RTCDataChannel dataChannel;
 
@@ -36,6 +37,11 @@ public class PeerController : MonoBehaviour
         {
             try
             {
+                if (stTime > 0)
+                {
+                    Debug.Log((stTime + Time.time) / 2);
+                }
+                stTime = Time.time;
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
                 //BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
                 evnt.Invoke(responseMessage);
