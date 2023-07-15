@@ -1,6 +1,8 @@
 using Mvm;
 using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Unity.WebRTC;
 using UnityEngine;
@@ -34,7 +36,8 @@ public class PeerController : MonoBehaviour
         {
             try
             {
-                BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
+                BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
+                //BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
                 evnt.Invoke(responseMessage);
             }
             catch (Exception e)

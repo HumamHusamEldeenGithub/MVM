@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.WebRTC;
 using UnityEngine;
+using Google.Protobuf;
+using System.IO;
 
 public class WebRTCManager : MonoBehaviour
 {
@@ -88,10 +90,20 @@ public class WebRTCManager : MonoBehaviour
         {
             syncContext.Post(new SendOrPostCallback(o =>
             {
-                var json = JsonConvert.SerializeObject(blendShapes);
+                byte[] byteArray;
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    // Serialize the protobuf object to the memory stream
+                    blendShapes.WriteTo(memoryStream);
+
+                    // Get the byte array from the memory stream
+                    byteArray = memoryStream.ToArray();
+                }
+                
                 foreach (WebRTCController peer in webRTCConnections.Values)
                 {
-                    peer.SendMessageToDataChannels(json);
+                    peer.SendMessageToDataChannels(byteArray);
                 }
             }), null);
 
