@@ -15,13 +15,15 @@ using System.Net.Http;
 public class WebRTCController : MonoBehaviour
 {
     #region Properties
+
+    public string peerId;
+
     public RTCPeerConnection pc;
 
     UserProfile userProfile;
 
-    Dictionary<string , RTCDataChannel> dataChannelsDict = new Dictionary<string,RTCDataChannel>();
+    RTCDataChannel peerDataChannel;
 
-    AudioStreamTrack localAudioStream;
     [SerializeField] GameObject audioSourcePrefab;
 
     #endregion
@@ -29,7 +31,7 @@ public class WebRTCController : MonoBehaviour
     #region MonoBehaviour
     private void Awake()
     {
-        userProfile = GetComponent<UserProfile>(); 
+        userProfile = GetComponent<UserProfile>();
     }
 
     #endregion
@@ -47,8 +49,10 @@ public class WebRTCController : MonoBehaviour
         return config;
     }
 
-    public void InitPeerConnection()
+    public void InitPeerConnection(AudioStreamTrack localAudioStream, string peerId)
     {
+        this.peerId = peerId;
+
         var configuration = GetSelectedSdpSemantics();
         pc = new RTCPeerConnection(ref configuration);
         Debug.Log($"Created local peer connection object user {userProfile.Username}");
@@ -57,49 +61,32 @@ public class WebRTCController : MonoBehaviour
         pc.OnIceConnectionChange = OnIceConnectionChange;
 
         Debug.Log($"Add Tracks from {userProfile.Username}");
-        CaptureAudio();
         pc.AddTrack(localAudioStream);
-            
+
         pc.OnTrack = e =>
         {
             if (e.Track is AudioStreamTrack audioTrack)
             {
                 OnAddTrack(audioTrack);
             }
-        }; ;  
+        }; ;
     }
 
     void OnAddTrack(AudioStreamTrack track)
     {
         GameObject newAudioSource = Instantiate(audioSourcePrefab);
-        newAudioSource.name = userProfile.name+"-audio";
-                
+        newAudioSource.name = userProfile.name + "-audio";
+
         AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
         audioSource.SetTrack(track);
         audioSource.loop = true;
         audioSource.Play();
     }
 
-    private void CaptureAudio()
-    {
-        AudioSource localAudioSource = GetComponent<AudioSource>();
-        var deviceName = Microphone.devices[0];
-        Microphone.GetDeviceCaps(deviceName, out int minFreq, out int maxFreq);
-        var micClip = Microphone.Start(deviceName, true, 1, 48000);
-
-        // set the latency to “0” samples before the audio starts to play.
-        while (!(Microphone.GetPosition(deviceName) > 0)) { }
-
-        localAudioSource.clip = micClip;
-        localAudioSource.loop = true;
-        localAudioSource.Play();
-        localAudioStream = new AudioStreamTrack(localAudioSource);
-    }
-
     #endregion
 
     #region Offer
-    public IEnumerator SendOffer(string toPeerId)
+    public IEnumerator SendOffer()
     {
         Debug.Log($"pc {userProfile.Username} SendOffer start");
 
@@ -107,7 +94,7 @@ public class WebRTCController : MonoBehaviour
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
 
-        dataChannelsDict.Add(toPeerId, dataChannel);
+        peerDataChannel = dataChannel;
 
         Debug.Log("pc1 createOffer start");
         RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
@@ -120,13 +107,13 @@ public class WebRTCController : MonoBehaviour
             Debug.LogError(op.Error);
             yield return null;
         }
-        
+
         else
         {
             var message = new SignalingMessage
             {
                 Type = "offer",
-                ToId = toPeerId,
+                ToId = peerId,
                 Data = op.Desc,
             };
 
@@ -154,10 +141,10 @@ public class WebRTCController : MonoBehaviour
     {
         RTCSessionDescription desc = JsonConvert.DeserializeObject<RTCSessionDescription>(socketMessage.Data.ToString());
 
+        // TODO 
         pc.OnDataChannel = channel =>
         {
-            ClientsManager.Instance.CreateNewRoomSpace(socketMessage.FromId, channel);
-            dataChannelsDict.Add(socketMessage.FromId, channel);
+            peerDataChannel = channel;
         };
 
         Debug.Log($"pc {userProfile.Username} SetRemoteDescription start");
@@ -185,7 +172,7 @@ public class WebRTCController : MonoBehaviour
         }
         else
         {
-            yield return OnCreateAnswerSuccess(op2.Desc, socketMessage.FromId);
+            yield return OnCreateAnswerSuccess(op2.Desc);
         }
         Debug.Log($"pc {userProfile.Username} CreateAnswer start");
     }
@@ -193,7 +180,7 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Answer
-    IEnumerator OnCreateAnswerSuccess(RTCSessionDescription desc,string peerId)
+    IEnumerator OnCreateAnswerSuccess(RTCSessionDescription desc)
     {
         Debug.Log($"pc {userProfile.Username} OnCreateAnswerSuccess start");
         var op2 = pc.SetLocalDescription(ref desc);
@@ -227,8 +214,6 @@ public class WebRTCController : MonoBehaviour
     public IEnumerator OnReceiveAnswerSuccess(SignalingMessage socketMessage)
     {
         RTCSessionDescription desc = JsonConvert.DeserializeObject<RTCSessionDescription>(socketMessage.Data.ToString());
-
-        ClientsManager.Instance.CreateNewRoomSpace(socketMessage.FromId, dataChannelsDict[socketMessage.FromId]);
 
         Debug.Log("pc setRemoteDescription start");
         var op = pc.SetRemoteDescription(ref desc);
@@ -300,18 +285,23 @@ public class WebRTCController : MonoBehaviour
                 break;
             case RTCIceConnectionState.Closed:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Closed");
+                EventsPool.Instance.InvokeEvent(typeof(WebRTCConnectionClosedEvent), peerId);
                 break;
             case RTCIceConnectionState.Completed:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Completed");
+                ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
                 break;
             case RTCIceConnectionState.Connected:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Connected");
+                ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
                 break;
             case RTCIceConnectionState.Disconnected:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Disconnected");
+                EventsPool.Instance.InvokeEvent(typeof(WebRTCConnectionClosedEvent), peerId);
                 break;
             case RTCIceConnectionState.Failed:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Failed");
+                EventsPool.Instance.InvokeEvent(typeof(WebRTCConnectionClosedEvent), peerId);
                 break;
             case RTCIceConnectionState.Max:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Max");
@@ -325,35 +315,19 @@ public class WebRTCController : MonoBehaviour
 
     #region Data Channel
 
-    public void SetBlendShapesReadyEvent(BlendShapesReadyEvent evnt)
-    {
-        void SendBlendShapes(BlendShapes blendShapes)
-        {
-            var json = JsonConvert.SerializeObject(blendShapes);
-            SendMessageToDataChannels(json);
-        }
-
-        evnt.AddListener(SendBlendShapes);
-    }
     public void SendMessageToDataChannels(string message)
     {
-        foreach (KeyValuePair<string, RTCDataChannel> channel in dataChannelsDict)
+        if (peerDataChannel.ReadyState == RTCDataChannelState.Open)
         {
-            if (channel.Value.ReadyState == RTCDataChannelState.Open)
-            {
-                channel.Value.Send(message);
-            }
+            peerDataChannel.Send(message);
         }
     }
 
     public void SendMessageToDataChannels(byte[] message)
     {
-        foreach (KeyValuePair<string, RTCDataChannel> channel in dataChannelsDict)
+        if (peerDataChannel.ReadyState == RTCDataChannelState.Open)
         {
-            if (channel.Value.ReadyState == RTCDataChannelState.Open)
-            {
-                channel.Value.Send(message);
-            }
+            peerDataChannel.Send(message);
         }
     }
 

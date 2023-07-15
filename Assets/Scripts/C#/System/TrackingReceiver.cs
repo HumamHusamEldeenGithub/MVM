@@ -19,7 +19,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     #region CachedVars
 
     NetworkStream pyStream;
-    WebRTCController selfClient;
+    WebRTCManager webRTCManager;
     ClientsManager selfController;
     OrientationProcessor selfOrProcessor;
 
@@ -63,10 +63,10 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         processManager = ProcessManager.Instance;
 
         selfOrProcessor = GetComponentInChildren<OrientationProcessor>();
-        selfClient = GetComponentInChildren<WebRTCController>();
         selfController = GetComponentInChildren<ClientsManager>();
+        webRTCManager = GetComponentInChildren<WebRTCManager>();
 
-        selfClient.SetBlendShapesReadyEvent(blendShapesReadyEvent);
+        webRTCManager.SetBlendShapesReadyEvent(blendShapesReadyEvent);
     }
 
     public void StartReceiving(bool success)

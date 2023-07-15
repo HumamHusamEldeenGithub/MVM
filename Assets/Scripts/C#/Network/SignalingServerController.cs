@@ -16,9 +16,9 @@ class SignalingServerController : MonoBehaviour
 
     UserProfile userProfile;
     ClientWebSocket webSocket;
-    List<OnlineStatus> OnlineStatuses = new List<OnlineStatus>();
+    OnlineStatus[] OnlineStatuses = { };
 
-    public WebRTCController webRTCController;
+    public WebRTCManager webRTCManager;
     #endregion
 
     #region MonoBehaviour
@@ -40,8 +40,8 @@ class SignalingServerController : MonoBehaviour
     async void OnDestroy()
     {
         threadRunning = false;
-        webRTCController.pc?.Close();
-        webRTCController.pc = null;
+
+        webRTCManager.DisposeAllWebRTCConnections();
 
         if (serverThread?.IsAlive == true)
             serverThread?.Join();
@@ -104,52 +104,45 @@ class SignalingServerController : MonoBehaviour
                 {
                     case "offer":
                         Debug.Log("Received Offer from " + socketMessage.FromId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            // Access UI controls or do other work in the main thread
-                            StartCoroutine(webRTCController.OnReceiveOfferSuccess(socketMessage));
-                        }), null);
+                        webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+                        webRTCManager.ReceiveOffer(socketMessage.FromId, socketMessage);
                         break;
 
                     case "answer":
                         Debug.Log("Received answer from " + socketMessage.FromId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            // Access UI controls or do other work in the main thread
-                            StartCoroutine(webRTCController.OnReceiveAnswerSuccess(socketMessage));
-                        }), null);
+                        webRTCManager.ReceiveAnswer(socketMessage.FromId, socketMessage);
                         break;
 
                     case "ice":
                         Debug.Log("Received Ice for " + socketMessage.ToId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            webRTCController.OnReceiveIce(socketMessage);
-                        }), null);
+                        webRTCManager.ReceiveICE(socketMessage.FromId, socketMessage);
                         break;
+
                     case "user_enter":
                         Debug.Log("user enter with id " + socketMessage.FromId);
-                        syncContext.Post(new SendOrPostCallback(o =>
-                        {
-                            StartCoroutine(webRTCController.SendOffer(socketMessage.FromId));
-                        }), null);
+                        webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+                        webRTCManager.SendOffer(socketMessage.FromId);
                         break;
+
                     case "leave_room":
 /*                        localAudioStream?.Dispose();
                         localAudioStream = null;
                         pc?.Dispose();
                         pc = null;*/
                         break;
+
                     case "get_users_online_status_list":
-                        OnlineStatuses = socketMessage.Data as List<OnlineStatus>;
+                        OnlineStatuses = (OnlineStatus[])socketMessage.Data;
                         foreach (OnlineStatus onlineStatus in OnlineStatuses)
                         {
                             Debug.Log(onlineStatus.ID + "--" + onlineStatus.IsOnline);
                         }
                         break;
+
                     case "user_status_changed":
                         Debug.Log($"User {socketMessage.FromId} has changed his status to {(bool)socketMessage.Data}");
                         break;
+
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type + " No events assigned to this type");
                         break;
@@ -180,8 +173,8 @@ class SignalingServerController : MonoBehaviour
 
     public void ConnectToRoom(string roomId)
     {
-        webRTCController.InitPeerConnection();
         SendJoinRoomEvent(roomId);
+        webRTCManager.CaptureAudio();
         EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
     }
 }
