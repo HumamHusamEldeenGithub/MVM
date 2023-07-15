@@ -12,19 +12,9 @@ public class WebRTCController : MonoBehaviour
 
     public RTCPeerConnection pc;
 
-    UserProfile userProfile;
-
     RTCDataChannel peerDataChannel;
 
     [SerializeField] GameObject audioSourcePrefab;
-
-    #endregion
-
-    #region MonoBehaviour
-    private void Awake()
-    {
-        userProfile = GetComponent<UserProfile>();
-    }
 
     #endregion
 
@@ -47,12 +37,12 @@ public class WebRTCController : MonoBehaviour
 
         var configuration = GetSelectedSdpSemantics();
         pc = new RTCPeerConnection(ref configuration);
-        Debug.Log($"Created local peer connection object user {userProfile.Username}");
+        Debug.Log($"Created local peer connection object user ");
 
         pc.OnIceCandidate = OnIceCandidate;
         pc.OnIceConnectionChange = OnIceConnectionChange;
 
-        Debug.Log($"Add Tracks from {userProfile.Username}");
+        Debug.Log($"Add Tracks ");
         pc.AddTrack(localAudioStream);
 
         pc.OnTrack = e =>
@@ -66,13 +56,13 @@ public class WebRTCController : MonoBehaviour
 
     void OnAddTrack(AudioStreamTrack track)
     {
-        GameObject newAudioSource = Instantiate(audioSourcePrefab);
-        newAudioSource.name = userProfile.name + "-audio";
+/*        GameObject newAudioSource = Instantiate(audioSourcePrefab);
+        newAudioSource.name = peerId + "-audio";
 
         AudioSource audioSource = newAudioSource.GetComponent<AudioSource>();
         audioSource.SetTrack(track);
         audioSource.loop = true;
-        audioSource.Play();
+        audioSource.Play();*/
     }
 
     #endregion
@@ -80,7 +70,7 @@ public class WebRTCController : MonoBehaviour
     #region Offer
     public IEnumerator SendOffer()
     {
-        Debug.Log($"pc {userProfile.Username} SendOffer start");
+        Debug.Log($"pc SendOffer start");
 
         RTCDataChannelInit conf = new RTCDataChannelInit();
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
@@ -95,7 +85,7 @@ public class WebRTCController : MonoBehaviour
 
         if (op.IsError)
         {
-            Debug.LogError("Error in creating offer in user " + userProfile.Username);
+            Debug.LogError("Error in creating offer in user ");
             Debug.LogError(op.Error);
             yield return null;
         }
@@ -112,21 +102,21 @@ public class WebRTCController : MonoBehaviour
             yield return OnCreateOfferSuccess(op.Desc);
             yield return SignalingServerController.SendMessageToServerAsync(message);
         }
-        Debug.Log($"pc {userProfile.Username} SendOffer end");
+        Debug.Log($"pc SendOffer end");
     }
 
     IEnumerator OnCreateOfferSuccess(RTCSessionDescription desc)
     {
-        Debug.Log($"pc {userProfile.Username} OnCreateOfferSuccess start");
+        Debug.Log($"pc OnCreateOfferSuccess start");
         var op = pc.SetLocalDescription(ref desc);
         yield return op;
 
         if (op.IsError)
         {
-            Debug.LogError("Error in SetLocalDescription in user " + userProfile.Username);
+            Debug.LogError("Error in SetLocalDescription in user ");
             Debug.LogError(op.Error);
         }
-        Debug.Log($"pc {userProfile.Username} OnCreateOfferSuccess end");
+        Debug.Log($"pc OnCreateOfferSuccess end");
     }
 
     public IEnumerator OnReceiveOfferSuccess(SignalingMessage socketMessage)
@@ -139,25 +129,25 @@ public class WebRTCController : MonoBehaviour
             peerDataChannel = channel;
         };
 
-        Debug.Log($"pc {userProfile.Username} SetRemoteDescription start");
+        Debug.Log($"pc SetRemoteDescription start");
         var op = pc.SetRemoteDescription(ref desc);
         yield return op;
         if (op.IsError)
         {
-            Debug.LogError("Error in SetRemoteDescription in user " + userProfile.Username);
+            Debug.LogError("Error in SetRemoteDescription in user " );
             Debug.LogError(op.Error);
             yield return null;
         }
-        Debug.Log($"pc {userProfile.Username} SetRemoteDescription end");
+        Debug.Log($"pc SetRemoteDescription end");
 
-        Debug.Log($"pc {userProfile.Username} CreateAnswer start");
+        Debug.Log($"pc CreateAnswer start");
         RTCOfferAnswerOptions offerOptions = new RTCOfferAnswerOptions();
         var op2 = pc.CreateAnswer(ref offerOptions);
         yield return op2;
 
         if (op2.IsError)
         {
-            Debug.LogError("Error in CreateAnswer in user " + userProfile.Username);
+            Debug.LogError("Error in CreateAnswer in user ");
             Debug.LogError(op2.Error);
             yield return null;
 
@@ -166,7 +156,7 @@ public class WebRTCController : MonoBehaviour
         {
             yield return OnCreateAnswerSuccess(op2.Desc);
         }
-        Debug.Log($"pc {userProfile.Username} CreateAnswer start");
+        Debug.Log($"pc CreateAnswer start");
     }
 
     #endregion
@@ -174,13 +164,13 @@ public class WebRTCController : MonoBehaviour
     #region Answer
     IEnumerator OnCreateAnswerSuccess(RTCSessionDescription desc)
     {
-        Debug.Log($"pc {userProfile.Username} OnCreateAnswerSuccess start");
+        Debug.Log($"pc OnCreateAnswerSuccess start");
         var op2 = pc.SetLocalDescription(ref desc);
         yield return op2;
 
         if (op2.IsError)
         {
-            Debug.LogError("Error in SetLocalDescription in user " + userProfile.Username);
+            Debug.LogError("Error in SetLocalDescription in user ");
             Debug.LogError(op2.Error);
             yield return null;
         }
@@ -200,7 +190,7 @@ public class WebRTCController : MonoBehaviour
             };
             yield return SignalingServerController.SendMessageToServerAsync(message);
         }
-        Debug.Log($"pc {userProfile.Username} OnCreateAnswerSuccess end");
+        Debug.Log($"pc OnCreateAnswerSuccess end");
     }
 
     public IEnumerator OnReceiveAnswerSuccess(SignalingMessage socketMessage)
@@ -213,7 +203,7 @@ public class WebRTCController : MonoBehaviour
 
         if (op.IsError)
         {
-            Debug.LogError("Error in SetRemoteDescription in user " + userProfile.Username);
+            Debug.LogError("Error in SetRemoteDescription in user ");
             Debug.LogError(op.Error);
             yield return null;
         }
@@ -237,7 +227,7 @@ public class WebRTCController : MonoBehaviour
             Type = "ice",
             Data = JsonConvert.SerializeObject(peerIce),
         };
-        Debug.Log($"Send ICE from {userProfile.Username}");
+        Debug.Log($"Send ICE");
         await SignalingServerController.SendMessageToServerAsync(iceMessage);
     }
 
@@ -269,32 +259,32 @@ public class WebRTCController : MonoBehaviour
         switch (state)
         {
             case RTCIceConnectionState.New:
-                Debug.Log($"{userProfile.Username} IceConnectionState: New");
+                Debug.Log($"IceConnectionState: New");
                 break;
             case RTCIceConnectionState.Checking:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Checking");
+                Debug.Log($"IceConnectionState: Checking");
                 break;
             case RTCIceConnectionState.Closed:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Closed");
+                Debug.Log($"IceConnectionState: Closed");
                 EventsPool.Instance.InvokeEvent(typeof(WebRTCConnectionClosedEvent), peerId);
                 break;
             case RTCIceConnectionState.Completed:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Completed");
-                ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
+                Debug.Log($"IceConnectionState: Completed");
                 break;
             case RTCIceConnectionState.Connected:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Connected");
+                Debug.Log($"IceConnectionState: Connected");
+                ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
                 break;
             case RTCIceConnectionState.Disconnected:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Disconnected");
+                Debug.Log($"IceConnectionState: Disconnected");
                 EventsPool.Instance.InvokeEvent(typeof(WebRTCConnectionClosedEvent), peerId);
                 break;
             case RTCIceConnectionState.Failed:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Failed");
+                Debug.Log($"IceConnectionState: Failed");
                 EventsPool.Instance.InvokeEvent(typeof(WebRTCConnectionClosedEvent), peerId);
                 break;
             case RTCIceConnectionState.Max:
-                Debug.Log($"{userProfile.Username} IceConnectionState: Max");
+                Debug.Log($"IceConnectionState: Max");
                 break;
             default:
                 break;
@@ -323,7 +313,7 @@ public class WebRTCController : MonoBehaviour
 
     public void OnDataChannelOpened()
     {
-        Debug.Log($"{userProfile.Username} Opened a dataChannel");
+        Debug.Log($"Opened a dataChannel");
     }
 
     #endregion

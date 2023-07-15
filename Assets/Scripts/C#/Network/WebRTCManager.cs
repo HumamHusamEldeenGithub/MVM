@@ -42,7 +42,9 @@ public class WebRTCManager : MonoBehaviour
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            WebRTCController webRTCController = gameObject.AddComponent<WebRTCController>();
+            GameObject newObj = new GameObject();
+            newObj.transform.parent = transform;
+            WebRTCController webRTCController = newObj.AddComponent<WebRTCController>();
             webRTCConnections.Add(peerId, webRTCController);
             webRTCController.InitPeerConnection(localAudioStream, peerId);
         }), null);
@@ -93,8 +95,7 @@ public class WebRTCManager : MonoBehaviour
                 }
             }), null);
 
-        }
-            
+        }   
         evnt.AddListener(SendBlendShapes);
     }
 
