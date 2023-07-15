@@ -76,10 +76,11 @@ namespace Mvm {
             "CglrZXlwb2ludHMYBCADKAsyDS5tdm0uS2V5cG9pbnRCCgoIX21lc3NhZ2Ui",
             "KwoIS2V5cG9pbnQSCQoBeBgBIAEoAhIJCgF5GAIgASgCEgkKAXoYAyABKAIi",
             "QQoKQmxlbmRTaGFwZRINCgVpbmRleBgBIAEoAxINCgVzY29yZRgCIAEoAhIV",
-            "Cg1jYXRlZ29yeV9uYW1lGAMgASgJIjQKC0JsZW5kU2hhcGVzEiUKDGJsZW5k",
-            "X3NoYXBlcxgBIAMoCzIPLm12bS5CbGVuZFNoYXBlKkEKEVNvY2tldE1lc3Nh",
-            "Z2VUeXBlEhAKDFJPT01fTUVTU0FHRRAAEg8KC1VTRVJfSk9JTkVEEAESCQoF",
-            "RVJST1IQAkIJWgcuL212bVBiYgZwcm90bzM="));
+            "Cg1jYXRlZ29yeV9uYW1lGAMgASgJIlEKC0JsZW5kU2hhcGVzEiUKDGJsZW5k",
+            "X3NoYXBlcxgBIAMoCzIPLm12bS5CbGVuZFNoYXBlEg0KBWluZGV4GAIgASgD",
+            "EgwKBGRhdGUYAyABKAIqQQoRU29ja2V0TWVzc2FnZVR5cGUSEAoMUk9PTV9N",
+            "RVNTQUdFEAASDwoLVVNFUl9KT0lORUQQARIJCgVFUlJPUhACQglaBy4vbXZt",
+            "UGJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -126,7 +127,7 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.SocketMessage2), global::Mvm.SocketMessage2.Parser, new[]{ "RoomId", "UserId", "Message", "Keypoints" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Keypoint), global::Mvm.Keypoint.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShape), global::Mvm.BlendShape.Parser, new[]{ "Index", "Score", "CategoryName" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShapes), global::Mvm.BlendShapes.Parser, new[]{ "BlendShapes_" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShapes), global::Mvm.BlendShapes.Parser, new[]{ "BlendShapes_", "Index", "Date" }, null, null, null, null)
           }));
     }
     #endregion
@@ -9079,6 +9080,8 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public BlendShapes(BlendShapes other) : this() {
       blendShapes_ = other.blendShapes_.Clone();
+      index_ = other.index_;
+      date_ = other.date_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -9099,6 +9102,30 @@ namespace Mvm {
       get { return blendShapes_; }
     }
 
+    /// <summary>Field number for the "index" field.</summary>
+    public const int IndexFieldNumber = 2;
+    private long index_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long Index {
+      get { return index_; }
+      set {
+        index_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "date" field.</summary>
+    public const int DateFieldNumber = 3;
+    private float date_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float Date {
+      get { return date_; }
+      set {
+        date_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -9115,6 +9142,8 @@ namespace Mvm {
         return true;
       }
       if(!blendShapes_.Equals(other.blendShapes_)) return false;
+      if (Index != other.Index) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Date, other.Date)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -9123,6 +9152,8 @@ namespace Mvm {
     public override int GetHashCode() {
       int hash = 1;
       hash ^= blendShapes_.GetHashCode();
+      if (Index != 0L) hash ^= Index.GetHashCode();
+      if (Date != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Date);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -9142,6 +9173,14 @@ namespace Mvm {
       output.WriteRawMessage(this);
     #else
       blendShapes_.WriteTo(output, _repeated_blendShapes_codec);
+      if (Index != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(Index);
+      }
+      if (Date != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Date);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -9153,6 +9192,14 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       blendShapes_.WriteTo(ref output, _repeated_blendShapes_codec);
+      if (Index != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(Index);
+      }
+      if (Date != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Date);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -9164,6 +9211,12 @@ namespace Mvm {
     public int CalculateSize() {
       int size = 0;
       size += blendShapes_.CalculateSize(_repeated_blendShapes_codec);
+      if (Index != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Index);
+      }
+      if (Date != 0F) {
+        size += 1 + 4;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -9177,6 +9230,12 @@ namespace Mvm {
         return;
       }
       blendShapes_.Add(other.blendShapes_);
+      if (other.Index != 0L) {
+        Index = other.Index;
+      }
+      if (other.Date != 0F) {
+        Date = other.Date;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -9196,6 +9255,14 @@ namespace Mvm {
             blendShapes_.AddEntriesFrom(input, _repeated_blendShapes_codec);
             break;
           }
+          case 16: {
+            Index = input.ReadInt64();
+            break;
+          }
+          case 29: {
+            Date = input.ReadFloat();
+            break;
+          }
         }
       }
     #endif
@@ -9213,6 +9280,14 @@ namespace Mvm {
             break;
           case 10: {
             blendShapes_.AddEntriesFrom(ref input, _repeated_blendShapes_codec);
+            break;
+          }
+          case 16: {
+            Index = input.ReadInt64();
+            break;
+          }
+          case 29: {
+            Date = input.ReadFloat();
             break;
           }
         }

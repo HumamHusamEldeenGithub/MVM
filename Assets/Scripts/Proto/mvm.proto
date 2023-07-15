@@ -195,5 +195,7 @@ message BlendShape {
 }
   
 message BlendShapes {
-repeated BlendShape blend_shapes = 1 ; 
+    repeated BlendShape blend_shapes = 1 ; 
+    int64 index = 2 ; 
+    float date = 3 ; 
 }

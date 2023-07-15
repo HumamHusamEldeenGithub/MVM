@@ -11,6 +11,7 @@ using System.IO;
 
 public class WebRTCManager : MonoBehaviour
 {
+    static int indexCnt = 0;
     SynchronizationContext syncContext;
     AudioStreamTrack localAudioStream;
     Dictionary<string,WebRTCController> webRTCConnections = new Dictionary<string, WebRTCController>();
@@ -90,6 +91,14 @@ public class WebRTCManager : MonoBehaviour
         {
             syncContext.Post(new SendOrPostCallback(o =>
             {
+                blendShapes.Index = indexCnt;
+                DateTime now = DateTime.Now;
+                DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+                long milliseconds = (long)(now - unixEpoch).TotalMilliseconds;
+
+                blendShapes.Date = milliseconds;
+
                 byte[] byteArray;
 
                 using (var memoryStream = new MemoryStream())

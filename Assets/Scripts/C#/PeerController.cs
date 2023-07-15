@@ -37,12 +37,8 @@ public class PeerController : MonoBehaviour
         {
             try
             {
-                if (stTime > 0)
-                {
-                    Debug.Log((stTime + Time.time) / 2);
-                }
-                stTime = Time.time;
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
+                Debug.Log(responseMessage.Date);
                 //BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
                 evnt.Invoke(responseMessage);
             }
