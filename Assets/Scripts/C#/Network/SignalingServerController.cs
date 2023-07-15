@@ -5,7 +5,7 @@ using System.Threading;
 using System.Text;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 class SignalingServerController : MonoBehaviour
 {
@@ -15,7 +15,7 @@ class SignalingServerController : MonoBehaviour
     bool threadRunning;
 
     UserProfile userProfile;
-    ClientWebSocket webSocket;
+    static ClientWebSocket webSocket;
     OnlineStatus[] OnlineStatuses = { };
 
     public WebRTCManager webRTCManager;
@@ -28,9 +28,9 @@ class SignalingServerController : MonoBehaviour
         userProfile = GetComponent<UserProfile>();
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
             new Action<bool>(InitWebSocketConnection));
-
+/*
         EventsPool.Instance.AddListener(typeof(SignalingMessageEvent),
-            new Action<SignalingMessage>(SendMessageToServerAsync));
+            new Action<SignalingMessage>(SendMessageToServerAsync));*/
 
         serverThread = new Thread(() => {
             ConnectToSignalingServer();
@@ -114,7 +114,7 @@ class SignalingServerController : MonoBehaviour
                         break;
 
                     case "ice":
-                        Debug.Log("Received Ice for " + socketMessage.ToId);
+                        Debug.Log("Received Ice from " + socketMessage.FromId);
                         webRTCManager.ReceiveICE(socketMessage.FromId, socketMessage);
                         break;
 
@@ -132,11 +132,12 @@ class SignalingServerController : MonoBehaviour
                         break;
 
                     case "get_users_online_status_list":
-                        OnlineStatuses = (OnlineStatus[])socketMessage.Data;
+                        Debug.Log("get user online status  " + socketMessage.Data);
+/*                        OnlineStatuses = (OnlineStatus[])socketMessage.Data;
                         foreach (OnlineStatus onlineStatus in OnlineStatuses)
                         {
                             Debug.Log(onlineStatus.ID + "--" + onlineStatus.IsOnline);
-                        }
+                        }*/
                         break;
 
                     case "user_status_changed":
@@ -155,20 +156,21 @@ class SignalingServerController : MonoBehaviour
         }
     }
 
-    async void SendMessageToServerAsync(SignalingMessage message)
+    public static async Task SendMessageToServerAsync(SignalingMessage message)
     {
+        Debug.Log("send message to sever socket");
         byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
         await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    public void SendJoinRoomEvent(string roomId)
+    public async void SendJoinRoomEvent(string roomId)
     {
         var message = new SignalingMessage
         {
             Type = "join_room",
             Data = roomId,
         };
-        SendMessageToServerAsync(message);
+        await SendMessageToServerAsync(message);
     }
 
     public void ConnectToRoom(string roomId)

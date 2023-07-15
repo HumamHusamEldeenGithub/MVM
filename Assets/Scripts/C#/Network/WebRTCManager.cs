@@ -3,16 +3,19 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.WebRTC;
 using UnityEngine;
 
 public class WebRTCManager : MonoBehaviour
 {
+    SynchronizationContext syncContext;
     AudioStreamTrack localAudioStream;
     Dictionary<string,WebRTCController> webRTCConnections = new Dictionary<string, WebRTCController>();
 
     private void Awake()
     {
+        syncContext = SynchronizationContext.Current;
         EventsPool.Instance.AddListener(typeof(UserEnterRoomEvent),
             new Action<string>(CreateNewWebRTCConnection));
 
@@ -37,39 +40,59 @@ public class WebRTCManager : MonoBehaviour
 
     public void CreateNewWebRTCConnection(string peerId)
     {
-        WebRTCController webRTCController = new WebRTCController();
-        webRTCController.InitPeerConnection(localAudioStream, peerId);
-        webRTCConnections.Add(peerId, webRTCController);
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            WebRTCController webRTCController = gameObject.AddComponent<WebRTCController>();
+            webRTCConnections.Add(peerId, webRTCController);
+            webRTCController.InitPeerConnection(localAudioStream, peerId);
+        }), null);
     }
 
     public void SendOffer(string peerId)
     {
-        StartCoroutine(webRTCConnections[peerId].SendOffer());
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            StartCoroutine(webRTCConnections[peerId].SendOffer());
+        }), null);
     }
 
     public void ReceiveOffer(string peerId, SignalingMessage msg)
     {
-        StartCoroutine(webRTCConnections[peerId].OnReceiveOfferSuccess(msg));
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            StartCoroutine(webRTCConnections[peerId].OnReceiveOfferSuccess(msg));
+        }), null);
     }
     public void ReceiveAnswer(string peerId , SignalingMessage msg)
     {
-        StartCoroutine(webRTCConnections[peerId].OnReceiveAnswerSuccess(msg));
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            StartCoroutine(webRTCConnections[peerId].OnReceiveAnswerSuccess(msg));
+        }), null);
     }
 
     public void ReceiveICE(string peerId, SignalingMessage msg)
     {
-        webRTCConnections[peerId].OnReceiveIce(msg);
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            webRTCConnections[peerId].OnReceiveIce(msg);
+        }), null);
+        
     }
 
     public void SetBlendShapesReadyEvent(BlendShapesReadyEvent evnt)
     {
         void SendBlendShapes(BlendShapes blendShapes)
         {
-            var json = JsonConvert.SerializeObject(blendShapes);
-            foreach (WebRTCController peer in webRTCConnections.Values)
+            syncContext.Post(new SendOrPostCallback(o =>
             {
-                peer.SendMessageToDataChannels(json);
-            }
+                var json = JsonConvert.SerializeObject(blendShapes);
+                foreach (WebRTCController peer in webRTCConnections.Values)
+                {
+                    peer.SendMessageToDataChannels(json);
+                }
+            }), null);
+
         }
             
         evnt.AddListener(SendBlendShapes);
@@ -77,16 +100,25 @@ public class WebRTCManager : MonoBehaviour
 
     void DisposeWebRTCConnection(string peerId)
     {
-        webRTCConnections[peerId].pc?.Close();
-        webRTCConnections[peerId].pc = null;
-        webRTCConnections.Remove(peerId);
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            webRTCConnections[peerId].pc?.Close();
+            webRTCConnections[peerId].pc = null;
+            webRTCConnections.Remove(peerId);
+        }), null);
+
     }
 
     public void DisposeAllWebRTCConnections()
     {
-        foreach(string key in webRTCConnections.Keys)
+
+        syncContext.Post(new SendOrPostCallback(o =>
         {
-            DisposeWebRTCConnection(key);
-        }
+            foreach (string key in webRTCConnections.Keys)
+            {
+                DisposeWebRTCConnection(key);
+            }
+        }), null);
+
     }
 }

@@ -2,15 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Unity.WebRTC;
 using System;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Text;
 using Newtonsoft.Json;
-using Mvm;
-using System.Collections.Generic;
-using Google.Protobuf;
-using System.Net.Http;
 
 public class WebRTCController : MonoBehaviour
 {
@@ -118,7 +110,7 @@ public class WebRTCController : MonoBehaviour
             };
 
             yield return OnCreateOfferSuccess(op.Desc);
-            EventsPool.Instance.InvokeEvent(typeof(SignalingMessage), message);
+            yield return SignalingServerController.SendMessageToServerAsync(message);
         }
         Debug.Log($"pc {userProfile.Username} SendOffer end");
     }
@@ -206,7 +198,7 @@ public class WebRTCController : MonoBehaviour
                 Data = answer
 
             };
-            EventsPool.Instance.InvokeEvent(typeof(SignalingMessage), message);
+            yield return SignalingServerController.SendMessageToServerAsync(message);
         }
         Debug.Log($"pc {userProfile.Username} OnCreateAnswerSuccess end");
     }
@@ -231,7 +223,7 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region ICE
-    void OnIceCandidate(RTCIceCandidate iceCandidate)
+    async void OnIceCandidate(RTCIceCandidate iceCandidate)
     {
         PeerICE peerIce = new PeerICE
         {
@@ -246,7 +238,7 @@ public class WebRTCController : MonoBehaviour
             Data = JsonConvert.SerializeObject(peerIce),
         };
         Debug.Log($"Send ICE from {userProfile.Username}");
-        EventsPool.Instance.InvokeEvent(typeof(SignalingMessage), iceMessage);
+        await SignalingServerController.SendMessageToServerAsync(iceMessage);
     }
 
     public void OnReceiveIce(SignalingMessage message)
@@ -254,7 +246,6 @@ public class WebRTCController : MonoBehaviour
         Debug.Log("Call OnReceiveIce");
         try
         {
-            Debug.Log((string)message.Data);
             var iceCandidate = JsonConvert.DeserializeObject<PeerICE>((string)message.Data);
             RTCIceCandidateInit iceCandidateInit = new RTCIceCandidateInit
             {
@@ -293,7 +284,6 @@ public class WebRTCController : MonoBehaviour
                 break;
             case RTCIceConnectionState.Connected:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Connected");
-                ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel);
                 break;
             case RTCIceConnectionState.Disconnected:
                 Debug.Log($"{userProfile.Username} IceConnectionState: Disconnected");
