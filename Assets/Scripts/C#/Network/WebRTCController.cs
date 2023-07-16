@@ -17,7 +17,7 @@ public class WebRTCController : MonoBehaviour
     [SerializeField] GameObject audioSourcePrefab;
 
     private PeerController peerController;
-    private AudioStreamTrack audioStreamTrack;
+    private AudioStreamTrack remoteStreamTrack;
 
     #endregion
 
@@ -49,10 +49,6 @@ public class WebRTCController : MonoBehaviour
             Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
             this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
-            if(this.audioStreamTrack != null)
-            {
-                OnAddTrack(this.audioStreamTrack);
-            }
         };
 
         Debug.Log($"Add Tracks ");
@@ -62,22 +58,21 @@ public class WebRTCController : MonoBehaviour
         {
             if (e.Track is AudioStreamTrack audioTrack)
             {
-                Debug.Log("OnTrackEvent");
                 if (peerController != null)
                 {
                     OnAddTrack(audioTrack);
                 }
                 else
                 {
-                    this.audioStreamTrack = audioTrack;
+                    this.remoteStreamTrack = audioTrack;
                 }
             }
         }; ;
     }
 
+    // TODO : find a better way to init remote audio 
     void OnAddTrack(AudioStreamTrack track)
     {
-        Debug.Log("OnTrackFunction");
         peerController.SetTrack(track);
     }
 
@@ -332,6 +327,12 @@ public class WebRTCController : MonoBehaviour
     public void OnDataChannelOpened()
     {
         Debug.Log($"Opened a dataChannel");
+        Debug.Log("Call Audio Stream");
+        if (this.remoteStreamTrack != null)
+        {
+            Debug.Log("Audio Stream Not Null");
+            OnAddTrack(this.remoteStreamTrack);
+        }
     }
 
     #endregion
