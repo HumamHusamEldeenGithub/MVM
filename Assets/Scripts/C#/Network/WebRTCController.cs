@@ -49,6 +49,13 @@ public class WebRTCController : MonoBehaviour
             Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
             this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
+            Debug.Log("Call Audio Stream in onDataChannel");
+            if (this.remoteStreamTrack != null)
+            {
+                Debug.Log("Audio Stream Not Null");
+                OnAddTrack(this.remoteStreamTrack);
+            }
+
         };
 
         Debug.Log($"Add Tracks ");
