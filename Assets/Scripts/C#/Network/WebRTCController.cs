@@ -17,6 +17,7 @@ public class WebRTCController : MonoBehaviour
     [SerializeField] GameObject audioSourcePrefab;
 
     private PeerController peerController;
+    private AudioStreamTrack audioStreamTrack;
 
     #endregion
 
@@ -48,16 +49,26 @@ public class WebRTCController : MonoBehaviour
             Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
             peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
+            if(audioStreamTrack != null)
+            {
+                OnAddTrack(audioStreamTrack);
+            }
         };
 
         Debug.Log($"Add Tracks ");
-        pc.AddTrack(localAudioStream);
 
         pc.OnTrack = e =>
         {
             if (e.Track is AudioStreamTrack audioTrack)
             {
-                OnAddTrack(audioTrack);
+                if (peerController != null)
+                {
+                    OnAddTrack(audioTrack);
+                }
+                else
+                {
+                    audioStreamTrack = audioTrack;
+                }
             }
         }; ;
     }
