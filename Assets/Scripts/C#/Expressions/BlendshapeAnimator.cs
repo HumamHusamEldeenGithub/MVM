@@ -78,7 +78,9 @@ public class BlendShapeAnimator : MonoBehaviour
                 // TODO : error found Array index (54) is out of bounds (size=52)
 
                 //Debug.Log(i.ToString() + blendShapes[i].CategoryName);
-                m_Renderer.SetBlendShapeWeight(i - 1, blendShapes[i].Score * 100);
+                var curValue = m_Renderer.GetBlendShapeWeight(i-1);
+                curValue = Mathf.Lerp(curValue, blendShapes[i].Score * 100, 15 * Time.deltaTime);
+                m_Renderer.SetBlendShapeWeight(i - 1, curValue);
             }
         }
     }
