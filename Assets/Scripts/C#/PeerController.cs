@@ -53,6 +53,12 @@ public class PeerController : MonoBehaviour
         if(dataChannel != null)
         {
             dataChannel.OnMessage += OnDataChannelMessage;
+
+            Debug.Log(dataChannel.Id);
+        }
+        else
+        {
+            Debug.Log("No channel");
         }
     }
 

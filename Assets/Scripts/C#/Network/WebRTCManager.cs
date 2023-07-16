@@ -85,34 +85,30 @@ public class WebRTCManager : MonoBehaviour
         
     }
 
-    public void SetBlendShapesReadyEvent(BlendShapesReadyEvent evnt)
+    public void SendBlendShapes(BlendShapes blendShapes)
     {
-        void SendBlendShapes(BlendShapes blendShapes)
+        syncContext.Post(new SendOrPostCallback(o =>
         {
-            syncContext.Post(new SendOrPostCallback(o =>
+            blendShapes.Index = indexCnt;
+            indexCnt++; 
+            DateTime now = DateTime.Now;
+            DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
+            float seconds = (float)(now - unixEpoch).TotalSeconds;
+            blendShapes.Date = seconds;
+
+            byte[] byteArray;
+            using (var memoryStream = new MemoryStream())
             {
-                blendShapes.Index = indexCnt;
-                indexCnt++; 
-                DateTime now = DateTime.Now;
-                DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
-                float seconds = (float)(now - unixEpoch).TotalSeconds;
-                blendShapes.Date = seconds;
-
-                byte[] byteArray;
-                using (var memoryStream = new MemoryStream())
-                {
-                    blendShapes.WriteTo(memoryStream);
-                    byteArray = memoryStream.ToArray();
-                }
+                blendShapes.WriteTo(memoryStream);
+                byteArray = memoryStream.ToArray();
+            }
                 
-                foreach (WebRTCController peer in webRTCConnections.Values)
-                {
-                    peer.SendMessageToDataChannels(byteArray);
-                }
-            }), null);
+            foreach (WebRTCController peer in webRTCConnections.Values)
+            {
+                peer.SendMessageToDataChannels(byteArray);
+            }
+        }), null);
 
-        }   
-        evnt.AddListener(SendBlendShapes);
     }
 
     void DisposeWebRTCConnection(string peerId)
