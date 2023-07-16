@@ -25,6 +25,7 @@ public class PeerController : MonoBehaviour
     {
         orProcessor = GetComponent<OrientationProcessor>();
         blendshapeAnimator = GetComponent<BlendShapeAnimator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Initialize(string peerID, RTCDataChannel dataChannel)
@@ -41,8 +42,6 @@ public class PeerController : MonoBehaviour
 
                 float seconds = (float)(now - unixEpoch).TotalSeconds;
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
-                Debug.LogWarning(responseMessage.Index);
-                Debug.Log(seconds - responseMessage.Date);
 
                 SetBlendShapes(responseMessage);
             }
@@ -65,7 +64,6 @@ public class PeerController : MonoBehaviour
 
     public void SetBlendShapes(BlendShapes blendshapes)
     {
-
         blendshapeAnimator.SetBlendShapes(blendshapes);
     }
 
