@@ -37,9 +37,13 @@ public class PeerController : MonoBehaviour
         {
             try
             {
+                DateTime now = DateTime.Now;
+                DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
+
+                float seconds = (float)(now - unixEpoch).TotalSeconds;
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
-                Debug.Log(responseMessage.Date);
-                //BlendShapes responseMessage = JsonConvert.DeserializeObject<BlendShapes>(Encoding.UTF8.GetString(bytes));
+                Debug.LogWarning(responseMessage.Index);
+                Debug.Log(seconds - responseMessage.Date);
                 evnt.Invoke(responseMessage);
             }
             catch (Exception e)

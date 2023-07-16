@@ -78,7 +78,13 @@ public class WebRTCController : MonoBehaviour
     {
         Debug.Log($"pc SendOffer start");
 
-        RTCDataChannelInit conf = new RTCDataChannelInit();
+        RTCDataChannelInit conf = new RTCDataChannelInit
+        {
+            ordered = false ,
+            maxPacketLifeTime=null,
+            maxRetransmits = null,
+        };
+        
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
         dataChannel.OnOpen = OnDataChannelOpened;
 
