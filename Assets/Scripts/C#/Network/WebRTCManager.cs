@@ -105,7 +105,7 @@ public class WebRTCManager : MonoBehaviour
                 
             foreach (WebRTCController peer in webRTCConnections.Values)
             {
-                peer.SendMessageToDataChannels(byteArray);
+                peer.SendMessageToDataChannel(byteArray);
             }
         }), null);
 

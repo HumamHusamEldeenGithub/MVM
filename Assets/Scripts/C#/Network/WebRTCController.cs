@@ -315,17 +315,18 @@ public class WebRTCController : MonoBehaviour
 
     #region Data Channel
 
-    public void SendMessageToDataChannels(string message)
+    // TODO : check null bug 
+    public void SendMessageToDataChannel(string message)
     {
-        if (peerDataChannel.ReadyState == RTCDataChannelState.Open)
+        if (peerDataChannel != null && peerDataChannel.ReadyState == RTCDataChannelState.Open)
         {
             peerDataChannel.Send(message);
         }
     }
 
-    public void SendMessageToDataChannels(byte[] message)
+    public void SendMessageToDataChannel(byte[] message)
     {
-        if (peerDataChannel.ReadyState == RTCDataChannelState.Open)
+        if (peerDataChannel != null && peerDataChannel.ReadyState == RTCDataChannelState.Open)
         {
             peerDataChannel.Send(message);
         }
