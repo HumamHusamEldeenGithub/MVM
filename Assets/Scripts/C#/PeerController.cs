@@ -17,6 +17,7 @@ public class PeerController : MonoBehaviour
 
     private BlendShapeAnimator blendshapeAnimator;
     private OrientationProcessor orProcessor;
+    private AudioSource audioSource;
 
     #endregion
 
@@ -66,5 +67,13 @@ public class PeerController : MonoBehaviour
     {
 
         blendshapeAnimator.SetBlendShapes(blendshapes);
+    }
+
+    public void SetTrack(AudioStreamTrack track)
+    {
+        audioSource.SetTrack(track);
+        audioSource.loop = true;
+        audioSource.volume = 1.0f;
+        audioSource.Play();
     }
 }
