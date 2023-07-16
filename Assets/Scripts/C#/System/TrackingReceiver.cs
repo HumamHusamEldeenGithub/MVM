@@ -31,6 +31,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     ProcessManager processManager;
     Thread mainThread = null;
     bool threadRunning = false;
+    PeerController peerController;
 
     #endregion
 
@@ -106,7 +107,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
             ReceivePyMessages();
         });
 
-        ClientsManager.Instance.CreateNewRoomSpace(ref blendShapesReadyEvent);
+        peerController = ClientsManager.Instance.CreateNewRoomSpace().PeerController;
         mainThread?.Start();
     }
 
@@ -123,7 +124,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 if (bytes == 0) return;
 
                 BlendShapes response = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
-                blendShapesReadyEvent.Invoke(response);
+                peerController.SetBlendShapes(response);
             }
         }
     }

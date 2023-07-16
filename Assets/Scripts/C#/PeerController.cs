@@ -31,8 +31,6 @@ public class PeerController : MonoBehaviour
         this.peerID = peerID;
         this.dataChannel = dataChannel;
 
-        BlendShapesReadyEvent evnt = new BlendShapesReadyEvent();
-
         void OnDataChannelMessage(byte[] bytes)
         {
             try
@@ -44,21 +42,23 @@ public class PeerController : MonoBehaviour
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
                 Debug.LogWarning(responseMessage.Index);
                 Debug.Log(seconds - responseMessage.Date);
-                evnt.Invoke(responseMessage);
+
+                SetBlendShapes(responseMessage);
             }
             catch (Exception e)
             {
                 Debug.LogError(e);
             }
         }
-
-        dataChannel.OnMessage += OnDataChannelMessage;
-
-        Initialize(ref evnt);
+        if(dataChannel != null)
+        {
+            dataChannel.OnMessage += OnDataChannelMessage;
+        }
     }
-    public void Initialize(ref BlendShapesReadyEvent evnt)
+
+    public void SetBlendShapes(BlendShapes blendshapes)
     {
-        evnt.AddListener(blendshapeAnimator.SetBlendShapes);
-    }
 
+        blendshapeAnimator.SetBlendShapes(blendshapes);
+    }
 }

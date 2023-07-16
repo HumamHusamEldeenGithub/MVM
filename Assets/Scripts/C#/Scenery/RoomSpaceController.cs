@@ -19,23 +19,25 @@ public class RoomSpaceController : MonoBehaviour
     [SerializeField] MeshRenderer backgroundMesh;
     [SerializeField] Camera roomCamera;
 
+
+
     public RoomRenderTexture CurrentRoomRenderTexture
     {
         get; set;
     }
 
+    public PeerController PeerController { get { return peerController; } }
+
     public void Initialize(string peerID, RTCDataChannel dataChannel)
     {
         SelfInitialize();
         peerController.Initialize(peerID, dataChannel);
-        dataChannel.OnClose += Dispose;
         CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
-    }
-    public void Initialize(ref BlendShapesReadyEvent evnt)
-    {
-        SelfInitialize();
-        peerController.Initialize(ref evnt);
-        CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
+
+        if (dataChannel != null)
+        {
+            dataChannel.OnClose += Dispose;
+        }
     }
 
     private void SelfInitialize()

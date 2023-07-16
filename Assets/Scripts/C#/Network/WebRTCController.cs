@@ -80,9 +80,8 @@ public class WebRTCController : MonoBehaviour
 
         RTCDataChannelInit conf = new RTCDataChannelInit
         {
-            ordered = false ,
-            maxPacketLifeTime=null,
-            maxRetransmits = null,
+            ordered = true,
+            maxRetransmits = 0,
         };
         
         RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);

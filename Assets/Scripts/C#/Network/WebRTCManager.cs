@@ -96,7 +96,6 @@ public class WebRTCManager : MonoBehaviour
                 DateTime now = DateTime.Now;
                 DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
                 float seconds = (float)(now - unixEpoch).TotalSeconds;
-                Debug.Log(seconds);
                 blendShapes.Date = seconds;
 
                 byte[] byteArray;
