@@ -48,26 +48,28 @@ public class WebRTCController : MonoBehaviour
         {
             Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
-            peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
-            if(audioStreamTrack != null)
+            this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
+            if(this.audioStreamTrack != null)
             {
-                OnAddTrack(audioStreamTrack);
+                OnAddTrack(this.audioStreamTrack);
             }
         };
 
         Debug.Log($"Add Tracks ");
+        pc.AddTrack(localAudioStream);
 
         pc.OnTrack = e =>
         {
             if (e.Track is AudioStreamTrack audioTrack)
             {
+                Debug.Log("OnTrackEvent");
                 if (peerController != null)
                 {
                     OnAddTrack(audioTrack);
                 }
                 else
                 {
-                    audioStreamTrack = audioTrack;
+                    this.audioStreamTrack = audioTrack;
                 }
             }
         }; ;
@@ -75,6 +77,7 @@ public class WebRTCController : MonoBehaviour
 
     void OnAddTrack(AudioStreamTrack track)
     {
+        Debug.Log("OnTrackFunction");
         peerController.SetTrack(track);
     }
 
