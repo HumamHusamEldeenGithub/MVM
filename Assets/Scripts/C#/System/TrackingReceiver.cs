@@ -121,9 +121,9 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 int bytes = pyStream.Read(messageData, 0, messageData.Length);
                 if (bytes == 0) return;
 
-                BlendShapes response = BlendShapes.Parser.ParseFrom(messageData, 0, bytes);
-                peerController.SetBlendShapes(response);
-                webRTCManager.SendBlendShapes(response);
+                PythonServerMessage response = PythonServerMessage.Parser.ParseFrom(messageData, 0, bytes);
+                peerController.SetBlendShapes(response.BlendShapes);
+                webRTCManager.SendBlendShapes(response.BlendShapes);
             }
         }
     }

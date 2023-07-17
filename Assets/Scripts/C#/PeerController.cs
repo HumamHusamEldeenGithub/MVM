@@ -11,7 +11,6 @@ public class PeerController : MonoBehaviour
 {
     #region Private
 
-    private float stTime = -1;
     public string peerID;
     private RTCDataChannel dataChannel;
 
@@ -37,10 +36,10 @@ public class PeerController : MonoBehaviour
         {
             try
             {
-                DateTime now = DateTime.Now;
+/*                DateTime now = DateTime.Now;
                 DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
 
-                float seconds = (float)(now - unixEpoch).TotalSeconds;
+                float seconds = (float)(now - unixEpoch).TotalSeconds;*/
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
 
                 SetBlendShapes(responseMessage);

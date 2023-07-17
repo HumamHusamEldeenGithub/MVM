@@ -165,11 +165,11 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<GetRoomsResponse>(res) : null;
     }
-    public static async Task<GetFriendsReposnes> GetFriends()
+    public static async Task<GetFriendsResponse> GetFriends()
     {
         string res = await CreateGetCall("/friends");
 
-        return res != null ? JsonConvert.DeserializeObject<GetFriendsReposnes>(res) : null;
+        return res != null ? JsonConvert.DeserializeObject<GetFriendsResponse>(res) : null;
     }
     public static async Task<GetUserByUsernameResponse> GetUserByUsername(GetUserByUsernameRequest req)
     {
@@ -177,5 +177,19 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<GetUserByUsernameResponse>(res) : null;
     }
+
+    public static async Task<UpsertAvatarSettingsResponse> UpsertAvatarSettings(UpsertAvatarSettingsRequest req)
+    {
+        string res = await CreatePostCall("/user/avatar", req);
+
+        return res != null ? JsonConvert.DeserializeObject<UpsertAvatarSettingsResponse>(res) : null;
+    }
+    public static async Task<GetAvatarSettingsResponse> GetAvatarSettings()
+    {
+        string res = await CreateGetCall("/user/avatar");
+
+        return res != null ? JsonConvert.DeserializeObject<GetAvatarSettingsResponse>(res) : null;
+    }
+
     #endregion
 }

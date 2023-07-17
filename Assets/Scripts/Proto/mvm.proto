@@ -1,3 +1,4 @@
+// protoc --go_out=./internal/pkg/generated  api/mvm.proto
 // protoc --csharp_out=../C# mvm.proto
 syntax = "proto3";
 package mvm;
@@ -39,6 +40,7 @@ message GetProfileRequest {}
 
 message GetProfileResponse {
     UserProfile profile = 1;
+    repeated Room user_rooms = 2;
 }
 
 message GetUserByUsernameRequest {
@@ -47,6 +49,7 @@ message GetUserByUsernameRequest {
 
 message GetUserByUsernameResponse {
     UserProfile profile = 1;
+    repeated Room user_rooms = 2;
 }
 
 message CreateFriendRequestRequest {
@@ -75,8 +78,14 @@ message DeleteFriendResponse {}
 
 message GetFriendsRequest {}
 
-message GetFriendsReposnes {
-    repeated string ids = 1;
+message GetFriendsResponse {
+    repeated UserProfile profiles = 1;
+}
+
+message GetPendingFriendsRequest {}
+
+message GetPendingFriendsResponse {
+    repeated UserProfile profiles = 1;
 }
 
 message SearchForUsersRequest {
@@ -100,6 +109,14 @@ message CreateRoomResponse{
 message GetRoomRequest {}
 
 message GetRoomsResponse {
+    repeated Room rooms = 1 ; 
+}
+
+message GetUserRoomsRequest {
+    string user_id = 1;
+}
+
+message GetUserRoomsResponse {
     repeated Room rooms = 1 ; 
 }
 
@@ -131,6 +148,10 @@ message UserProfile {
     string email = 3;
 }
 
+message GetIceResponse{
+    repeated string ices = 1 ;
+}
+
 message Room {
     string id = 1;
     string owner_id = 2 ; 
@@ -140,6 +161,20 @@ message Room {
     bool friends_only = 6 ;
     repeated string invitations = 7 ;
 }
+
+message UpsertAvatarSettingsRequest {
+    map<int64, int64> settings = 1;
+}
+
+message UpsertAvatarSettingsResponse{}
+
+message GetAvatarSettingsRequest{}
+
+message GetAvatarSettingsResponse{
+    map<int64, int64> settings = 1;
+}
+
+// Socket messages 
 
 message SocketMessage  {
     SocketMessageType type = 1;
@@ -165,21 +200,11 @@ message ErrorMessage {
     string error = 2 ;
 }
 
-message SimpleSocketMessage {
-    optional string message = 2 ;   
-    repeated Keypoint keypoints = 3 ; 
-}
-
-message SimpleSocketMessage2 {
-    optional string message = 2 ;   
-    repeated BlendShapes blendShapes = 3 ; 
-}
-
-message SocketMessage2{
-    string room_id = 1 ; 
-    string user_id = 2 ;
-    optional string message = 3 ;   
-    repeated Keypoint keypoints = 4 ; 
+message PythonServerMessage{
+    int64 index = 1 ; 
+    BlendShapes blend_shapes = 2 ; 
+    Keypoints keypoints = 3 ; 
+    float date = 4 ; 
 }
 
 message Keypoint {
@@ -196,6 +221,8 @@ message BlendShape {
   
 message BlendShapes {
     repeated BlendShape blend_shapes = 1 ; 
-    int64 index = 2 ; 
-    float date = 3 ; 
+}
+
+message Keypoints {
+    repeated Keypoint keypoints = 1 ; 
 }

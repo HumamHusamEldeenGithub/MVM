@@ -1,3 +1,4 @@
+using Mvm;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,9 +35,9 @@ public class OrientationProcessor : MonoBehaviour
         if (points == null)
         {
             points = new List<Vector3>();
-            for (int i = 0; i < kpoints.Points.Count; i++)
+            for (int i = 0; i < kpoints.Keypoints_.Count; i++)
             {
-                var kpt = kpoints.Points[i];
+                var kpt = kpoints.Keypoints_[i];
                 var pt = new Vector3(kpt.X, kpt.Y, kpt.Z);
                 pt.x = 2 * pt.x - 1;
                 pt.y = 2 * pt.y - 1;
@@ -47,9 +48,9 @@ public class OrientationProcessor : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < kpoints.Points.Count; i++)
+            for (int i = 0; i < kpoints.Keypoints_.Count; i++)
             {
-                var kpt = kpoints.Points[i];
+                var kpt = kpoints.Keypoints_[i];
                 var pt = new Vector3(kpt.X, kpt.Y, kpt.Z);
                 pt.x = 2 * pt.x - 1;
                 pt.y = 2 * pt.y - 1;

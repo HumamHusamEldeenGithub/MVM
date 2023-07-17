@@ -89,12 +89,12 @@ public class WebRTCManager : MonoBehaviour
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            blendShapes.Index = indexCnt;
+/*            blendShapes.Index = indexCnt;
             indexCnt++; 
             DateTime now = DateTime.Now;
             DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
             float seconds = (float)(now - unixEpoch).TotalSeconds;
-            blendShapes.Date = seconds;
+            blendShapes.Date = seconds;*/
 
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())

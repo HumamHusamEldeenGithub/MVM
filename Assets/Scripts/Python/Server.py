@@ -1,4 +1,4 @@
-# protoc --csharp_out=../C# --python_out=../Python main_proto.proto
+# protoc --csharp_out=../C# --python_out=../Python mvm.proto
 
 import mediapipe_face_blendshapes 
 import asyncio
