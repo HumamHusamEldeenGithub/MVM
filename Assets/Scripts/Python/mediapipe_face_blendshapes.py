@@ -5,7 +5,7 @@ import asyncio
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mvm_pb2 import BlendShapes
+from mvm_pb2 import BlendShapes,PythonServerMessage
 
 async def BlendShapesDetector (reader,writer) :
     try:
@@ -32,11 +32,10 @@ async def BlendShapesDetector (reader,writer) :
 
 
 def encodeBlendShapes(blendShapes):
-    out = BlendShapes()
+    message = PythonServerMessage()
     for element in blendShapes :
-        blendShape = out.blend_shapes.add()
+        blendShape = message.blend_shapes.blend_shapes.add()
         blendShape.index = element.index
         blendShape.score = element.score
         blendShape.category_name = element.category_name
-    return out
-
+    return message
