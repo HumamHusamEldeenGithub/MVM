@@ -70,12 +70,12 @@ namespace Mvm {
             "EhMKC2ludml0YXRpb25zGAcgAygJIpABChtVcHNlcnRBdmF0YXJTZXR0aW5n",
             "c1JlcXVlc3QSQAoIc2V0dGluZ3MYASADKAsyLi5tdm0uVXBzZXJ0QXZhdGFy",
             "U2V0dGluZ3NSZXF1ZXN0LlNldHRpbmdzRW50cnkaLwoNU2V0dGluZ3NFbnRy",
-            "eRILCgNrZXkYASABKAMSDQoFdmFsdWUYAiABKAM6AjgBIh4KHFVwc2VydEF2",
+            "eRILCgNrZXkYASABKAUSDQoFdmFsdWUYAiABKAU6AjgBIh4KHFVwc2VydEF2",
             "YXRhclNldHRpbmdzUmVzcG9uc2UiGgoYR2V0QXZhdGFyU2V0dGluZ3NSZXF1",
             "ZXN0IowBChlHZXRBdmF0YXJTZXR0aW5nc1Jlc3BvbnNlEj4KCHNldHRpbmdz",
             "GAEgAygLMiwubXZtLkdldEF2YXRhclNldHRpbmdzUmVzcG9uc2UuU2V0dGlu",
-            "Z3NFbnRyeRovCg1TZXR0aW5nc0VudHJ5EgsKA2tleRgBIAEoAxINCgV2YWx1",
-            "ZRgCIAEoAzoCOAEikwEKDVNvY2tldE1lc3NhZ2USJAoEdHlwZRgBIAEoDjIW",
+            "Z3NFbnRyeRovCg1TZXR0aW5nc0VudHJ5EgsKA2tleRgBIAEoBRINCgV2YWx1",
+            "ZRgCIAEoBToCOAEikwEKDVNvY2tldE1lc3NhZ2USJAoEdHlwZRgBIAEoDjIW",
             "Lm12bS5Tb2NrZXRNZXNzYWdlVHlwZRIoCgxyb29tX21lc3NhZ2UYAiABKAsy",
             "EC5tdm0uUm9vbU1lc3NhZ2VIABIqCg1lcnJvcl9tZXNzYWdlGAMgASgLMhEu",
             "bXZtLkVycm9yTWVzc2FnZUgAQgYKBGRhdGEiUQoLUm9vbU1lc3NhZ2USFAoH",
@@ -7981,12 +7981,12 @@ namespace Mvm {
 
     /// <summary>Field number for the "settings" field.</summary>
     public const int SettingsFieldNumber = 1;
-    private static readonly pbc::MapField<long, long>.Codec _map_settings_codec
-        = new pbc::MapField<long, long>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForInt64(16, 0L), 10);
-    private readonly pbc::MapField<long, long> settings_ = new pbc::MapField<long, long>();
+    private static readonly pbc::MapField<int, int>.Codec _map_settings_codec
+        = new pbc::MapField<int, int>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForInt32(16, 0), 10);
+    private readonly pbc::MapField<int, int> settings_ = new pbc::MapField<int, int>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::MapField<long, long> Settings {
+    public pbc::MapField<int, int> Settings {
       get { return settings_; }
     }
 
@@ -8463,12 +8463,12 @@ namespace Mvm {
 
     /// <summary>Field number for the "settings" field.</summary>
     public const int SettingsFieldNumber = 1;
-    private static readonly pbc::MapField<long, long>.Codec _map_settings_codec
-        = new pbc::MapField<long, long>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForInt64(16, 0L), 10);
-    private readonly pbc::MapField<long, long> settings_ = new pbc::MapField<long, long>();
+    private static readonly pbc::MapField<int, int>.Codec _map_settings_codec
+        = new pbc::MapField<int, int>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForInt32(16, 0), 10);
+    private readonly pbc::MapField<int, int> settings_ = new pbc::MapField<int, int>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::MapField<long, long> Settings {
+    public pbc::MapField<int, int> Settings {
       get { return settings_; }
     }
 

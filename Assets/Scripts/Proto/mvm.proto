@@ -163,7 +163,7 @@ message Room {
 }
 
 message UpsertAvatarSettingsRequest {
-    map<int64, int64> settings = 1;
+    map<int32, int32> settings = 1;
 }
 
 message UpsertAvatarSettingsResponse{}
@@ -171,7 +171,7 @@ message UpsertAvatarSettingsResponse{}
 message GetAvatarSettingsRequest{}
 
 message GetAvatarSettingsResponse{
-    map<int64, int64> settings = 1;
+    map<int32, int32> settings = 1;
 }
 
 // Socket messages 
