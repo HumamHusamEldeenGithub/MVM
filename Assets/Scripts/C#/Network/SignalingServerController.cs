@@ -4,7 +4,6 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Text;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 class SignalingServerController : MonoBehaviour

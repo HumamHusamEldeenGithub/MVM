@@ -28,10 +28,10 @@ public class RoomSpaceController : MonoBehaviour
 
     public PeerController PeerController { get { return peerController; } }
 
-    public void Initialize(string peerID, RTCDataChannel dataChannel)
+    public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile user)
     {
         SelfInitialize();
-        peerController.Initialize(peerID, dataChannel);
+        peerController.Initialize(peerID, dataChannel, user);
         CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
 
         if (dataChannel != null)

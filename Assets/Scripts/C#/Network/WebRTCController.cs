@@ -28,7 +28,7 @@ public class WebRTCController : MonoBehaviour
         RTCConfiguration config = default;
         config.iceServers = new RTCIceServer[]
         {
-            new RTCIceServer { urls = new string[] { "stun:stun.l.google.com:19302" } }
+            new RTCIceServer { urls = new string[] { "stun:108.177.122.127:19302" } }
         };
 
         return config;
@@ -48,6 +48,8 @@ public class WebRTCController : MonoBehaviour
         {
             Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
+
+            // TODO send user profile
             this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
             Debug.Log("Call Audio Stream in onDataChannel");
             if (this.remoteStreamTrack != null)
@@ -292,6 +294,7 @@ public class WebRTCController : MonoBehaviour
                 Debug.Log($"IceConnectionState: Connected");
                 if (peerDataChannel != null)
                 {
+                    // TODO send user profile
                     peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
                 }
                 break;

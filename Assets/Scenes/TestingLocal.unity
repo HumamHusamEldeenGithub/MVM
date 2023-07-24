@@ -1731,11 +1731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006163d4067b2a4499aacb47bbce6ca9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userId: 
   peerId: 
-  static_roomId: 8fc3e523-42ec-4154-b341-44bf35a559c2
   audioSourcePrefab: {fileID: 4058095923496747409, guid: f05e69312cb39734faff3bd1d89faddc, type: 3}
-  avatarPrefab: {fileID: 0}
 --- !u!82 &756717183
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2086,7 +2083,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

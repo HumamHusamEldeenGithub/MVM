@@ -21,23 +21,24 @@ public class ClientsManager : Singleton<ClientsManager>
         EventsPool.Instance.AddListener(typeof(RemoveScreenEvent), new Action<RoomSpaceController.RoomRenderTexture>(RemovePeer));
     }
 
-    public RoomSpaceController CreateNewRoomSpace(string peerID = "", RTCDataChannel dataChannel = null)
+    public RoomSpaceController CreateNewRoomSpace(string peerID = "self", RTCDataChannel dataChannel = null, UserProfile user = null)
     {
         RoomSpaceController newPeer = InstantiateRoomSpace(peerID);
         pos += new Vector3(50, 0, 0);
         newPeer.transform.position = pos;
 
-        newPeer.Initialize(peerID, dataChannel);
+        newPeer.Initialize(peerID, dataChannel, user);
         EventsPool.Instance.InvokeEvent(typeof(CreateNewScreenEvent), newPeer.CurrentRoomRenderTexture);
         return newPeer;
     }
 
-    private RoomSpaceController InstantiateRoomSpace(string id = "self")
+    private RoomSpaceController InstantiateRoomSpace(string id)
     {
         var roomSpace = Instantiate(roomPrefab);
         participantsRoomSpaces.Add(id, roomSpace);
         return roomSpace;
     }
+
     private void RemovePeer(RoomSpaceController.RoomRenderTexture rt)
     {
         participantsRoomSpaces.Remove(rt.renderTexture.name);

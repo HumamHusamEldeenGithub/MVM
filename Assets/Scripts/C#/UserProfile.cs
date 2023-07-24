@@ -40,7 +40,7 @@ public class UserProfile : Singleton<UserProfile>
                 Username = username,
                 Password = password,
                 Token = res.Token,
-                RefreshToken = res.RefreshToken
+                RefreshToken = res.RefreshToken,
             };
         }
 
@@ -57,6 +57,9 @@ public class UserProfile : Singleton<UserProfile>
         public string Password { get; set; }
         public string Token { get; set; }
         public string RefreshToken { get; set; }
+        public FacialFeatures UserFeatures { get; set; }
+        public Gender UserGender { get; set; }
+        public int Age { get; set; }
     }
 
     override protected void Awake()

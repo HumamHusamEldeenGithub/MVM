@@ -1,9 +1,5 @@
 using Mvm;
-using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using Unity.WebRTC;
 using UnityEngine;
 
@@ -23,14 +19,16 @@ public class PeerController : MonoBehaviour
     private void Awake()
     {
         orProcessor = GetComponent<OrientationProcessor>();
-        blendshapeAnimator = GetComponent<BlendShapeAnimator>();
+        blendshapeAnimator = GetComponentInChildren<BlendShapeAnimator>();
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void Initialize(string peerID, RTCDataChannel dataChannel)
+    public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile user)
     {
         this.peerID = peerID;
         this.dataChannel = dataChannel;
+
+        blendshapeAnimator.InitializeFace(user);
 
         void OnDataChannelMessage(byte[] bytes)
         {

@@ -7,6 +7,36 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Eyes_Mat
+    second: {fileID: 2100000, guid: e3d7d9b6c74d8844185d9c52a8b1876d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mouth_Mat
+    second: {fileID: 2100000, guid: dfa6c22a39d82d04cb4f098dad721351, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin_F
+    second: {fileID: 2100000, guid: 34951ab01a9483540af071bad7200a90, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin_Tongue_Mat
+    second: {fileID: 2100000, guid: 34951ab01a9483540af071bad7200a90, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Teeth_Mat
+    second: {fileID: 2100000, guid: 3bc288233909b9346aaf78416fb4fdb0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Teeth_Tongue_Mat
+    second: {fileID: 2100000, guid: 3bc288233909b9346aaf78416fb4fdb0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Wolf3D_Avatar.002
     second: {fileID: -6922793697723135513, guid: cf9d040f7346f7c468465c63a8e5780f, type: 3}
   materials:
