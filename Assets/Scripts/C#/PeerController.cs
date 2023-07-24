@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class PeerController : MonoBehaviour
 {
+    [SerializeField]
+    private FaceAnimator maleAnimator;
+
+    [SerializeField]
+    private FaceAnimator femaleAnimator;
+
     #region Private
 
+    private FaceAnimator currentAnimator;
     public string peerID;
     private RTCDataChannel dataChannel;
 
-    private BlendShapeAnimator blendshapeAnimator;
     private OrientationProcessor orProcessor;
     private AudioSource audioSource;
 
@@ -19,7 +25,6 @@ public class PeerController : MonoBehaviour
     private void Awake()
     {
         orProcessor = GetComponent<OrientationProcessor>();
-        blendshapeAnimator = GetComponentInChildren<BlendShapeAnimator>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -28,16 +33,33 @@ public class PeerController : MonoBehaviour
         this.peerID = peerID;
         this.dataChannel = dataChannel;
 
-        blendshapeAnimator.InitializeFace(user);
+        if (user != null && user.userData.UserGender == Gender.Male)
+        {
+            femaleAnimator.gameObject.SetActive(false);
+
+            currentAnimator = maleAnimator;
+        }
+        else
+        {
+            maleAnimator.gameObject.SetActive(false);
+
+            currentAnimator = femaleAnimator;
+        }
+
+        currentAnimator.gameObject.SetActive(true);
+        currentAnimator.InitializeFace(user);
+
 
         void OnDataChannelMessage(byte[] bytes)
         {
             try
             {
-/*                DateTime now = DateTime.Now;
+                /*
+                DateTime now = DateTime.Now;
                 DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
 
-                float seconds = (float)(now - unixEpoch).TotalSeconds;*/
+                float seconds = (float)(now - unixEpoch).TotalSeconds;
+                */
                 BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
 
                 SetBlendShapes(responseMessage);
@@ -61,7 +83,7 @@ public class PeerController : MonoBehaviour
 
     public void SetBlendShapes(BlendShapes blendshapes)
     {
-        blendshapeAnimator.SetBlendShapes(blendshapes);
+        currentAnimator.SetBlendShapes(blendshapes);
     }
 
     public void SetTrack(AudioStreamTrack track)
