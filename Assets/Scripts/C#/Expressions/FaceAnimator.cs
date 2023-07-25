@@ -38,7 +38,7 @@ public class FaceAnimator : MonoBehaviour
 
     #endregion
 
-    public void InitializeFace(UserProfile profile)
+    public void InitializeFace(UserProfile.PeerData userData)
     {
         blendshapeKeys.Clear();
         for (int i = 0; i < m_Renderer.sharedMesh.blendShapeCount; i++)
@@ -46,21 +46,22 @@ public class FaceAnimator : MonoBehaviour
             blendshapeKeys.Add(m_Renderer.sharedMesh.GetBlendShapeName(i), i);
         }
 
-        if (profile != null)
+        if (userData != null)
         {
-            SetHeadStyle(profile.userData.UserFeatures.HeadStyle);
-            SetHairStyle(profile.userData.UserFeatures.HairStyle);
-            SetBrowsStyle(profile.userData.UserFeatures.EyebrowsStyle);
-            SetEyeStyle(profile.userData.UserFeatures.EyeStyle);
-            SetNoseStyle(profile.userData.UserFeatures.NoseStyle);
-            SetMouthStyle(profile.userData.UserFeatures.MouthStyle);
-            SetSkinImperfection(profile.userData.UserFeatures.SkinImperfection);
-            SetTattoo(profile.userData.UserFeatures.Tattoo);
+           
+            SetHeadStyle(int.Parse(userData.AvatarSettings[(int)AvatarSettings.HeadStyle]));
+            SetHairStyle(int.Parse(userData.AvatarSettings[(int)AvatarSettings.HairStyle]));
+            SetBrowsStyle(int.Parse(userData.AvatarSettings[(int)AvatarSettings.EyebrowsStyle]));
+            SetEyeStyle(int.Parse(userData.AvatarSettings[(int)AvatarSettings.EyeStyle]));
+            SetNoseStyle(int.Parse(userData.AvatarSettings[(int)AvatarSettings.NoseStyle]));
+            SetMouthStyle(int.Parse(userData.AvatarSettings[(int)AvatarSettings.MouthStyle]));
+            SetSkinImperfection(int.Parse(userData.AvatarSettings[(int)AvatarSettings.SkinImperfection]));
+            SetTattoo(int.Parse(userData.AvatarSettings[(int)AvatarSettings.Tattoo]));
 
-            SetHairColor(profile.userData.UserFeatures.HairColor);
-            SetBrowsColor(profile.userData.UserFeatures.BrowsColor);
-            SetSkinColor(profile.userData.UserFeatures.SkinColor);
-            SetEyesColor(profile.userData.UserFeatures.EyeColor);
+            SetHairColor(userData.AvatarSettings[(int)AvatarSettings.HairColor]);
+            SetBrowsColor(userData.AvatarSettings[(int)AvatarSettings.BrowsColor]);
+            SetSkinColor(userData.AvatarSettings[(int)AvatarSettings.SkinColor]);
+            SetEyesColor(userData.AvatarSettings[(int)AvatarSettings.EyeColor]);
         }
     }
 

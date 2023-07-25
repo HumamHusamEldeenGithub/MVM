@@ -21,7 +21,7 @@ public class ClientsManager : Singleton<ClientsManager>
         EventsPool.Instance.AddListener(typeof(RemoveScreenEvent), new Action<RoomSpaceController.RoomRenderTexture>(RemovePeer));
     }
 
-    public RoomSpaceController CreateNewRoomSpace(string peerID = "self", RTCDataChannel dataChannel = null, UserProfile user = null)
+    public RoomSpaceController CreateNewRoomSpace(string peerID = "self", RTCDataChannel dataChannel = null, UserProfile.PeerData user = null)
     {
         RoomSpaceController newPeer = InstantiateRoomSpace(peerID);
         pos += new Vector3(50, 0, 0);

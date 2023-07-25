@@ -28,7 +28,7 @@ public class RoomSpaceController : MonoBehaviour
 
     public PeerController PeerController { get { return peerController; } }
 
-    public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile user)
+    public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile.PeerData user)
     {
         SelfInitialize();
         peerController.Initialize(peerID, dataChannel, user);

@@ -3,6 +3,7 @@ using UnityEngine;
 using Mvm;
 using System;
 using System.Threading;
+using Google.Protobuf.Collections;
 
 public class UserProfile : Singleton<UserProfile>
 {
@@ -37,6 +38,7 @@ public class UserProfile : Singleton<UserProfile>
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
             userData = new UserData
             {
+                // TODO : add id to response
                 Username = username,
                 Password = password,
                 Token = res.Token,
@@ -60,6 +62,15 @@ public class UserProfile : Singleton<UserProfile>
         public FacialFeatures UserFeatures { get; set; }
         public Gender UserGender { get; set; }
         public int Age { get; set; }
+        public MapField<int, string> AvatarSettings { get; set; }
+    }
+
+    public class PeerData
+    {
+        public string Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public MapField<int,string> AvatarSettings { get; set; }
     }
 
     override protected void Awake()

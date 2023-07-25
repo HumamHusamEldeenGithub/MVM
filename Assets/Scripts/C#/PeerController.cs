@@ -28,12 +28,12 @@ public class PeerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile user)
+    public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile.PeerData userData)
     {
         this.peerID = peerID;
         this.dataChannel = dataChannel;
 
-        if (user != null && user.userData.UserGender == Gender.Male)
+        if (userData == null || userData.AvatarSettings[(int)AvatarSettings.Gender] == Gender.Male.ToString())
         {
             femaleAnimator.gameObject.SetActive(false);
 
@@ -47,22 +47,16 @@ public class PeerController : MonoBehaviour
         }
 
         currentAnimator.gameObject.SetActive(true);
-        currentAnimator.InitializeFace(user);
+        currentAnimator.InitializeFace(userData);
 
 
         void OnDataChannelMessage(byte[] bytes)
         {
             try
             {
-                /*
-                DateTime now = DateTime.Now;
-                DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
+                PythonServerMessage responseMessage = PythonServerMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
 
-                float seconds = (float)(now - unixEpoch).TotalSeconds;
-                */
-                BlendShapes responseMessage = BlendShapes.Parser.ParseFrom(bytes, 0, bytes.Length);
-
-                SetBlendShapes(responseMessage);
+                SetTrackingData(responseMessage);
             }
             catch (Exception e)
             {
@@ -81,9 +75,9 @@ public class PeerController : MonoBehaviour
         }
     }
 
-    public void SetBlendShapes(BlendShapes blendshapes)
+    public void SetTrackingData(PythonServerMessage message)
     {
-        currentAnimator.SetBlendShapes(blendshapes);
+        currentAnimator.SetBlendShapes(message.BlendShapes);
     }
 
     public void SetTrack(AudioStreamTrack track)

@@ -34,7 +34,7 @@ public class WebRTCController : MonoBehaviour
         return config;
     }
 
-    public void InitPeerConnection(AudioStreamTrack localAudioStream, string peerId)
+    public void InitPeerConnection(AudioStreamTrack localAudioStream, string peerId , UserProfile.PeerData userData)
     {
         this.peerId = peerId;
 
@@ -50,7 +50,7 @@ public class WebRTCController : MonoBehaviour
             this.peerDataChannel = channel;
 
             // TODO send user profile
-            this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
+            this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
             Debug.Log("Call Audio Stream in onDataChannel");
             if (this.remoteStreamTrack != null)
             {

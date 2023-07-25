@@ -191,5 +191,12 @@ public class Server : MonoBehaviour
         return res != null ? JsonConvert.DeserializeObject<GetAvatarSettingsResponse>(res) : null;
     }
 
+    public static async Task<GetUserProfileFeaturesResponse> GetUserProfileFeatures(GetUserProfileFeaturesRequest req)
+    {
+        string res = await CreatePostCall("/user/features", req);
+
+        return res != null ? JsonConvert.DeserializeObject<GetUserProfileFeaturesResponse>(res) : null;
+    }
+
     #endregion
 }

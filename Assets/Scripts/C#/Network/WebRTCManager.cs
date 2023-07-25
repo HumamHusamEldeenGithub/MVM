@@ -11,7 +11,6 @@ using System.IO;
 
 public class WebRTCManager : MonoBehaviour
 {
-    static int indexCnt = 0;
     SynchronizationContext syncContext;
     AudioStreamTrack localAudioStream;
     Dictionary<string,WebRTCController> webRTCConnections = new Dictionary<string, WebRTCController>();
@@ -43,13 +42,27 @@ public class WebRTCManager : MonoBehaviour
 
     public void CreateNewWebRTCConnection(string peerId)
     {
-        syncContext.Post(new SendOrPostCallback(o =>
+        syncContext.Post(new SendOrPostCallback(async o =>
         {
             GameObject newObj = new GameObject();
             newObj.transform.parent = transform;
             WebRTCController webRTCController = newObj.AddComponent<WebRTCController>();
             webRTCConnections.Add(peerId, webRTCController);
-            webRTCController.InitPeerConnection(localAudioStream, peerId);
+
+            var userProfile = await Server.GetUserProfileFeatures(new GetUserProfileFeaturesRequest
+            {
+                Id = peerId,
+            });
+            UserProfile.PeerData peerData = new UserProfile.PeerData
+            {
+                Id = userProfile.Profile.Id,
+                Username = userProfile.Profile.Username,
+                Email = userProfile.Profile.Email,
+                AvatarSettings = userProfile.Profile.AvatarSettings
+                
+            };
+
+            webRTCController.InitPeerConnection(localAudioStream, peerId,peerData);
         }), null);
     }
 
@@ -85,21 +98,14 @@ public class WebRTCManager : MonoBehaviour
         
     }
 
-    public void SendBlendShapes(BlendShapes blendShapes)
+    public void SendMessageToDataChannel(PythonServerMessage message)
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-/*            blendShapes.Index = indexCnt;
-            indexCnt++; 
-            DateTime now = DateTime.Now;
-            DateTime unixEpoch = new DateTime(2023, 7, 15, 20, 0, 0, DateTimeKind.Utc);
-            float seconds = (float)(now - unixEpoch).TotalSeconds;
-            blendShapes.Date = seconds;*/
-
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {
-                blendShapes.WriteTo(memoryStream);
+                message.WriteTo(memoryStream);
                 byteArray = memoryStream.ToArray();
             }
                 
@@ -119,12 +125,10 @@ public class WebRTCManager : MonoBehaviour
             webRTCConnections[peerId].pc = null;
             webRTCConnections.Remove(peerId);
         }), null);
-
     }
 
     public void DisposeAllWebRTCConnections()
     {
-
         syncContext.Post(new SendOrPostCallback(o =>
         {
             foreach (string key in webRTCConnections.Keys)
@@ -132,6 +136,5 @@ public class WebRTCManager : MonoBehaviour
                 DisposeWebRTCConnection(key);
             }
         }), null);
-
     }
 }

@@ -123,8 +123,8 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 if (bytes == 0) return;
 
                 PythonServerMessage response = PythonServerMessage.Parser.ParseFrom(messageData, 0, bytes);
-                peerController.SetBlendShapes(response.BlendShapes);
-                webRTCManager.SendBlendShapes(response.BlendShapes);
+                peerController.SetTrackingData(response);
+                webRTCManager.SendMessageToDataChannel(response);
             }
         }
     }
