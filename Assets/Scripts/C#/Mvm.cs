@@ -25,90 +25,92 @@ namespace Mvm {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cgltdm0ucHJvdG8SA212bSIHCgVFbXB0eSI2ChBMb2dpblVzZXJSZXF1ZXN0",
-            "EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIjkKEUxvZ2lu",
-            "VXNlclJlc3BvbnNlEg0KBXRva2VuGAEgASgJEhUKDXJlZnJlc2hfdG9rZW4Y",
-            "AiABKAkiMwoaTG9naW5CeVJlZnJlc2hUb2tlblJlcXVlc3QSFQoNcmVmcmVz",
-            "aF90b2tlbhgBIAEoCSJDChtMb2dpbkJ5UmVmcmVzaFRva2VuUmVzcG9uc2US",
-            "DQoFdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCSJGChFDcmVh",
-            "dGVVc2VyUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCRINCgVlbWFpbBgCIAEo",
-            "CRIQCghwYXNzd29yZBgDIAEoCSIgChJDcmVhdGVVc2VyUmVzcG9uc2USCgoC",
-            "aWQYASABKAkiEwoRR2V0UHJvZmlsZVJlcXVlc3QiVgoSR2V0UHJvZmlsZVJl",
-            "c3BvbnNlEiEKB3Byb2ZpbGUYASABKAsyEC5tdm0uVXNlclByb2ZpbGUSHQoK",
-            "dXNlcl9yb29tcxgCIAMoCzIJLm12bS5Sb29tIiwKGEdldFVzZXJCeVVzZXJu",
-            "YW1lUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCSJdChlHZXRVc2VyQnlVc2Vy",
-            "bmFtZVJlc3BvbnNlEiEKB3Byb2ZpbGUYASABKAsyEC5tdm0uVXNlclByb2Zp",
-            "bGUSHQoKdXNlcl9yb29tcxgCIAMoCzIJLm12bS5Sb29tIi8KGkNyZWF0ZUZy",
-            "aWVuZFJlcXVlc3RSZXF1ZXN0EhEKCWZyaWVuZF9pZBgBIAEoCSIdChtDcmVh",
-            "dGVGcmllbmRSZXF1ZXN0UmVzcG9uc2UiLwoaRGVsZXRlRnJpZW5kUmVxdWVz",
-            "dFJlcXVlc3QSEQoJZnJpZW5kX2lkGAEgASgJIh0KG0RlbGV0ZUZyaWVuZFJl",
-            "cXVlc3RSZXNwb25zZSIlChBBZGRGcmllbmRSZXF1ZXN0EhEKCWZyaWVuZF9p",
-            "ZBgBIAEoCSITChFBZGRGcmllbmRSZXNwb25zZSIoChNEZWxldGVGcmllbmRS",
-            "ZXF1ZXN0EhEKCWZyaWVuZF9pZBgBIAEoCSIWChREZWxldGVGcmllbmRSZXNw",
-            "b25zZSITChFHZXRGcmllbmRzUmVxdWVzdCI4ChJHZXRGcmllbmRzUmVzcG9u",
-            "c2USIgoIcHJvZmlsZXMYASADKAsyEC5tdm0uVXNlclByb2ZpbGUiGgoYR2V0",
-            "UGVuZGluZ0ZyaWVuZHNSZXF1ZXN0Ij8KGUdldFBlbmRpbmdGcmllbmRzUmVz",
-            "cG9uc2USIgoIcHJvZmlsZXMYASADKAsyEC5tdm0uVXNlclByb2ZpbGUiLQoV",
-            "U2VhcmNoRm9yVXNlcnNSZXF1ZXN0EhQKDHNlYXJjaF9pbnB1dBgBIAEoCSI5",
-            "ChZTZWFyY2hGb3JVc2Vyc1Jlc3BvbnNlEh8KBXVzZXJzGAEgAygLMhAubXZt",
-            "LlVzZXJQcm9maWxlIkwKEUNyZWF0ZVJvb21SZXF1ZXN0Eg0KBXRpdGxlGAEg",
-            "ASgJEhIKCmlzX3ByaXZhdGUYAiABKAgSFAoMZnJpZW5kc19vbmx5GAMgASgI",
-            "Ii0KEkNyZWF0ZVJvb21SZXNwb25zZRIXCgRyb29tGAEgASgLMgkubXZtLlJv",
-            "b20iEAoOR2V0Um9vbVJlcXVlc3QiLAoQR2V0Um9vbXNSZXNwb25zZRIYCgVy",
-            "b29tcxgBIAMoCzIJLm12bS5Sb29tIiYKE0dldFVzZXJSb29tc1JlcXVlc3QS",
-            "DwoHdXNlcl9pZBgBIAEoCSIwChRHZXRVc2VyUm9vbXNSZXNwb25zZRIYCgVy",
-            "b29tcxgBIAMoCzIJLm12bS5Sb29tIiQKEURlbGV0ZVJvb21SZXF1ZXN0Eg8K",
-            "B3Jvb21faWQYASABKAkiJQoSRGVsZXRlUm9vbVJlc3BvbnNlEg8KB3Jvb21f",
-            "aWQYASABKAkiPwobQ3JlYXRlUm9vbUludml0YXRpb25SZXF1ZXN0Eg8KB3Jv",
-            "b21faWQYASABKAkSDwoHdXNlcl9pZBgCIAEoCSIeChxDcmVhdGVSb29tSW52",
-            "aXRhdGlvblJlc3BvbnNlIj8KG0RlbGV0ZVJvb21JbnZpdGF0aW9uUmVxdWVz",
-            "dBIPCgdyb29tX2lkGAEgASgJEg8KB3VzZXJfaWQYAiABKAkiHgocRGVsZXRl",
-            "Um9vbUludml0YXRpb25SZXNwb25zZSKwAQoLVXNlclByb2ZpbGUSCgoCaWQY",
-            "ASABKAkSEAoIdXNlcm5hbWUYAiABKAkSDQoFZW1haWwYAyABKAkSPQoPYXZh",
-            "dGFyX3NldHRpbmdzGAQgAygLMiQubXZtLlVzZXJQcm9maWxlLkF2YXRhclNl",
-            "dHRpbmdzRW50cnkaNQoTQXZhdGFyU2V0dGluZ3NFbnRyeRILCgNrZXkYASAB",
-            "KAUSDQoFdmFsdWUYAiABKAk6AjgBIh4KDkdldEljZVJlc3BvbnNlEgwKBGlj",
-            "ZXMYASADKAkigQEKBFJvb20SCgoCaWQYASABKAkSEAoIb3duZXJfaWQYAiAB",
-            "KAkSDQoFdGl0bGUYAyABKAkSDQoFdXNlcnMYBCADKAkSEgoKaXNfcHJpdmF0",
-            "ZRgFIAEoCBIUCgxmcmllbmRzX29ubHkYBiABKAgSEwoLaW52aXRhdGlvbnMY",
-            "ByADKAkikAEKG1Vwc2VydEF2YXRhclNldHRpbmdzUmVxdWVzdBJACghzZXR0",
-            "aW5ncxgBIAMoCzIuLm12bS5VcHNlcnRBdmF0YXJTZXR0aW5nc1JlcXVlc3Qu",
-            "U2V0dGluZ3NFbnRyeRovCg1TZXR0aW5nc0VudHJ5EgsKA2tleRgBIAEoBRIN",
-            "CgV2YWx1ZRgCIAEoCToCOAEiHgocVXBzZXJ0QXZhdGFyU2V0dGluZ3NSZXNw",
-            "b25zZSIaChhHZXRBdmF0YXJTZXR0aW5nc1JlcXVlc3QijAEKGUdldEF2YXRh",
-            "clNldHRpbmdzUmVzcG9uc2USPgoIc2V0dGluZ3MYASADKAsyLC5tdm0uR2V0",
-            "QXZhdGFyU2V0dGluZ3NSZXNwb25zZS5TZXR0aW5nc0VudHJ5Gi8KDVNldHRp",
-            "bmdzRW50cnkSCwoDa2V5GAEgASgFEg0KBXZhbHVlGAIgASgJOgI4ASIrCh1H",
-            "ZXRVc2VyUHJvZmlsZUZlYXR1cmVzUmVxdWVzdBIKCgJpZBgBIAEoCSJDCh5H",
-            "ZXRVc2VyUHJvZmlsZUZlYXR1cmVzUmVzcG9uc2USIQoHcHJvZmlsZRgBIAEo",
-            "CzIQLm12bS5Vc2VyUHJvZmlsZSKTAQoNU29ja2V0TWVzc2FnZRIkCgR0eXBl",
-            "GAEgASgOMhYubXZtLlNvY2tldE1lc3NhZ2VUeXBlEigKDHJvb21fbWVzc2Fn",
-            "ZRgCIAEoCzIQLm12bS5Sb29tTWVzc2FnZUgAEioKDWVycm9yX21lc3NhZ2UY",
-            "AyABKAsyES5tdm0uRXJyb3JNZXNzYWdlSABCBgoEZGF0YSJRCgtSb29tTWVz",
-            "c2FnZRIUCgdtZXNzYWdlGAIgASgJSACIAQESIAoJa2V5cG9pbnRzGAMgAygL",
-            "Mg0ubXZtLktleXBvaW50QgoKCF9tZXNzYWdlIjIKDEVycm9yTWVzc2FnZRIT",
-            "CgtzdGF0dXNfY29kZRgBIAEoAxINCgVlcnJvchgCIAEoCSJ9ChNQeXRob25T",
-            "ZXJ2ZXJNZXNzYWdlEg0KBWluZGV4GAEgASgDEiYKDGJsZW5kX3NoYXBlcxgC",
-            "IAEoCzIQLm12bS5CbGVuZFNoYXBlcxIhCglrZXlwb2ludHMYAyABKAsyDi5t",
-            "dm0uS2V5cG9pbnRzEgwKBGRhdGUYBCABKAIiKwoIS2V5cG9pbnQSCQoBeBgB",
-            "IAEoAhIJCgF5GAIgASgCEgkKAXoYAyABKAIiQQoKQmxlbmRTaGFwZRINCgVp",
-            "bmRleBgBIAEoAxINCgVzY29yZRgCIAEoAhIVCg1jYXRlZ29yeV9uYW1lGAMg",
-            "ASgJIjQKC0JsZW5kU2hhcGVzEiUKDGJsZW5kX3NoYXBlcxgBIAMoCzIPLm12",
-            "bS5CbGVuZFNoYXBlIi0KCUtleXBvaW50cxIgCglrZXlwb2ludHMYASADKAsy",
-            "DS5tdm0uS2V5cG9pbnQqQQoRU29ja2V0TWVzc2FnZVR5cGUSEAoMUk9PTV9N",
-            "RVNTQUdFEAASDwoLVVNFUl9KT0lORUQQARIJCgVFUlJPUhACQglaBy4vbXZt",
-            "UGJiBnByb3RvMw=="));
+            "EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIkUKEUxvZ2lu",
+            "VXNlclJlc3BvbnNlEgoKAmlkGAEgASgJEg0KBXRva2VuGAIgASgJEhUKDXJl",
+            "ZnJlc2hfdG9rZW4YAyABKAkiMwoaTG9naW5CeVJlZnJlc2hUb2tlblJlcXVl",
+            "c3QSFQoNcmVmcmVzaF90b2tlbhgBIAEoCSJPChtMb2dpbkJ5UmVmcmVzaFRv",
+            "a2VuUmVzcG9uc2USCgoCaWQYASABKAkSDQoFdG9rZW4YAiABKAkSFQoNcmVm",
+            "cmVzaF90b2tlbhgDIAEoCSJGChFDcmVhdGVVc2VyUmVxdWVzdBIQCgh1c2Vy",
+            "bmFtZRgBIAEoCRINCgVlbWFpbBgCIAEoCRIQCghwYXNzd29yZBgDIAEoCSIg",
+            "ChJDcmVhdGVVc2VyUmVzcG9uc2USCgoCaWQYASABKAkiEwoRR2V0UHJvZmls",
+            "ZVJlcXVlc3QigwEKEkdldFByb2ZpbGVSZXNwb25zZRIhCgdwcm9maWxlGAEg",
+            "ASgLMhAubXZtLlVzZXJQcm9maWxlEh0KCnVzZXJfcm9vbXMYAiADKAsyCS5t",
+            "dm0uUm9vbRIrCg5hdmF0YXJTZXR0aW5ncxgDIAEoCzITLm12bS5BdmF0YXJT",
+            "ZXR0aW5ncyIsChhHZXRVc2VyQnlVc2VybmFtZVJlcXVlc3QSEAoIdXNlcm5h",
+            "bWUYASABKAkiXQoZR2V0VXNlckJ5VXNlcm5hbWVSZXNwb25zZRIhCgdwcm9m",
+            "aWxlGAEgASgLMhAubXZtLlVzZXJQcm9maWxlEh0KCnVzZXJfcm9vbXMYAiAD",
+            "KAsyCS5tdm0uUm9vbSIvChpDcmVhdGVGcmllbmRSZXF1ZXN0UmVxdWVzdBIR",
+            "CglmcmllbmRfaWQYASABKAkiHQobQ3JlYXRlRnJpZW5kUmVxdWVzdFJlc3Bv",
+            "bnNlIi8KGkRlbGV0ZUZyaWVuZFJlcXVlc3RSZXF1ZXN0EhEKCWZyaWVuZF9p",
+            "ZBgBIAEoCSIdChtEZWxldGVGcmllbmRSZXF1ZXN0UmVzcG9uc2UiJQoQQWRk",
+            "RnJpZW5kUmVxdWVzdBIRCglmcmllbmRfaWQYASABKAkiEwoRQWRkRnJpZW5k",
+            "UmVzcG9uc2UiKAoTRGVsZXRlRnJpZW5kUmVxdWVzdBIRCglmcmllbmRfaWQY",
+            "ASABKAkiFgoURGVsZXRlRnJpZW5kUmVzcG9uc2UiEwoRR2V0RnJpZW5kc1Jl",
+            "cXVlc3QiOAoSR2V0RnJpZW5kc1Jlc3BvbnNlEiIKCHByb2ZpbGVzGAEgAygL",
+            "MhAubXZtLlVzZXJQcm9maWxlIhoKGEdldFBlbmRpbmdGcmllbmRzUmVxdWVz",
+            "dCI/ChlHZXRQZW5kaW5nRnJpZW5kc1Jlc3BvbnNlEiIKCHByb2ZpbGVzGAEg",
+            "AygLMhAubXZtLlVzZXJQcm9maWxlIi0KFVNlYXJjaEZvclVzZXJzUmVxdWVz",
+            "dBIUCgxzZWFyY2hfaW5wdXQYASABKAkiOQoWU2VhcmNoRm9yVXNlcnNSZXNw",
+            "b25zZRIfCgV1c2VycxgBIAMoCzIQLm12bS5Vc2VyUHJvZmlsZSJMChFDcmVh",
+            "dGVSb29tUmVxdWVzdBINCgV0aXRsZRgBIAEoCRISCgppc19wcml2YXRlGAIg",
+            "ASgIEhQKDGZyaWVuZHNfb25seRgDIAEoCCItChJDcmVhdGVSb29tUmVzcG9u",
+            "c2USFwoEcm9vbRgBIAEoCzIJLm12bS5Sb29tIhAKDkdldFJvb21SZXF1ZXN0",
+            "IiwKEEdldFJvb21zUmVzcG9uc2USGAoFcm9vbXMYASADKAsyCS5tdm0uUm9v",
+            "bSImChNHZXRVc2VyUm9vbXNSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiMAoU",
+            "R2V0VXNlclJvb21zUmVzcG9uc2USGAoFcm9vbXMYASADKAsyCS5tdm0uUm9v",
+            "bSIkChFEZWxldGVSb29tUmVxdWVzdBIPCgdyb29tX2lkGAEgASgJIiUKEkRl",
+            "bGV0ZVJvb21SZXNwb25zZRIPCgdyb29tX2lkGAEgASgJIj8KG0NyZWF0ZVJv",
+            "b21JbnZpdGF0aW9uUmVxdWVzdBIPCgdyb29tX2lkGAEgASgJEg8KB3VzZXJf",
+            "aWQYAiABKAkiHgocQ3JlYXRlUm9vbUludml0YXRpb25SZXNwb25zZSI/ChtE",
+            "ZWxldGVSb29tSW52aXRhdGlvblJlcXVlc3QSDwoHcm9vbV9pZBgBIAEoCRIP",
+            "Cgd1c2VyX2lkGAIgASgJIh4KHERlbGV0ZVJvb21JbnZpdGF0aW9uUmVzcG9u",
+            "c2UiOgoLVXNlclByb2ZpbGUSCgoCaWQYASABKAkSEAoIdXNlcm5hbWUYAiAB",
+            "KAkSDQoFZW1haWwYAyABKAkiHgoOR2V0SWNlUmVzcG9uc2USDAoEaWNlcxgB",
+            "IAMoCSKBAQoEUm9vbRIKCgJpZBgBIAEoCRIQCghvd25lcl9pZBgCIAEoCRIN",
+            "CgV0aXRsZRgDIAEoCRINCgV1c2VycxgEIAMoCRISCgppc19wcml2YXRlGAUg",
+            "ASgIEhQKDGZyaWVuZHNfb25seRgGIAEoCBITCgtpbnZpdGF0aW9ucxgHIAMo",
+            "CSJEChtVcHNlcnRBdmF0YXJTZXR0aW5nc1JlcXVlc3QSJQoIc2V0dGluZ3MY",
+            "ASABKAsyEy5tdm0uQXZhdGFyU2V0dGluZ3MiHgocVXBzZXJ0QXZhdGFyU2V0",
+            "dGluZ3NSZXNwb25zZSIaChhHZXRBdmF0YXJTZXR0aW5nc1JlcXVlc3QiQgoZ",
+            "R2V0QXZhdGFyU2V0dGluZ3NSZXNwb25zZRIlCghzZXR0aW5ncxgBIAEoCzIT",
+            "Lm12bS5BdmF0YXJTZXR0aW5ncyIrCh1HZXRVc2VyUHJvZmlsZUZlYXR1cmVz",
+            "UmVxdWVzdBIKCgJpZBgBIAEoCSJwCh5HZXRVc2VyUHJvZmlsZUZlYXR1cmVz",
+            "UmVzcG9uc2USIQoHcHJvZmlsZRgBIAEoCzIQLm12bS5Vc2VyUHJvZmlsZRIr",
+            "Cg5hdmF0YXJTZXR0aW5ncxgCIAEoCzITLm12bS5BdmF0YXJTZXR0aW5ncyKM",
+            "AgoOQXZhdGFyU2V0dGluZ3MSEQoJaGVhZFN0eWxlGAEgASgJEhEKCWhhaXJT",
+            "dHlsZRgCIAEoCRIVCg1leWVicm93c1N0eWxlGAMgASgJEhAKCGV5ZVN0eWxl",
+            "GAQgASgJEhEKCW5vc2VTdHlsZRgFIAEoCRISCgptb3V0aFN0eWxlGAYgASgJ",
+            "EhgKEHNraW5JbXBlcmZlY3Rpb24YByABKAkSDgoGdGF0dG9vGAggASgJEhEK",
+            "CWhhaXJDb2xvchgJIAEoCRISCgpicm93c0NvbG9yGAogASgJEhEKCXNraW5D",
+            "b2xvchgLIAEoCRIQCghleWVDb2xvchgMIAEoCRIOCgZnZW5kZXIYDSABKAki",
+            "kwEKDVNvY2tldE1lc3NhZ2USJAoEdHlwZRgBIAEoDjIWLm12bS5Tb2NrZXRN",
+            "ZXNzYWdlVHlwZRIoCgxyb29tX21lc3NhZ2UYAiABKAsyEC5tdm0uUm9vbU1l",
+            "c3NhZ2VIABIqCg1lcnJvcl9tZXNzYWdlGAMgASgLMhEubXZtLkVycm9yTWVz",
+            "c2FnZUgAQgYKBGRhdGEiUQoLUm9vbU1lc3NhZ2USFAoHbWVzc2FnZRgCIAEo",
+            "CUgAiAEBEiAKCWtleXBvaW50cxgDIAMoCzINLm12bS5LZXlwb2ludEIKCghf",
+            "bWVzc2FnZSIyCgxFcnJvck1lc3NhZ2USEwoLc3RhdHVzX2NvZGUYASABKAMS",
+            "DQoFZXJyb3IYAiABKAkifQoTUHl0aG9uU2VydmVyTWVzc2FnZRINCgVpbmRl",
+            "eBgBIAEoAxImCgxibGVuZF9zaGFwZXMYAiABKAsyEC5tdm0uQmxlbmRTaGFw",
+            "ZXMSIQoJa2V5cG9pbnRzGAMgASgLMg4ubXZtLktleXBvaW50cxIMCgRkYXRl",
+            "GAQgASgCIisKCEtleXBvaW50EgkKAXgYASABKAISCQoBeRgCIAEoAhIJCgF6",
+            "GAMgASgCIkEKCkJsZW5kU2hhcGUSDQoFaW5kZXgYASABKAMSDQoFc2NvcmUY",
+            "AiABKAISFQoNY2F0ZWdvcnlfbmFtZRgDIAEoCSI0CgtCbGVuZFNoYXBlcxIl",
+            "CgxibGVuZF9zaGFwZXMYASADKAsyDy5tdm0uQmxlbmRTaGFwZSItCglLZXlw",
+            "b2ludHMSIAoJa2V5cG9pbnRzGAEgAygLMg0ubXZtLktleXBvaW50KkEKEVNv",
+            "Y2tldE1lc3NhZ2VUeXBlEhAKDFJPT01fTUVTU0FHRRAAEg8KC1VTRVJfSk9J",
+            "TkVEEAESCQoFRVJST1IQAkIJWgcuL212bVBiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Empty), global::Mvm.Empty.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginUserRequest), global::Mvm.LoginUserRequest.Parser, new[]{ "Username", "Password" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginUserResponse), global::Mvm.LoginUserResponse.Parser, new[]{ "Token", "RefreshToken" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginUserResponse), global::Mvm.LoginUserResponse.Parser, new[]{ "Id", "Token", "RefreshToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginByRefreshTokenRequest), global::Mvm.LoginByRefreshTokenRequest.Parser, new[]{ "RefreshToken" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginByRefreshTokenResponse), global::Mvm.LoginByRefreshTokenResponse.Parser, new[]{ "Token", "RefreshToken" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginByRefreshTokenResponse), global::Mvm.LoginByRefreshTokenResponse.Parser, new[]{ "Id", "Token", "RefreshToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.CreateUserRequest), global::Mvm.CreateUserRequest.Parser, new[]{ "Username", "Email", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.CreateUserResponse), global::Mvm.CreateUserResponse.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetProfileRequest), global::Mvm.GetProfileRequest.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetProfileResponse), global::Mvm.GetProfileResponse.Parser, new[]{ "Profile", "UserRooms" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetProfileResponse), global::Mvm.GetProfileResponse.Parser, new[]{ "Profile", "UserRooms", "AvatarSettings" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserByUsernameRequest), global::Mvm.GetUserByUsernameRequest.Parser, new[]{ "Username" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserByUsernameResponse), global::Mvm.GetUserByUsernameResponse.Parser, new[]{ "Profile", "UserRooms" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.CreateFriendRequestRequest), global::Mvm.CreateFriendRequestRequest.Parser, new[]{ "FriendId" }, null, null, null, null),
@@ -137,15 +139,16 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.CreateRoomInvitationResponse), global::Mvm.CreateRoomInvitationResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.DeleteRoomInvitationRequest), global::Mvm.DeleteRoomInvitationRequest.Parser, new[]{ "RoomId", "UserId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.DeleteRoomInvitationResponse), global::Mvm.DeleteRoomInvitationResponse.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.UserProfile), global::Mvm.UserProfile.Parser, new[]{ "Id", "Username", "Email", "AvatarSettings" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.UserProfile), global::Mvm.UserProfile.Parser, new[]{ "Id", "Username", "Email" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetIceResponse), global::Mvm.GetIceResponse.Parser, new[]{ "Ices" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Room), global::Mvm.Room.Parser, new[]{ "Id", "OwnerId", "Title", "Users", "IsPrivate", "FriendsOnly", "Invitations" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.UpsertAvatarSettingsRequest), global::Mvm.UpsertAvatarSettingsRequest.Parser, new[]{ "Settings" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.UpsertAvatarSettingsRequest), global::Mvm.UpsertAvatarSettingsRequest.Parser, new[]{ "Settings" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.UpsertAvatarSettingsResponse), global::Mvm.UpsertAvatarSettingsResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetAvatarSettingsRequest), global::Mvm.GetAvatarSettingsRequest.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetAvatarSettingsResponse), global::Mvm.GetAvatarSettingsResponse.Parser, new[]{ "Settings" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetAvatarSettingsResponse), global::Mvm.GetAvatarSettingsResponse.Parser, new[]{ "Settings" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesRequest), global::Mvm.GetUserProfileFeaturesRequest.Parser, new[]{ "Id" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesResponse), global::Mvm.GetUserProfileFeaturesResponse.Parser, new[]{ "Profile" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesResponse), global::Mvm.GetUserProfileFeaturesResponse.Parser, new[]{ "Profile", "AvatarSettings" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.AvatarSettings), global::Mvm.AvatarSettings.Parser, new[]{ "HeadStyle", "HairStyle", "EyebrowsStyle", "EyeStyle", "NoseStyle", "MouthStyle", "SkinImperfection", "Tattoo", "HairColor", "BrowsColor", "SkinColor", "EyeColor", "Gender" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.SocketMessage), global::Mvm.SocketMessage.Parser, new[]{ "Type", "RoomMessage", "ErrorMessage" }, new[]{ "Data" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.RoomMessage), global::Mvm.RoomMessage.Parser, new[]{ "Message", "Keypoints" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.ErrorMessage), global::Mvm.ErrorMessage.Parser, new[]{ "StatusCode", "Error" }, null, null, null, null),
@@ -581,6 +584,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public LoginUserResponse(LoginUserResponse other) : this() {
+      id_ = other.id_;
       token_ = other.token_;
       refreshToken_ = other.refreshToken_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -592,8 +596,20 @@ namespace Mvm {
       return new LoginUserResponse(this);
     }
 
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private string id_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Id {
+      get { return id_; }
+      set {
+        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 1;
+    public const int TokenFieldNumber = 2;
     private string token_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -605,7 +621,7 @@ namespace Mvm {
     }
 
     /// <summary>Field number for the "refresh_token" field.</summary>
-    public const int RefreshTokenFieldNumber = 2;
+    public const int RefreshTokenFieldNumber = 3;
     private string refreshToken_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -631,6 +647,7 @@ namespace Mvm {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Id != other.Id) return false;
       if (Token != other.Token) return false;
       if (RefreshToken != other.RefreshToken) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -640,6 +657,7 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (Id.Length != 0) hash ^= Id.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
       if (RefreshToken.Length != 0) hash ^= RefreshToken.GetHashCode();
       if (_unknownFields != null) {
@@ -660,12 +678,16 @@ namespace Mvm {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Token.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (Token.Length != 0) {
+        output.WriteRawTag(18);
         output.WriteString(Token);
       }
       if (RefreshToken.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(RefreshToken);
       }
       if (_unknownFields != null) {
@@ -678,12 +700,16 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Token.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (Token.Length != 0) {
+        output.WriteRawTag(18);
         output.WriteString(Token);
       }
       if (RefreshToken.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(RefreshToken);
       }
       if (_unknownFields != null) {
@@ -696,6 +722,9 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (Id.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      }
       if (Token.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
       }
@@ -713,6 +742,9 @@ namespace Mvm {
     public void MergeFrom(LoginUserResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.Id.Length != 0) {
+        Id = other.Id;
       }
       if (other.Token.Length != 0) {
         Token = other.Token;
@@ -736,10 +768,14 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Token = input.ReadString();
+            Id = input.ReadString();
             break;
           }
           case 18: {
+            Token = input.ReadString();
+            break;
+          }
+          case 26: {
             RefreshToken = input.ReadString();
             break;
           }
@@ -759,10 +795,14 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Token = input.ReadString();
+            Id = input.ReadString();
             break;
           }
           case 18: {
+            Token = input.ReadString();
+            break;
+          }
+          case 26: {
             RefreshToken = input.ReadString();
             break;
           }
@@ -996,6 +1036,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public LoginByRefreshTokenResponse(LoginByRefreshTokenResponse other) : this() {
+      id_ = other.id_;
       token_ = other.token_;
       refreshToken_ = other.refreshToken_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1007,8 +1048,20 @@ namespace Mvm {
       return new LoginByRefreshTokenResponse(this);
     }
 
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private string id_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Id {
+      get { return id_; }
+      set {
+        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 1;
+    public const int TokenFieldNumber = 2;
     private string token_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1020,7 +1073,7 @@ namespace Mvm {
     }
 
     /// <summary>Field number for the "refresh_token" field.</summary>
-    public const int RefreshTokenFieldNumber = 2;
+    public const int RefreshTokenFieldNumber = 3;
     private string refreshToken_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1046,6 +1099,7 @@ namespace Mvm {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Id != other.Id) return false;
       if (Token != other.Token) return false;
       if (RefreshToken != other.RefreshToken) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1055,6 +1109,7 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (Id.Length != 0) hash ^= Id.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
       if (RefreshToken.Length != 0) hash ^= RefreshToken.GetHashCode();
       if (_unknownFields != null) {
@@ -1075,12 +1130,16 @@ namespace Mvm {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Token.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (Token.Length != 0) {
+        output.WriteRawTag(18);
         output.WriteString(Token);
       }
       if (RefreshToken.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(RefreshToken);
       }
       if (_unknownFields != null) {
@@ -1093,12 +1152,16 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Token.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (Token.Length != 0) {
+        output.WriteRawTag(18);
         output.WriteString(Token);
       }
       if (RefreshToken.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(RefreshToken);
       }
       if (_unknownFields != null) {
@@ -1111,6 +1174,9 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (Id.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      }
       if (Token.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
       }
@@ -1128,6 +1194,9 @@ namespace Mvm {
     public void MergeFrom(LoginByRefreshTokenResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.Id.Length != 0) {
+        Id = other.Id;
       }
       if (other.Token.Length != 0) {
         Token = other.Token;
@@ -1151,10 +1220,14 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Token = input.ReadString();
+            Id = input.ReadString();
             break;
           }
           case 18: {
+            Token = input.ReadString();
+            break;
+          }
+          case 26: {
             RefreshToken = input.ReadString();
             break;
           }
@@ -1174,10 +1247,14 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Token = input.ReadString();
+            Id = input.ReadString();
             break;
           }
           case 18: {
+            Token = input.ReadString();
+            break;
+          }
+          case 26: {
             RefreshToken = input.ReadString();
             break;
           }
@@ -1828,6 +1905,7 @@ namespace Mvm {
     public GetProfileResponse(GetProfileResponse other) : this() {
       profile_ = other.profile_ != null ? other.profile_.Clone() : null;
       userRooms_ = other.userRooms_.Clone();
+      avatarSettings_ = other.avatarSettings_ != null ? other.avatarSettings_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1860,6 +1938,18 @@ namespace Mvm {
       get { return userRooms_; }
     }
 
+    /// <summary>Field number for the "avatarSettings" field.</summary>
+    public const int AvatarSettingsFieldNumber = 3;
+    private global::Mvm.AvatarSettings avatarSettings_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.AvatarSettings AvatarSettings {
+      get { return avatarSettings_; }
+      set {
+        avatarSettings_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1877,6 +1967,7 @@ namespace Mvm {
       }
       if (!object.Equals(Profile, other.Profile)) return false;
       if(!userRooms_.Equals(other.userRooms_)) return false;
+      if (!object.Equals(AvatarSettings, other.AvatarSettings)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1886,6 +1977,7 @@ namespace Mvm {
       int hash = 1;
       if (profile_ != null) hash ^= Profile.GetHashCode();
       hash ^= userRooms_.GetHashCode();
+      if (avatarSettings_ != null) hash ^= AvatarSettings.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1909,6 +2001,10 @@ namespace Mvm {
         output.WriteMessage(Profile);
       }
       userRooms_.WriteTo(output, _repeated_userRooms_codec);
+      if (avatarSettings_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(AvatarSettings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1924,6 +2020,10 @@ namespace Mvm {
         output.WriteMessage(Profile);
       }
       userRooms_.WriteTo(ref output, _repeated_userRooms_codec);
+      if (avatarSettings_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(AvatarSettings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1938,6 +2038,9 @@ namespace Mvm {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Profile);
       }
       size += userRooms_.CalculateSize(_repeated_userRooms_codec);
+      if (avatarSettings_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AvatarSettings);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1957,6 +2060,12 @@ namespace Mvm {
         Profile.MergeFrom(other.Profile);
       }
       userRooms_.Add(other.userRooms_);
+      if (other.avatarSettings_ != null) {
+        if (avatarSettings_ == null) {
+          AvatarSettings = new global::Mvm.AvatarSettings();
+        }
+        AvatarSettings.MergeFrom(other.AvatarSettings);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1983,6 +2092,13 @@ namespace Mvm {
             userRooms_.AddEntriesFrom(input, _repeated_userRooms_codec);
             break;
           }
+          case 26: {
+            if (avatarSettings_ == null) {
+              AvatarSettings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(AvatarSettings);
+            break;
+          }
         }
       }
     #endif
@@ -2007,6 +2123,13 @@ namespace Mvm {
           }
           case 18: {
             userRooms_.AddEntriesFrom(ref input, _repeated_userRooms_codec);
+            break;
+          }
+          case 26: {
+            if (avatarSettings_ == null) {
+              AvatarSettings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(AvatarSettings);
             break;
           }
         }
@@ -7149,7 +7272,6 @@ namespace Mvm {
       id_ = other.id_;
       username_ = other.username_;
       email_ = other.email_;
-      avatarSettings_ = other.avatarSettings_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7195,17 +7317,6 @@ namespace Mvm {
       }
     }
 
-    /// <summary>Field number for the "avatar_settings" field.</summary>
-    public const int AvatarSettingsFieldNumber = 4;
-    private static readonly pbc::MapField<int, string>.Codec _map_avatarSettings_codec
-        = new pbc::MapField<int, string>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForString(18, ""), 34);
-    private readonly pbc::MapField<int, string> avatarSettings_ = new pbc::MapField<int, string>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::MapField<int, string> AvatarSettings {
-      get { return avatarSettings_; }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -7224,7 +7335,6 @@ namespace Mvm {
       if (Id != other.Id) return false;
       if (Username != other.Username) return false;
       if (Email != other.Email) return false;
-      if (!AvatarSettings.Equals(other.AvatarSettings)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7235,7 +7345,6 @@ namespace Mvm {
       if (Id.Length != 0) hash ^= Id.GetHashCode();
       if (Username.Length != 0) hash ^= Username.GetHashCode();
       if (Email.Length != 0) hash ^= Email.GetHashCode();
-      hash ^= AvatarSettings.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7266,7 +7375,6 @@ namespace Mvm {
         output.WriteRawTag(26);
         output.WriteString(Email);
       }
-      avatarSettings_.WriteTo(output, _map_avatarSettings_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7289,7 +7397,6 @@ namespace Mvm {
         output.WriteRawTag(26);
         output.WriteString(Email);
       }
-      avatarSettings_.WriteTo(ref output, _map_avatarSettings_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -7309,7 +7416,6 @@ namespace Mvm {
       if (Email.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
       }
-      size += avatarSettings_.CalculateSize(_map_avatarSettings_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -7331,7 +7437,6 @@ namespace Mvm {
       if (other.Email.Length != 0) {
         Email = other.Email;
       }
-      avatarSettings_.Add(other.avatarSettings_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -7359,10 +7464,6 @@ namespace Mvm {
             Email = input.ReadString();
             break;
           }
-          case 34: {
-            avatarSettings_.AddEntriesFrom(input, _map_avatarSettings_codec);
-            break;
-          }
         }
       }
     #endif
@@ -7388,10 +7489,6 @@ namespace Mvm {
           }
           case 26: {
             Email = input.ReadString();
-            break;
-          }
-          case 34: {
-            avatarSettings_.AddEntriesFrom(ref input, _map_avatarSettings_codec);
             break;
           }
         }
@@ -8002,7 +8099,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public UpsertAvatarSettingsRequest(UpsertAvatarSettingsRequest other) : this() {
-      settings_ = other.settings_.Clone();
+      settings_ = other.settings_ != null ? other.settings_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -8014,13 +8111,14 @@ namespace Mvm {
 
     /// <summary>Field number for the "settings" field.</summary>
     public const int SettingsFieldNumber = 1;
-    private static readonly pbc::MapField<int, string>.Codec _map_settings_codec
-        = new pbc::MapField<int, string>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForString(18, ""), 10);
-    private readonly pbc::MapField<int, string> settings_ = new pbc::MapField<int, string>();
+    private global::Mvm.AvatarSettings settings_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::MapField<int, string> Settings {
+    public global::Mvm.AvatarSettings Settings {
       get { return settings_; }
+      set {
+        settings_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -8038,7 +8136,7 @@ namespace Mvm {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!Settings.Equals(other.Settings)) return false;
+      if (!object.Equals(Settings, other.Settings)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -8046,7 +8144,7 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= Settings.GetHashCode();
+      if (settings_ != null) hash ^= Settings.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -8065,7 +8163,10 @@ namespace Mvm {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      settings_.WriteTo(output, _map_settings_codec);
+      if (settings_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Settings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -8076,7 +8177,10 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      settings_.WriteTo(ref output, _map_settings_codec);
+      if (settings_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Settings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -8087,7 +8191,9 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      size += settings_.CalculateSize(_map_settings_codec);
+      if (settings_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Settings);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -8100,7 +8206,12 @@ namespace Mvm {
       if (other == null) {
         return;
       }
-      settings_.Add(other.settings_);
+      if (other.settings_ != null) {
+        if (settings_ == null) {
+          Settings = new global::Mvm.AvatarSettings();
+        }
+        Settings.MergeFrom(other.Settings);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -8117,7 +8228,10 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            settings_.AddEntriesFrom(input, _map_settings_codec);
+            if (settings_ == null) {
+              Settings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(Settings);
             break;
           }
         }
@@ -8136,7 +8250,10 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            settings_.AddEntriesFrom(ref input, _map_settings_codec);
+            if (settings_ == null) {
+              Settings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(Settings);
             break;
           }
         }
@@ -8484,7 +8601,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetAvatarSettingsResponse(GetAvatarSettingsResponse other) : this() {
-      settings_ = other.settings_.Clone();
+      settings_ = other.settings_ != null ? other.settings_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -8496,13 +8613,14 @@ namespace Mvm {
 
     /// <summary>Field number for the "settings" field.</summary>
     public const int SettingsFieldNumber = 1;
-    private static readonly pbc::MapField<int, string>.Codec _map_settings_codec
-        = new pbc::MapField<int, string>.Codec(pb::FieldCodec.ForInt32(8, 0), pb::FieldCodec.ForString(18, ""), 10);
-    private readonly pbc::MapField<int, string> settings_ = new pbc::MapField<int, string>();
+    private global::Mvm.AvatarSettings settings_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::MapField<int, string> Settings {
+    public global::Mvm.AvatarSettings Settings {
       get { return settings_; }
+      set {
+        settings_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -8520,7 +8638,7 @@ namespace Mvm {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!Settings.Equals(other.Settings)) return false;
+      if (!object.Equals(Settings, other.Settings)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -8528,7 +8646,7 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= Settings.GetHashCode();
+      if (settings_ != null) hash ^= Settings.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -8547,7 +8665,10 @@ namespace Mvm {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      settings_.WriteTo(output, _map_settings_codec);
+      if (settings_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Settings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -8558,7 +8679,10 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      settings_.WriteTo(ref output, _map_settings_codec);
+      if (settings_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Settings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -8569,7 +8693,9 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      size += settings_.CalculateSize(_map_settings_codec);
+      if (settings_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Settings);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -8582,7 +8708,12 @@ namespace Mvm {
       if (other == null) {
         return;
       }
-      settings_.Add(other.settings_);
+      if (other.settings_ != null) {
+        if (settings_ == null) {
+          Settings = new global::Mvm.AvatarSettings();
+        }
+        Settings.MergeFrom(other.Settings);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -8599,7 +8730,10 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            settings_.AddEntriesFrom(input, _map_settings_codec);
+            if (settings_ == null) {
+              Settings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(Settings);
             break;
           }
         }
@@ -8618,7 +8752,10 @@ namespace Mvm {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            settings_.AddEntriesFrom(ref input, _map_settings_codec);
+            if (settings_ == null) {
+              Settings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(Settings);
             break;
           }
         }
@@ -8852,6 +8989,7 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetUserProfileFeaturesResponse(GetUserProfileFeaturesResponse other) : this() {
       profile_ = other.profile_ != null ? other.profile_.Clone() : null;
+      avatarSettings_ = other.avatarSettings_ != null ? other.avatarSettings_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -8873,6 +9011,18 @@ namespace Mvm {
       }
     }
 
+    /// <summary>Field number for the "avatarSettings" field.</summary>
+    public const int AvatarSettingsFieldNumber = 2;
+    private global::Mvm.AvatarSettings avatarSettings_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.AvatarSettings AvatarSettings {
+      get { return avatarSettings_; }
+      set {
+        avatarSettings_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -8889,6 +9039,7 @@ namespace Mvm {
         return true;
       }
       if (!object.Equals(Profile, other.Profile)) return false;
+      if (!object.Equals(AvatarSettings, other.AvatarSettings)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -8897,6 +9048,7 @@ namespace Mvm {
     public override int GetHashCode() {
       int hash = 1;
       if (profile_ != null) hash ^= Profile.GetHashCode();
+      if (avatarSettings_ != null) hash ^= AvatarSettings.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -8919,6 +9071,10 @@ namespace Mvm {
         output.WriteRawTag(10);
         output.WriteMessage(Profile);
       }
+      if (avatarSettings_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AvatarSettings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -8933,6 +9089,10 @@ namespace Mvm {
         output.WriteRawTag(10);
         output.WriteMessage(Profile);
       }
+      if (avatarSettings_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AvatarSettings);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -8945,6 +9105,9 @@ namespace Mvm {
       int size = 0;
       if (profile_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Profile);
+      }
+      if (avatarSettings_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AvatarSettings);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -8963,6 +9126,12 @@ namespace Mvm {
           Profile = new global::Mvm.UserProfile();
         }
         Profile.MergeFrom(other.Profile);
+      }
+      if (other.avatarSettings_ != null) {
+        if (avatarSettings_ == null) {
+          AvatarSettings = new global::Mvm.AvatarSettings();
+        }
+        AvatarSettings.MergeFrom(other.AvatarSettings);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -8984,6 +9153,13 @@ namespace Mvm {
               Profile = new global::Mvm.UserProfile();
             }
             input.ReadMessage(Profile);
+            break;
+          }
+          case 18: {
+            if (avatarSettings_ == null) {
+              AvatarSettings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(AvatarSettings);
             break;
           }
         }
@@ -9008,6 +9184,646 @@ namespace Mvm {
             input.ReadMessage(Profile);
             break;
           }
+          case 18: {
+            if (avatarSettings_ == null) {
+              AvatarSettings = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(AvatarSettings);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class AvatarSettings : pb::IMessage<AvatarSettings>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<AvatarSettings> _parser = new pb::MessageParser<AvatarSettings>(() => new AvatarSettings());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<AvatarSettings> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[46]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public AvatarSettings() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public AvatarSettings(AvatarSettings other) : this() {
+      headStyle_ = other.headStyle_;
+      hairStyle_ = other.hairStyle_;
+      eyebrowsStyle_ = other.eyebrowsStyle_;
+      eyeStyle_ = other.eyeStyle_;
+      noseStyle_ = other.noseStyle_;
+      mouthStyle_ = other.mouthStyle_;
+      skinImperfection_ = other.skinImperfection_;
+      tattoo_ = other.tattoo_;
+      hairColor_ = other.hairColor_;
+      browsColor_ = other.browsColor_;
+      skinColor_ = other.skinColor_;
+      eyeColor_ = other.eyeColor_;
+      gender_ = other.gender_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public AvatarSettings Clone() {
+      return new AvatarSettings(this);
+    }
+
+    /// <summary>Field number for the "headStyle" field.</summary>
+    public const int HeadStyleFieldNumber = 1;
+    private string headStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string HeadStyle {
+      get { return headStyle_; }
+      set {
+        headStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "hairStyle" field.</summary>
+    public const int HairStyleFieldNumber = 2;
+    private string hairStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string HairStyle {
+      get { return hairStyle_; }
+      set {
+        hairStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "eyebrowsStyle" field.</summary>
+    public const int EyebrowsStyleFieldNumber = 3;
+    private string eyebrowsStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string EyebrowsStyle {
+      get { return eyebrowsStyle_; }
+      set {
+        eyebrowsStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "eyeStyle" field.</summary>
+    public const int EyeStyleFieldNumber = 4;
+    private string eyeStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string EyeStyle {
+      get { return eyeStyle_; }
+      set {
+        eyeStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "noseStyle" field.</summary>
+    public const int NoseStyleFieldNumber = 5;
+    private string noseStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string NoseStyle {
+      get { return noseStyle_; }
+      set {
+        noseStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "mouthStyle" field.</summary>
+    public const int MouthStyleFieldNumber = 6;
+    private string mouthStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string MouthStyle {
+      get { return mouthStyle_; }
+      set {
+        mouthStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "skinImperfection" field.</summary>
+    public const int SkinImperfectionFieldNumber = 7;
+    private string skinImperfection_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SkinImperfection {
+      get { return skinImperfection_; }
+      set {
+        skinImperfection_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "tattoo" field.</summary>
+    public const int TattooFieldNumber = 8;
+    private string tattoo_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Tattoo {
+      get { return tattoo_; }
+      set {
+        tattoo_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "hairColor" field.</summary>
+    public const int HairColorFieldNumber = 9;
+    private string hairColor_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string HairColor {
+      get { return hairColor_; }
+      set {
+        hairColor_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "browsColor" field.</summary>
+    public const int BrowsColorFieldNumber = 10;
+    private string browsColor_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string BrowsColor {
+      get { return browsColor_; }
+      set {
+        browsColor_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "skinColor" field.</summary>
+    public const int SkinColorFieldNumber = 11;
+    private string skinColor_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SkinColor {
+      get { return skinColor_; }
+      set {
+        skinColor_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "eyeColor" field.</summary>
+    public const int EyeColorFieldNumber = 12;
+    private string eyeColor_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string EyeColor {
+      get { return eyeColor_; }
+      set {
+        eyeColor_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "gender" field.</summary>
+    public const int GenderFieldNumber = 13;
+    private string gender_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Gender {
+      get { return gender_; }
+      set {
+        gender_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as AvatarSettings);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(AvatarSettings other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (HeadStyle != other.HeadStyle) return false;
+      if (HairStyle != other.HairStyle) return false;
+      if (EyebrowsStyle != other.EyebrowsStyle) return false;
+      if (EyeStyle != other.EyeStyle) return false;
+      if (NoseStyle != other.NoseStyle) return false;
+      if (MouthStyle != other.MouthStyle) return false;
+      if (SkinImperfection != other.SkinImperfection) return false;
+      if (Tattoo != other.Tattoo) return false;
+      if (HairColor != other.HairColor) return false;
+      if (BrowsColor != other.BrowsColor) return false;
+      if (SkinColor != other.SkinColor) return false;
+      if (EyeColor != other.EyeColor) return false;
+      if (Gender != other.Gender) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HeadStyle.Length != 0) hash ^= HeadStyle.GetHashCode();
+      if (HairStyle.Length != 0) hash ^= HairStyle.GetHashCode();
+      if (EyebrowsStyle.Length != 0) hash ^= EyebrowsStyle.GetHashCode();
+      if (EyeStyle.Length != 0) hash ^= EyeStyle.GetHashCode();
+      if (NoseStyle.Length != 0) hash ^= NoseStyle.GetHashCode();
+      if (MouthStyle.Length != 0) hash ^= MouthStyle.GetHashCode();
+      if (SkinImperfection.Length != 0) hash ^= SkinImperfection.GetHashCode();
+      if (Tattoo.Length != 0) hash ^= Tattoo.GetHashCode();
+      if (HairColor.Length != 0) hash ^= HairColor.GetHashCode();
+      if (BrowsColor.Length != 0) hash ^= BrowsColor.GetHashCode();
+      if (SkinColor.Length != 0) hash ^= SkinColor.GetHashCode();
+      if (EyeColor.Length != 0) hash ^= EyeColor.GetHashCode();
+      if (Gender.Length != 0) hash ^= Gender.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HeadStyle.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(HeadStyle);
+      }
+      if (HairStyle.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(HairStyle);
+      }
+      if (EyebrowsStyle.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(EyebrowsStyle);
+      }
+      if (EyeStyle.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(EyeStyle);
+      }
+      if (NoseStyle.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(NoseStyle);
+      }
+      if (MouthStyle.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(MouthStyle);
+      }
+      if (SkinImperfection.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(SkinImperfection);
+      }
+      if (Tattoo.Length != 0) {
+        output.WriteRawTag(66);
+        output.WriteString(Tattoo);
+      }
+      if (HairColor.Length != 0) {
+        output.WriteRawTag(74);
+        output.WriteString(HairColor);
+      }
+      if (BrowsColor.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(BrowsColor);
+      }
+      if (SkinColor.Length != 0) {
+        output.WriteRawTag(90);
+        output.WriteString(SkinColor);
+      }
+      if (EyeColor.Length != 0) {
+        output.WriteRawTag(98);
+        output.WriteString(EyeColor);
+      }
+      if (Gender.Length != 0) {
+        output.WriteRawTag(106);
+        output.WriteString(Gender);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HeadStyle.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(HeadStyle);
+      }
+      if (HairStyle.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(HairStyle);
+      }
+      if (EyebrowsStyle.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(EyebrowsStyle);
+      }
+      if (EyeStyle.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(EyeStyle);
+      }
+      if (NoseStyle.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(NoseStyle);
+      }
+      if (MouthStyle.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(MouthStyle);
+      }
+      if (SkinImperfection.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(SkinImperfection);
+      }
+      if (Tattoo.Length != 0) {
+        output.WriteRawTag(66);
+        output.WriteString(Tattoo);
+      }
+      if (HairColor.Length != 0) {
+        output.WriteRawTag(74);
+        output.WriteString(HairColor);
+      }
+      if (BrowsColor.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(BrowsColor);
+      }
+      if (SkinColor.Length != 0) {
+        output.WriteRawTag(90);
+        output.WriteString(SkinColor);
+      }
+      if (EyeColor.Length != 0) {
+        output.WriteRawTag(98);
+        output.WriteString(EyeColor);
+      }
+      if (Gender.Length != 0) {
+        output.WriteRawTag(106);
+        output.WriteString(Gender);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HeadStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(HeadStyle);
+      }
+      if (HairStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(HairStyle);
+      }
+      if (EyebrowsStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EyebrowsStyle);
+      }
+      if (EyeStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EyeStyle);
+      }
+      if (NoseStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NoseStyle);
+      }
+      if (MouthStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(MouthStyle);
+      }
+      if (SkinImperfection.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SkinImperfection);
+      }
+      if (Tattoo.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Tattoo);
+      }
+      if (HairColor.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(HairColor);
+      }
+      if (BrowsColor.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(BrowsColor);
+      }
+      if (SkinColor.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SkinColor);
+      }
+      if (EyeColor.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EyeColor);
+      }
+      if (Gender.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Gender);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(AvatarSettings other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HeadStyle.Length != 0) {
+        HeadStyle = other.HeadStyle;
+      }
+      if (other.HairStyle.Length != 0) {
+        HairStyle = other.HairStyle;
+      }
+      if (other.EyebrowsStyle.Length != 0) {
+        EyebrowsStyle = other.EyebrowsStyle;
+      }
+      if (other.EyeStyle.Length != 0) {
+        EyeStyle = other.EyeStyle;
+      }
+      if (other.NoseStyle.Length != 0) {
+        NoseStyle = other.NoseStyle;
+      }
+      if (other.MouthStyle.Length != 0) {
+        MouthStyle = other.MouthStyle;
+      }
+      if (other.SkinImperfection.Length != 0) {
+        SkinImperfection = other.SkinImperfection;
+      }
+      if (other.Tattoo.Length != 0) {
+        Tattoo = other.Tattoo;
+      }
+      if (other.HairColor.Length != 0) {
+        HairColor = other.HairColor;
+      }
+      if (other.BrowsColor.Length != 0) {
+        BrowsColor = other.BrowsColor;
+      }
+      if (other.SkinColor.Length != 0) {
+        SkinColor = other.SkinColor;
+      }
+      if (other.EyeColor.Length != 0) {
+        EyeColor = other.EyeColor;
+      }
+      if (other.Gender.Length != 0) {
+        Gender = other.Gender;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            HeadStyle = input.ReadString();
+            break;
+          }
+          case 18: {
+            HairStyle = input.ReadString();
+            break;
+          }
+          case 26: {
+            EyebrowsStyle = input.ReadString();
+            break;
+          }
+          case 34: {
+            EyeStyle = input.ReadString();
+            break;
+          }
+          case 42: {
+            NoseStyle = input.ReadString();
+            break;
+          }
+          case 50: {
+            MouthStyle = input.ReadString();
+            break;
+          }
+          case 58: {
+            SkinImperfection = input.ReadString();
+            break;
+          }
+          case 66: {
+            Tattoo = input.ReadString();
+            break;
+          }
+          case 74: {
+            HairColor = input.ReadString();
+            break;
+          }
+          case 82: {
+            BrowsColor = input.ReadString();
+            break;
+          }
+          case 90: {
+            SkinColor = input.ReadString();
+            break;
+          }
+          case 98: {
+            EyeColor = input.ReadString();
+            break;
+          }
+          case 106: {
+            Gender = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            HeadStyle = input.ReadString();
+            break;
+          }
+          case 18: {
+            HairStyle = input.ReadString();
+            break;
+          }
+          case 26: {
+            EyebrowsStyle = input.ReadString();
+            break;
+          }
+          case 34: {
+            EyeStyle = input.ReadString();
+            break;
+          }
+          case 42: {
+            NoseStyle = input.ReadString();
+            break;
+          }
+          case 50: {
+            MouthStyle = input.ReadString();
+            break;
+          }
+          case 58: {
+            SkinImperfection = input.ReadString();
+            break;
+          }
+          case 66: {
+            Tattoo = input.ReadString();
+            break;
+          }
+          case 74: {
+            HairColor = input.ReadString();
+            break;
+          }
+          case 82: {
+            BrowsColor = input.ReadString();
+            break;
+          }
+          case 90: {
+            SkinColor = input.ReadString();
+            break;
+          }
+          case 98: {
+            EyeColor = input.ReadString();
+            break;
+          }
+          case 106: {
+            Gender = input.ReadString();
+            break;
+          }
         }
       }
     }
@@ -9029,7 +9845,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[46]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[47]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -9351,7 +10167,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[47]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[48]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -9578,7 +10394,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[48]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[49]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -9804,7 +10620,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[49]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[50]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10122,7 +10938,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[50]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[51]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10385,7 +11201,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[51]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[52]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10648,7 +11464,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[52]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[53]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10826,7 +11642,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[53]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[54]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

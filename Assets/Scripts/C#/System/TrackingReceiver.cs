@@ -105,8 +105,13 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
             ReceivePyMessages();
         });
 
-        // TODO send user profile
-        peerController = ClientsManager.Instance.CreateNewRoomSpace().PeerController;
+        peerController = ClientsManager.Instance.CreateNewRoomSpace("self" , null , new UserProfile.PeerData
+        {
+            Id = UserProfile.Instance.userData.Id,
+            Username = UserProfile.Instance.userData.Username,
+            Email = UserProfile.Instance.userData.Email,
+            AvatarSettings = UserProfile.Instance.userData.AvatarSettings
+        }).PeerController;
         mainThread?.Start();
     }
 

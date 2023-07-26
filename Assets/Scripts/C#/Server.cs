@@ -20,10 +20,13 @@ public class Server : MonoBehaviour
         using HttpClient client = new HttpClient();
         try
         {
+            // TODO : use userdata.token instead of the static token 
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Token);
             HttpResponseMessage response = await client.GetAsync("http://" + ServerUrl + ":" + Port + route );
             response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
 
             string responseContent = await response.Content.ReadAsStringAsync();
+            Debug.Log(responseContent);
             return responseContent;
         }
         catch (HttpRequestException ex)
@@ -38,6 +41,8 @@ public class Server : MonoBehaviour
         using HttpClient client = new HttpClient();
         try
         {
+            // TODO : use userdata.token instead of the static token 
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Token);
             var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + ServerUrl + ":" + Port + route , jsonBody);
             response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
@@ -58,6 +63,8 @@ public class Server : MonoBehaviour
         using HttpClient client = new HttpClient();
         try
         {
+            // TODO : use userdata.token instead of the static token 
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Token);
             var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(HttpMethod.Delete, "http://" + ServerUrl + ":" + Port + route)
             {

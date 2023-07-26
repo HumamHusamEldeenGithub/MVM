@@ -49,18 +49,7 @@ public class WebRTCManager : MonoBehaviour
             WebRTCController webRTCController = newObj.AddComponent<WebRTCController>();
             webRTCConnections.Add(peerId, webRTCController);
 
-            var userProfile = await Server.GetUserProfileFeatures(new GetUserProfileFeaturesRequest
-            {
-                Id = peerId,
-            });
-            UserProfile.PeerData peerData = new UserProfile.PeerData
-            {
-                Id = userProfile.Profile.Id,
-                Username = userProfile.Profile.Username,
-                Email = userProfile.Profile.Email,
-                AvatarSettings = userProfile.Profile.AvatarSettings
-                
-            };
+            var peerData = await UserProfile.GetPeerData(peerId);
 
             webRTCController.InitPeerConnection(localAudioStream, peerId,peerData);
         }), null);

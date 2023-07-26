@@ -33,7 +33,9 @@ public class PeerController : MonoBehaviour
         this.peerID = peerID;
         this.dataChannel = dataChannel;
 
-        if (userData == null || userData.AvatarSettings[(int)AvatarSettings.Gender] == Gender.Male.ToString())
+        if (userData == null) userData = UserProfile.GetDefaultAvatarSettings();
+
+        if (userData.AvatarSettings.Gender == Gender.Male.ToString())
         {
             femaleAnimator.gameObject.SetActive(false);
 

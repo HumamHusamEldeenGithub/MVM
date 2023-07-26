@@ -13,8 +13,9 @@ message LoginUserRequest{
 }
 
 message LoginUserResponse{
-    string token = 1;
-    string refresh_token = 2;
+    string id = 1;
+    string token = 2;
+    string refresh_token = 3;
 }
 
 message LoginByRefreshTokenRequest {
@@ -22,8 +23,9 @@ message LoginByRefreshTokenRequest {
 }
 
 message LoginByRefreshTokenResponse {
-    string token = 1;
-    string refresh_token = 2;
+    string id = 1;
+    string token = 2;
+    string refresh_token = 3;
 }
 
 message CreateUserRequest {
@@ -41,6 +43,7 @@ message GetProfileRequest {}
 message GetProfileResponse {
     UserProfile profile = 1;
     repeated Room user_rooms = 2;
+    AvatarSettings avatarSettings = 3 ; 
 }
 
 message GetUserByUsernameRequest {
@@ -146,7 +149,6 @@ message UserProfile {
     string id = 1 ; 
     string username = 2;
     string email = 3;
-    map<int32, string> avatar_settings = 4;
 }
 
 message GetIceResponse{
@@ -164,7 +166,7 @@ message Room {
 }
 
 message UpsertAvatarSettingsRequest {
-    map<int32, string> settings = 1;
+    AvatarSettings settings = 1;
 }
 
 message UpsertAvatarSettingsResponse{}
@@ -172,7 +174,7 @@ message UpsertAvatarSettingsResponse{}
 message GetAvatarSettingsRequest{}
 
 message GetAvatarSettingsResponse{
-    map<int32, string> settings = 1;
+    AvatarSettings settings = 1;
 }
 
 message GetUserProfileFeaturesRequest {
@@ -181,6 +183,23 @@ message GetUserProfileFeaturesRequest {
 
 message GetUserProfileFeaturesResponse {
     UserProfile profile = 1;
+    AvatarSettings avatarSettings = 2 ; 
+}
+
+message AvatarSettings{ 
+    string headStyle = 1;
+    string hairStyle = 2;
+    string eyebrowsStyle = 3;
+    string eyeStyle = 4;
+    string noseStyle = 5;
+    string mouthStyle = 6;
+    string skinImperfection = 7;
+    string tattoo = 8;
+    string hairColor = 9;
+    string browsColor = 10;
+    string skinColor = 11;
+    string eyeColor = 12;
+    string gender = 13;
 }
 
 // Socket messages 

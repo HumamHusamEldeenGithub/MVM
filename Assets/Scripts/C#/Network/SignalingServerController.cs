@@ -79,6 +79,7 @@ class SignalingServerController : MonoBehaviour
             await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
 
             Debug.Log("Connected to MVM server");
+            
         }
         catch (Exception e)
         {
