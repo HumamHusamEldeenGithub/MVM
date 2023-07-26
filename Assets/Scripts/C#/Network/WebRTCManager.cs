@@ -50,6 +50,10 @@ public class WebRTCManager : MonoBehaviour
             webRTCConnections.Add(peerId, webRTCController);
 
             var peerData = await UserProfile.GetPeerData(peerId);
+            if (peerData.AvatarSettings == null)
+            {
+                peerData.AvatarSettings = UserProfile.GetDefaultAvatarSettings().AvatarSettings;
+            }
 
             webRTCController.InitPeerConnection(localAudioStream, peerId,peerData);
         }), null);
