@@ -104,7 +104,7 @@ class SignalingServerController : MonoBehaviour
                 {
                     case "offer":
                         Debug.Log("Received Offer from " + socketMessage.FromId);
-                        webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+                        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
                         webRTCManager.ReceiveOffer(socketMessage.FromId, socketMessage);
                         break;
 
@@ -120,7 +120,7 @@ class SignalingServerController : MonoBehaviour
 
                     case "user_enter":
                         Debug.Log("user enter with id " + socketMessage.FromId);
-                        webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+                       await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
                         webRTCManager.SendOffer(socketMessage.FromId);
                         break;
 

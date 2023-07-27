@@ -8,6 +8,7 @@ using Unity.WebRTC;
 using UnityEngine;
 using Google.Protobuf;
 using System.IO;
+using System.Threading.Tasks;
 
 public class WebRTCManager : MonoBehaviour
 {
@@ -18,8 +19,6 @@ public class WebRTCManager : MonoBehaviour
     private void Awake()
     {
         syncContext = SynchronizationContext.Current;
-        EventsPool.Instance.AddListener(typeof(UserEnterRoomEvent),
-            new Action<string>(CreateNewWebRTCConnection));
 
         EventsPool.Instance.AddListener(typeof(WebRTCConnectionClosedEvent),
             new Action<string>(DisposeWebRTCConnection));
@@ -40,23 +39,34 @@ public class WebRTCManager : MonoBehaviour
         localAudioStream = new AudioStreamTrack(localAudioSource);
     }
 
-    public void CreateNewWebRTCConnection(string peerId)
+    public async Task CreateNewWebRTCConnection(string peerId)
     {
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
         syncContext.Post(new SendOrPostCallback(async o =>
         {
-            GameObject newObj = new GameObject();
-            newObj.transform.parent = transform;
-            WebRTCController webRTCController = newObj.AddComponent<WebRTCController>();
-            webRTCConnections.Add(peerId, webRTCController);
-
-            var peerData = await UserProfile.GetPeerData(peerId);
-            if (peerData.AvatarSettings == null)
+            try
             {
-                peerData.AvatarSettings = UserProfile.GetDefaultAvatarSettings().AvatarSettings;
-            }
+                GameObject newObj = new GameObject();
+                newObj.transform.parent = transform;
+                WebRTCController webRTCController = newObj.AddComponent<WebRTCController>();
+                webRTCConnections.Add(peerId, webRTCController);
 
-            webRTCController.InitPeerConnection(localAudioStream, peerId,peerData);
+                var peerData = await UserProfile.GetPeerData(peerId);
+                if (peerData.AvatarSettings == null)
+                {
+                    peerData.AvatarSettings = UserProfile.GetDefaultAvatarSettings().AvatarSettings;
+                }
+
+                webRTCController.InitPeerConnection(localAudioStream, peerId, peerData);
+                tcs.SetResult(true);
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+            }
         }), null);
+
+        await tcs.Task;
     }
 
     public void SendOffer(string peerId)
