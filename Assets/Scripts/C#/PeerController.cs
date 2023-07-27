@@ -56,7 +56,13 @@ public class PeerController : MonoBehaviour
         {
             try
             {
+                DateTime now = DateTime.Now;
+                DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
+
+                float seconds = (float)(now - unixEpoch).TotalSeconds;
                 PythonServerMessage responseMessage = PythonServerMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
+
+                Debug.Log($"Time difference = {seconds - responseMessage.Date}");
 
                 SetTrackingData(responseMessage);
             }
