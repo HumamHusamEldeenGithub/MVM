@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Mvm;
@@ -21,7 +19,7 @@ public class Server : MonoBehaviour
         try
         {
             // TODO : use userdata.token instead of the static token 
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Token);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Instance.Token);
             HttpResponseMessage response = await client.GetAsync("http://" + ServerUrl + ":" + Port + route );
             response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
 
@@ -42,7 +40,7 @@ public class Server : MonoBehaviour
         try
         {
             // TODO : use userdata.token instead of the static token 
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Token);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Instance.Token);
             var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + ServerUrl + ":" + Port + route , jsonBody);
             response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
@@ -64,7 +62,7 @@ public class Server : MonoBehaviour
         try
         {
             // TODO : use userdata.token instead of the static token 
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Token);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Instance.Token);
             var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(HttpMethod.Delete, "http://" + ServerUrl + ":" + Port + route)
             {

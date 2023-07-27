@@ -1,15 +1,13 @@
 using System.Collections.Generic;
-using UnityEngine;
 using Mvm;
 using System;
 using System.Threading;
-using Google.Protobuf.Collections;
 using System.Threading.Tasks;
 
 public class UserProfile : Singleton<UserProfile>
 {
     public UserData userData;
-    public static string Token, RefreshToken;
+    public string Token, RefreshToken;
 
     public string Username
     {
@@ -114,6 +112,7 @@ public class UserProfile : Singleton<UserProfile>
 
     override protected void Awake()
     {
+        base.Awake();
         EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
     }
