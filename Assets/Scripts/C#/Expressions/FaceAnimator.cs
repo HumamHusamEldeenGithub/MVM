@@ -109,7 +109,7 @@ public class FaceAnimator : MonoBehaviour
     protected void SetHairColor(string colorHex)
     {
         Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color))
+        if (ColorUtility.TryParseHtmlString(colorHex, out color) && hairMaterial)
         {
             hairMaterial.color = color;
         }
@@ -118,7 +118,7 @@ public class FaceAnimator : MonoBehaviour
     protected void SetBrowsColor(string colorHex)
     {
         Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color))
+        if (ColorUtility.TryParseHtmlString(colorHex, out color) && skinMaterial)
         {
             skinMaterial.SetColor("_BrowsColor", color);
         }
@@ -127,7 +127,7 @@ public class FaceAnimator : MonoBehaviour
     protected void SetSkinColor(string colorHex)
     {
         Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color))
+        if (ColorUtility.TryParseHtmlString(colorHex, out color) && skinMaterial)
         {
             skinMaterial.SetColor("_SkinColor", color);
         }
@@ -136,7 +136,7 @@ public class FaceAnimator : MonoBehaviour
     protected void SetEyesColor(string colorHex)
     {
         Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color))
+        if (ColorUtility.TryParseHtmlString(colorHex, out color) && eyesMaterial)
         {
             eyesMaterial.SetColor("_IrisColor", color);
         }
