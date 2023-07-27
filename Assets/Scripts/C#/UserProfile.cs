@@ -144,10 +144,10 @@ public class UserProfile : Singleton<UserProfile>
             MouthStyle="0",
             SkinImperfection="0",
             Tattoo ="0" , 
-            HairColor = "000000" , 
-            BrowsColor = "000000",
-            SkinColor = "dbc488",
-            EyeColor = "000000",
+            HairColor = "#000000FF" , 
+            BrowsColor = "#000000FF",
+            SkinColor = "#dbc488FF",
+            EyeColor = "#000000FF",
             Gender = "Male",
         };
         return new PeerData

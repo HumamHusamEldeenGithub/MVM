@@ -48,7 +48,6 @@ public class FaceAnimator : MonoBehaviour
 
         if (userData != null)
         {
-
             SetHeadStyle(int.Parse(userData.AvatarSettings.HeadStyle));
             SetHairStyle(int.Parse(userData.AvatarSettings.HairStyle));
             SetBrowsStyle(int.Parse(userData.AvatarSettings.EyebrowsStyle));
@@ -137,7 +136,7 @@ public class FaceAnimator : MonoBehaviour
     protected void SetEyesColor(string colorHex)
     {
         Color color;
-        if(ColorUtility.TryParseHtmlString(colorHex, out color))
+        if (ColorUtility.TryParseHtmlString(colorHex, out color))
         {
             eyesMaterial.SetColor("_IrisColor", color);
         }
