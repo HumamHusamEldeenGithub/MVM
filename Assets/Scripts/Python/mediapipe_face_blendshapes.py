@@ -24,7 +24,7 @@ async def BlendShapesDetector (reader,writer) :
                 # Pack the serialized data and send it over the socket
                 md_blendShapes = encodeBlendShapes(detection_result.face_blendshapes[0]).SerializeToString()
                 writer.write(md_blendShapes)
-                await asyncio.sleep(0.01) # wait for 33ms (30fps)
+                await asyncio.sleep(0.04) # wait for 33ms (30fps)
     except Exception as e: 
         print(e)
         Server.SendError("ERROR FOUND")

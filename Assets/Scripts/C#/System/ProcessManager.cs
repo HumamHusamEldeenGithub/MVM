@@ -123,6 +123,7 @@ public class ProcessManager : Singleton<ProcessManager>
             },
             out _
         );
+        
     }
 
     public void CreatePythonServer(int localPort)
@@ -141,7 +142,6 @@ public class ProcessManager : Singleton<ProcessManager>
 
     private void StartPythonStream(int localPort)
     {
-
         pyClient = new TcpClient("localhost", localPort);
         pyStream = pyClient.GetStream();
     }
