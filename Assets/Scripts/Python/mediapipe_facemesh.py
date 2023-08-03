@@ -3,7 +3,6 @@ import cv2
 import Server
 import asyncio
 import sys
-from main_proto_pb2 import Keypoints
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -37,8 +36,8 @@ async def FacemeshDetector(reader,writer):
                     for face_landmarks in results.multi_face_landmarks:
                         if (len(face_landmarks.landmark) > 0) : 
                             # Pack the serialized data and send it over the socket
-                            md_keypoints = encodeLandmarks(face_landmarks.landmark).SerializeToString()
-                            writer.write(md_keypoints)
+                            # md_keypoints = encodeLandmarks(face_landmarks.landmark).SerializeToString()
+                            # writer.write(md_keypoints)
                             await asyncio.sleep(0.01) # wait for 33ms (30fps)
                         """
                         mp_drawing.draw_landmarks(
@@ -72,11 +71,11 @@ async def FacemeshDetector(reader,writer):
         print(e)
         Server.SendError("ERROR FOUND")
 
-def encodeLandmarks(landmarks):
-    keypoints = Keypoints()
-    for landmark in landmarks :
-        keypoint = keypoints.points.add()
-        keypoint.x = landmark.x
-        keypoint.y = landmark.y
-        keypoint.z = landmark.z
-    return keypoints
+# def encodeLandmarks(landmarks):
+#     keypoints = Keypoints()
+#     for landmark in landmarks :
+#         keypoint = keypoints.points.add()
+#         keypoint.x = landmark.x
+#         keypoint.y = landmark.y
+#         keypoint.z = landmark.z
+#     return keypoints

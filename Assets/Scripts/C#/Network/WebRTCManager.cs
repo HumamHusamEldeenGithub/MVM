@@ -101,7 +101,7 @@ public class WebRTCManager : MonoBehaviour
         
     }
 
-    public void SendMessageToDataChannel(PythonServerMessage message)
+    public void SendMessageToDataChannel(DataChannelMessage message)
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
@@ -109,7 +109,7 @@ public class WebRTCManager : MonoBehaviour
             DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
 
             float seconds = (float)(now - unixEpoch).TotalSeconds;
-            message.Date = seconds;
+            message.TrackingMessage.Date = seconds;
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {

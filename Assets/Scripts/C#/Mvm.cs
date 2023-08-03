@@ -89,19 +89,28 @@ namespace Mvm {
             "c2FnZUgAQgYKBGRhdGEiUQoLUm9vbU1lc3NhZ2USFAoHbWVzc2FnZRgCIAEo",
             "CUgAiAEBEiAKCWtleXBvaW50cxgDIAMoCzINLm12bS5LZXlwb2ludEIKCghf",
             "bWVzc2FnZSIyCgxFcnJvck1lc3NhZ2USEwoLc3RhdHVzX2NvZGUYASABKAMS",
-            "DQoFZXJyb3IYAiABKAkifQoTUHl0aG9uU2VydmVyTWVzc2FnZRINCgVpbmRl",
-            "eBgBIAEoAxImCgxibGVuZF9zaGFwZXMYAiABKAsyEC5tdm0uQmxlbmRTaGFw",
-            "ZXMSIQoJa2V5cG9pbnRzGAMgASgLMg4ubXZtLktleXBvaW50cxIMCgRkYXRl",
-            "GAQgASgCIisKCEtleXBvaW50EgkKAXgYASABKAISCQoBeRgCIAEoAhIJCgF6",
-            "GAMgASgCIkEKCkJsZW5kU2hhcGUSDQoFaW5kZXgYASABKAMSDQoFc2NvcmUY",
-            "AiABKAISFQoNY2F0ZWdvcnlfbmFtZRgDIAEoCSI0CgtCbGVuZFNoYXBlcxIl",
-            "CgxibGVuZF9zaGFwZXMYASADKAsyDy5tdm0uQmxlbmRTaGFwZSItCglLZXlw",
-            "b2ludHMSIAoJa2V5cG9pbnRzGAEgAygLMg0ubXZtLktleXBvaW50KkEKEVNv",
-            "Y2tldE1lc3NhZ2VUeXBlEhAKDFJPT01fTUVTU0FHRRAAEg8KC1VTRVJfSk9J",
-            "TkVEEAESCQoFRVJST1IQAkIJWgcuL212bVBiYgZwcm90bzM="));
+            "DQoFZXJyb3IYAiABKAkiHgoLQ2hhdE1lc3NhZ2USDwoHbWVzc2FnZRgBIAEo",
+            "CSKMAgoSRGF0YUNoYW5uZWxNZXNzYWdlEikKBHR5cGUYASABKA4yGy5tdm0u",
+            "RGF0YUNoYW5uZWxNZXNzYWdlVHlwZRIzChB0cmFja2luZ19tZXNzYWdlGAIg",
+            "ASgLMhQubXZtLlRyYWNraW5nTWVzc2FnZUgAiAEBEisKDGNoYXRfbWVzc2Fn",
+            "ZRgDIAEoCzIQLm12bS5DaGF0TWVzc2FnZUgBiAEBEjAKDmF2YXRhcl9tZXNz",
+            "YWdlGAQgASgLMhMubXZtLkF2YXRhclNldHRpbmdzSAKIAQFCEwoRX3RyYWNr",
+            "aW5nX21lc3NhZ2VCDwoNX2NoYXRfbWVzc2FnZUIRCg9fYXZhdGFyX21lc3Nh",
+            "Z2UieAoPVHJhY2tpbmdNZXNzYWdlEg0KBWluZGV4GAEgASgDEiUKC2JsZW5k",
+            "U2hhcGVzGAIgASgLMhAubXZtLkJsZW5kU2hhcGVzEiEKCWtleXBvaW50cxgD",
+            "IAEoCzIOLm12bS5LZXlwb2ludHMSDAoEZGF0ZRgEIAEoAiIrCghLZXlwb2lu",
+            "dBIJCgF4GAEgASgCEgkKAXkYAiABKAISCQoBehgDIAEoAiJBCgpCbGVuZFNo",
+            "YXBlEg0KBWluZGV4GAEgASgDEg0KBXNjb3JlGAIgASgCEhUKDWNhdGVnb3J5",
+            "X25hbWUYAyABKAkiMwoLQmxlbmRTaGFwZXMSJAoLYmxlbmRTaGFwZXMYASAD",
+            "KAsyDy5tdm0uQmxlbmRTaGFwZSItCglLZXlwb2ludHMSIAoJa2V5cG9pbnRz",
+            "GAEgAygLMg0ubXZtLktleXBvaW50KkEKEVNvY2tldE1lc3NhZ2VUeXBlEhAK",
+            "DFJPT01fTUVTU0FHRRAAEg8KC1VTRVJfSk9JTkVEEAESCQoFRVJST1IQAipU",
+            "ChZEYXRhQ2hhbm5lbE1lc3NhZ2VUeXBlEhQKEFRSQUNLSU5HX01FU1NBR0UQ",
+            "ABIQCgxDSEFUX01FU1NBR0UQARISCg5BVkFUQVJfTUVTU0FHRRADQglaBy4v",
+            "bXZtUGJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), typeof(global::Mvm.DataChannelMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Empty), global::Mvm.Empty.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginUserRequest), global::Mvm.LoginUserRequest.Parser, new[]{ "Username", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.LoginUserResponse), global::Mvm.LoginUserResponse.Parser, new[]{ "Id", "Token", "RefreshToken" }, null, null, null, null),
@@ -152,7 +161,9 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.SocketMessage), global::Mvm.SocketMessage.Parser, new[]{ "Type", "RoomMessage", "ErrorMessage" }, new[]{ "Data" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.RoomMessage), global::Mvm.RoomMessage.Parser, new[]{ "Message", "Keypoints" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.ErrorMessage), global::Mvm.ErrorMessage.Parser, new[]{ "StatusCode", "Error" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.PythonServerMessage), global::Mvm.PythonServerMessage.Parser, new[]{ "Index", "BlendShapes", "Keypoints", "Date" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.ChatMessage), global::Mvm.ChatMessage.Parser, new[]{ "Message" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.DataChannelMessage), global::Mvm.DataChannelMessage.Parser, new[]{ "Type", "TrackingMessage", "ChatMessage", "AvatarMessage" }, new[]{ "TrackingMessage", "ChatMessage", "AvatarMessage" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.TrackingMessage), global::Mvm.TrackingMessage.Parser, new[]{ "Index", "BlendShapes", "Keypoints", "Date" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Keypoint), global::Mvm.Keypoint.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShape), global::Mvm.BlendShape.Parser, new[]{ "Index", "Score", "CategoryName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShapes), global::Mvm.BlendShapes.Parser, new[]{ "BlendShapes_" }, null, null, null, null),
@@ -167,6 +178,12 @@ namespace Mvm {
     [pbr::OriginalName("ROOM_MESSAGE")] RoomMessage = 0,
     [pbr::OriginalName("USER_JOINED")] UserJoined = 1,
     [pbr::OriginalName("ERROR")] Error = 2,
+  }
+
+  public enum DataChannelMessageType {
+    [pbr::OriginalName("TRACKING_MESSAGE")] TrackingMessage = 0,
+    [pbr::OriginalName("CHAT_MESSAGE")] ChatMessage = 1,
+    [pbr::OriginalName("AVATAR_MESSAGE")] AvatarMessage = 3,
   }
 
   #endregion
@@ -10606,16 +10623,16 @@ namespace Mvm {
 
   }
 
-  public sealed partial class PythonServerMessage : pb::IMessage<PythonServerMessage>
+  public sealed partial class ChatMessage : pb::IMessage<ChatMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<PythonServerMessage> _parser = new pb::MessageParser<PythonServerMessage>(() => new PythonServerMessage());
+    private static readonly pb::MessageParser<ChatMessage> _parser = new pb::MessageParser<ChatMessage>(() => new ChatMessage());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<PythonServerMessage> Parser { get { return _parser; } }
+    public static pb::MessageParser<ChatMessage> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -10631,7 +10648,7 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PythonServerMessage() {
+    public ChatMessage() {
       OnConstruction();
     }
 
@@ -10639,7 +10656,523 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PythonServerMessage(PythonServerMessage other) : this() {
+    public ChatMessage(ChatMessage other) : this() {
+      message_ = other.message_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ChatMessage Clone() {
+      return new ChatMessage(this);
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ChatMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ChatMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Message != other.Message) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ChatMessage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class DataChannelMessage : pb::IMessage<DataChannelMessage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DataChannelMessage> _parser = new pb::MessageParser<DataChannelMessage>(() => new DataChannelMessage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DataChannelMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[51]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataChannelMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataChannelMessage(DataChannelMessage other) : this() {
+      type_ = other.type_;
+      trackingMessage_ = other.trackingMessage_ != null ? other.trackingMessage_.Clone() : null;
+      chatMessage_ = other.chatMessage_ != null ? other.chatMessage_.Clone() : null;
+      avatarMessage_ = other.avatarMessage_ != null ? other.avatarMessage_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataChannelMessage Clone() {
+      return new DataChannelMessage(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::Mvm.DataChannelMessageType type_ = global::Mvm.DataChannelMessageType.TrackingMessage;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.DataChannelMessageType Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "tracking_message" field.</summary>
+    public const int TrackingMessageFieldNumber = 2;
+    private global::Mvm.TrackingMessage trackingMessage_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.TrackingMessage TrackingMessage {
+      get { return trackingMessage_; }
+      set {
+        trackingMessage_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "chat_message" field.</summary>
+    public const int ChatMessageFieldNumber = 3;
+    private global::Mvm.ChatMessage chatMessage_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.ChatMessage ChatMessage {
+      get { return chatMessage_; }
+      set {
+        chatMessage_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "avatar_message" field.</summary>
+    public const int AvatarMessageFieldNumber = 4;
+    private global::Mvm.AvatarSettings avatarMessage_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.AvatarSettings AvatarMessage {
+      get { return avatarMessage_; }
+      set {
+        avatarMessage_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DataChannelMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DataChannelMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (!object.Equals(TrackingMessage, other.TrackingMessage)) return false;
+      if (!object.Equals(ChatMessage, other.ChatMessage)) return false;
+      if (!object.Equals(AvatarMessage, other.AvatarMessage)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != global::Mvm.DataChannelMessageType.TrackingMessage) hash ^= Type.GetHashCode();
+      if (trackingMessage_ != null) hash ^= TrackingMessage.GetHashCode();
+      if (chatMessage_ != null) hash ^= ChatMessage.GetHashCode();
+      if (avatarMessage_ != null) hash ^= AvatarMessage.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Type != global::Mvm.DataChannelMessageType.TrackingMessage) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (trackingMessage_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(TrackingMessage);
+      }
+      if (chatMessage_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ChatMessage);
+      }
+      if (avatarMessage_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(AvatarMessage);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Type != global::Mvm.DataChannelMessageType.TrackingMessage) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (trackingMessage_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(TrackingMessage);
+      }
+      if (chatMessage_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ChatMessage);
+      }
+      if (avatarMessage_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(AvatarMessage);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != global::Mvm.DataChannelMessageType.TrackingMessage) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (trackingMessage_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TrackingMessage);
+      }
+      if (chatMessage_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ChatMessage);
+      }
+      if (avatarMessage_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AvatarMessage);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DataChannelMessage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != global::Mvm.DataChannelMessageType.TrackingMessage) {
+        Type = other.Type;
+      }
+      if (other.trackingMessage_ != null) {
+        if (trackingMessage_ == null) {
+          TrackingMessage = new global::Mvm.TrackingMessage();
+        }
+        TrackingMessage.MergeFrom(other.TrackingMessage);
+      }
+      if (other.chatMessage_ != null) {
+        if (chatMessage_ == null) {
+          ChatMessage = new global::Mvm.ChatMessage();
+        }
+        ChatMessage.MergeFrom(other.ChatMessage);
+      }
+      if (other.avatarMessage_ != null) {
+        if (avatarMessage_ == null) {
+          AvatarMessage = new global::Mvm.AvatarSettings();
+        }
+        AvatarMessage.MergeFrom(other.AvatarMessage);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Type = (global::Mvm.DataChannelMessageType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            if (trackingMessage_ == null) {
+              TrackingMessage = new global::Mvm.TrackingMessage();
+            }
+            input.ReadMessage(TrackingMessage);
+            break;
+          }
+          case 26: {
+            if (chatMessage_ == null) {
+              ChatMessage = new global::Mvm.ChatMessage();
+            }
+            input.ReadMessage(ChatMessage);
+            break;
+          }
+          case 34: {
+            if (avatarMessage_ == null) {
+              AvatarMessage = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(AvatarMessage);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Type = (global::Mvm.DataChannelMessageType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            if (trackingMessage_ == null) {
+              TrackingMessage = new global::Mvm.TrackingMessage();
+            }
+            input.ReadMessage(TrackingMessage);
+            break;
+          }
+          case 26: {
+            if (chatMessage_ == null) {
+              ChatMessage = new global::Mvm.ChatMessage();
+            }
+            input.ReadMessage(ChatMessage);
+            break;
+          }
+          case 34: {
+            if (avatarMessage_ == null) {
+              AvatarMessage = new global::Mvm.AvatarSettings();
+            }
+            input.ReadMessage(AvatarMessage);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class TrackingMessage : pb::IMessage<TrackingMessage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TrackingMessage> _parser = new pb::MessageParser<TrackingMessage>(() => new TrackingMessage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<TrackingMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[52]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TrackingMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TrackingMessage(TrackingMessage other) : this() {
       index_ = other.index_;
       blendShapes_ = other.blendShapes_ != null ? other.blendShapes_.Clone() : null;
       keypoints_ = other.keypoints_ != null ? other.keypoints_.Clone() : null;
@@ -10649,8 +11182,8 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PythonServerMessage Clone() {
-      return new PythonServerMessage(this);
+    public TrackingMessage Clone() {
+      return new TrackingMessage(this);
     }
 
     /// <summary>Field number for the "index" field.</summary>
@@ -10665,7 +11198,7 @@ namespace Mvm {
       }
     }
 
-    /// <summary>Field number for the "blend_shapes" field.</summary>
+    /// <summary>Field number for the "blendShapes" field.</summary>
     public const int BlendShapesFieldNumber = 2;
     private global::Mvm.BlendShapes blendShapes_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10704,12 +11237,12 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as PythonServerMessage);
+      return Equals(other as TrackingMessage);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(PythonServerMessage other) {
+    public bool Equals(TrackingMessage other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -10821,7 +11354,7 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(PythonServerMessage other) {
+    public void MergeFrom(TrackingMessage other) {
       if (other == null) {
         return;
       }
@@ -10938,7 +11471,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[51]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[53]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -11201,7 +11734,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[52]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[54]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -11464,7 +11997,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[53]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[55]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -11494,7 +12027,7 @@ namespace Mvm {
       return new BlendShapes(this);
     }
 
-    /// <summary>Field number for the "blend_shapes" field.</summary>
+    /// <summary>Field number for the "blendShapes" field.</summary>
     public const int BlendShapes_FieldNumber = 1;
     private static readonly pb::FieldCodec<global::Mvm.BlendShape> _repeated_blendShapes_codec
         = pb::FieldCodec.ForMessage(10, global::Mvm.BlendShape.Parser);
@@ -11642,7 +12175,7 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[54]; }
+      get { return global::Mvm.MvmReflection.Descriptor.MessageTypes[56]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
