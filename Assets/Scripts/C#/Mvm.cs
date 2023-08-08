@@ -76,44 +76,44 @@ namespace Mvm {
             "Lm12bS5BdmF0YXJTZXR0aW5ncyIrCh1HZXRVc2VyUHJvZmlsZUZlYXR1cmVz",
             "UmVxdWVzdBIKCgJpZBgBIAEoCSJwCh5HZXRVc2VyUHJvZmlsZUZlYXR1cmVz",
             "UmVzcG9uc2USIQoHcHJvZmlsZRgBIAEoCzIQLm12bS5Vc2VyUHJvZmlsZRIr",
-            "Cg5hdmF0YXJTZXR0aW5ncxgCIAEoCzITLm12bS5BdmF0YXJTZXR0aW5ncyKM",
+            "Cg5hdmF0YXJTZXR0aW5ncxgCIAEoCzITLm12bS5BdmF0YXJTZXR0aW5ncyKk",
             "AgoOQXZhdGFyU2V0dGluZ3MSEQoJaGVhZFN0eWxlGAEgASgJEhEKCWhhaXJT",
             "dHlsZRgCIAEoCRIVCg1leWVicm93c1N0eWxlGAMgASgJEhAKCGV5ZVN0eWxl",
             "GAQgASgJEhEKCW5vc2VTdHlsZRgFIAEoCRISCgptb3V0aFN0eWxlGAYgASgJ",
             "EhgKEHNraW5JbXBlcmZlY3Rpb24YByABKAkSDgoGdGF0dG9vGAggASgJEhEK",
             "CWhhaXJDb2xvchgJIAEoCRISCgpicm93c0NvbG9yGAogASgJEhEKCXNraW5D",
-            "b2xvchgLIAEoCRIQCghleWVDb2xvchgMIAEoCRIOCgZnZW5kZXIYDSABKAki",
-            "kwEKDVNvY2tldE1lc3NhZ2USJAoEdHlwZRgBIAEoDjIWLm12bS5Tb2NrZXRN",
-            "ZXNzYWdlVHlwZRIoCgxyb29tX21lc3NhZ2UYAiABKAsyEC5tdm0uUm9vbU1l",
-            "c3NhZ2VIABIqCg1lcnJvcl9tZXNzYWdlGAMgASgLMhEubXZtLkVycm9yTWVz",
-            "c2FnZUgAQgYKBGRhdGEiUQoLUm9vbU1lc3NhZ2USFAoHbWVzc2FnZRgCIAEo",
-            "CUgAiAEBEiAKCWtleXBvaW50cxgDIAMoCzINLm12bS5LZXlwb2ludEIKCghf",
-            "bWVzc2FnZSIyCgxFcnJvck1lc3NhZ2USEwoLc3RhdHVzX2NvZGUYASABKAMS",
-            "DQoFZXJyb3IYAiABKAkiHgoLQ2hhdE1lc3NhZ2USDwoHbWVzc2FnZRgBIAEo",
-            "CSLkAgoSRGF0YUNoYW5uZWxNZXNzYWdlEikKBHR5cGUYASABKA4yGy5tdm0u",
-            "RGF0YUNoYW5uZWxNZXNzYWdlVHlwZRIzChB0cmFja2luZ19tZXNzYWdlGAIg",
-            "ASgLMhQubXZtLlRyYWNraW5nTWVzc2FnZUgAiAEBEisKDGNoYXRfbWVzc2Fn",
-            "ZRgDIAEoCzIQLm12bS5DaGF0TWVzc2FnZUgBiAEBEjAKDmF2YXRhcl9tZXNz",
-            "YWdlGAQgASgLMhMubXZtLkF2YXRhclNldHRpbmdzSAKIAQESPAoVZmFjZV9y",
-            "b3RhdGlvbl9tZXNzYWdlGAUgASgLMhgubXZtLkZhY2VSb3RhdGlvbk1lc3Nh",
-            "Z2VIA4gBAUITChFfdHJhY2tpbmdfbWVzc2FnZUIPCg1fY2hhdF9tZXNzYWdl",
-            "QhEKD19hdmF0YXJfbWVzc2FnZUIYChZfZmFjZV9yb3RhdGlvbl9tZXNzYWdl",
-            "IngKD1RyYWNraW5nTWVzc2FnZRINCgVpbmRleBgBIAEoAxIlCgtibGVuZFNo",
-            "YXBlcxgCIAEoCzIQLm12bS5CbGVuZFNoYXBlcxIhCglrZXlwb2ludHMYAyAB",
-            "KAsyDi5tdm0uS2V5cG9pbnRzEgwKBGRhdGUYBCABKAIiTgoTRmFjZVJvdGF0",
-            "aW9uTWVzc2FnZRIRCglyb3RhdGlvblgYASABKAISEQoJcm90YXRpb25ZGAIg",
-            "ASgCEhEKCXJvdGF0aW9uWhgDIAEoAiIrCghLZXlwb2ludBIJCgF4GAEgASgC",
-            "EgkKAXkYAiABKAISCQoBehgDIAEoAiJBCgpCbGVuZFNoYXBlEg0KBWluZGV4",
-            "GAEgASgDEg0KBXNjb3JlGAIgASgCEhUKDWNhdGVnb3J5X25hbWUYAyABKAki",
-            "MwoLQmxlbmRTaGFwZXMSJAoLYmxlbmRTaGFwZXMYASADKAsyDy5tdm0uQmxl",
-            "bmRTaGFwZSItCglLZXlwb2ludHMSIAoJa2V5cG9pbnRzGAEgAygLMg0ubXZt",
-            "LktleXBvaW50IjIKDk9ubGluZVN0YXR1c2VzEiAKBXVzZXJzGAEgAygLMhEu",
-            "bXZtLk9ubGluZVN0YXR1cyIsCgxPbmxpbmVTdGF0dXMSCgoCaWQYASABKAkS",
-            "EAoIaXNPbmxpbmUYAiABKAgqQQoRU29ja2V0TWVzc2FnZVR5cGUSEAoMUk9P",
-            "TV9NRVNTQUdFEAASDwoLVVNFUl9KT0lORUQQARIJCgVFUlJPUhACKlQKFkRh",
-            "dGFDaGFubmVsTWVzc2FnZVR5cGUSFAoQVFJBQ0tJTkdfTUVTU0FHRRAAEhAK",
-            "DENIQVRfTUVTU0FHRRABEhIKDkFWQVRBUl9NRVNTQUdFEANCCVoHLi9tdm1Q",
-            "YmIGcHJvdG8z"));
+            "b2xvchgLIAEoCRIQCghleWVDb2xvchgMIAEoCRIOCgZnZW5kZXIYDSABKAkS",
+            "FgoOcm9vbUJhY2tncm91bmQYDiABKAkikwEKDVNvY2tldE1lc3NhZ2USJAoE",
+            "dHlwZRgBIAEoDjIWLm12bS5Tb2NrZXRNZXNzYWdlVHlwZRIoCgxyb29tX21l",
+            "c3NhZ2UYAiABKAsyEC5tdm0uUm9vbU1lc3NhZ2VIABIqCg1lcnJvcl9tZXNz",
+            "YWdlGAMgASgLMhEubXZtLkVycm9yTWVzc2FnZUgAQgYKBGRhdGEiUQoLUm9v",
+            "bU1lc3NhZ2USFAoHbWVzc2FnZRgCIAEoCUgAiAEBEiAKCWtleXBvaW50cxgD",
+            "IAMoCzINLm12bS5LZXlwb2ludEIKCghfbWVzc2FnZSIyCgxFcnJvck1lc3Nh",
+            "Z2USEwoLc3RhdHVzX2NvZGUYASABKAMSDQoFZXJyb3IYAiABKAkiHgoLQ2hh",
+            "dE1lc3NhZ2USDwoHbWVzc2FnZRgBIAEoCSLkAgoSRGF0YUNoYW5uZWxNZXNz",
+            "YWdlEikKBHR5cGUYASABKA4yGy5tdm0uRGF0YUNoYW5uZWxNZXNzYWdlVHlw",
+            "ZRIzChB0cmFja2luZ19tZXNzYWdlGAIgASgLMhQubXZtLlRyYWNraW5nTWVz",
+            "c2FnZUgAiAEBEisKDGNoYXRfbWVzc2FnZRgDIAEoCzIQLm12bS5DaGF0TWVz",
+            "c2FnZUgBiAEBEjAKDmF2YXRhcl9tZXNzYWdlGAQgASgLMhMubXZtLkF2YXRh",
+            "clNldHRpbmdzSAKIAQESPAoVZmFjZV9yb3RhdGlvbl9tZXNzYWdlGAUgASgL",
+            "MhgubXZtLkZhY2VSb3RhdGlvbk1lc3NhZ2VIA4gBAUITChFfdHJhY2tpbmdf",
+            "bWVzc2FnZUIPCg1fY2hhdF9tZXNzYWdlQhEKD19hdmF0YXJfbWVzc2FnZUIY",
+            "ChZfZmFjZV9yb3RhdGlvbl9tZXNzYWdlIngKD1RyYWNraW5nTWVzc2FnZRIN",
+            "CgVpbmRleBgBIAEoAxIlCgtibGVuZFNoYXBlcxgCIAEoCzIQLm12bS5CbGVu",
+            "ZFNoYXBlcxIhCglrZXlwb2ludHMYAyABKAsyDi5tdm0uS2V5cG9pbnRzEgwK",
+            "BGRhdGUYBCABKAIiTgoTRmFjZVJvdGF0aW9uTWVzc2FnZRIRCglyb3RhdGlv",
+            "blgYASABKAISEQoJcm90YXRpb25ZGAIgASgCEhEKCXJvdGF0aW9uWhgDIAEo",
+            "AiIrCghLZXlwb2ludBIJCgF4GAEgASgCEgkKAXkYAiABKAISCQoBehgDIAEo",
+            "AiJBCgpCbGVuZFNoYXBlEg0KBWluZGV4GAEgASgDEg0KBXNjb3JlGAIgASgC",
+            "EhUKDWNhdGVnb3J5X25hbWUYAyABKAkiMwoLQmxlbmRTaGFwZXMSJAoLYmxl",
+            "bmRTaGFwZXMYASADKAsyDy5tdm0uQmxlbmRTaGFwZSItCglLZXlwb2ludHMS",
+            "IAoJa2V5cG9pbnRzGAEgAygLMg0ubXZtLktleXBvaW50IjIKDk9ubGluZVN0",
+            "YXR1c2VzEiAKBXVzZXJzGAEgAygLMhEubXZtLk9ubGluZVN0YXR1cyIsCgxP",
+            "bmxpbmVTdGF0dXMSCgoCaWQYASABKAkSEAoIaXNPbmxpbmUYAiABKAgqQQoR",
+            "U29ja2V0TWVzc2FnZVR5cGUSEAoMUk9PTV9NRVNTQUdFEAASDwoLVVNFUl9K",
+            "T0lORUQQARIJCgVFUlJPUhACKlQKFkRhdGFDaGFubmVsTWVzc2FnZVR5cGUS",
+            "FAoQVFJBQ0tJTkdfTUVTU0FHRRAAEhAKDENIQVRfTUVTU0FHRRABEhIKDkFW",
+            "QVRBUl9NRVNTQUdFEANCCVoHLi9tdm1QYmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), typeof(global::Mvm.DataChannelMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -163,7 +163,7 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetAvatarSettingsResponse), global::Mvm.GetAvatarSettingsResponse.Parser, new[]{ "Settings" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesRequest), global::Mvm.GetUserProfileFeaturesRequest.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesResponse), global::Mvm.GetUserProfileFeaturesResponse.Parser, new[]{ "Profile", "AvatarSettings" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.AvatarSettings), global::Mvm.AvatarSettings.Parser, new[]{ "HeadStyle", "HairStyle", "EyebrowsStyle", "EyeStyle", "NoseStyle", "MouthStyle", "SkinImperfection", "Tattoo", "HairColor", "BrowsColor", "SkinColor", "EyeColor", "Gender" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.AvatarSettings), global::Mvm.AvatarSettings.Parser, new[]{ "HeadStyle", "HairStyle", "EyebrowsStyle", "EyeStyle", "NoseStyle", "MouthStyle", "SkinImperfection", "Tattoo", "HairColor", "BrowsColor", "SkinColor", "EyeColor", "Gender", "RoomBackground" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.SocketMessage), global::Mvm.SocketMessage.Parser, new[]{ "Type", "RoomMessage", "ErrorMessage" }, new[]{ "Data" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.RoomMessage), global::Mvm.RoomMessage.Parser, new[]{ "Message", "Keypoints" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.ErrorMessage), global::Mvm.ErrorMessage.Parser, new[]{ "StatusCode", "Error" }, null, null, null, null),
@@ -9271,6 +9271,7 @@ namespace Mvm {
       skinColor_ = other.skinColor_;
       eyeColor_ = other.eyeColor_;
       gender_ = other.gender_;
+      roomBackground_ = other.roomBackground_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -9436,6 +9437,18 @@ namespace Mvm {
       }
     }
 
+    /// <summary>Field number for the "roomBackground" field.</summary>
+    public const int RoomBackgroundFieldNumber = 14;
+    private string roomBackground_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string RoomBackground {
+      get { return roomBackground_; }
+      set {
+        roomBackground_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -9464,6 +9477,7 @@ namespace Mvm {
       if (SkinColor != other.SkinColor) return false;
       if (EyeColor != other.EyeColor) return false;
       if (Gender != other.Gender) return false;
+      if (RoomBackground != other.RoomBackground) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -9484,6 +9498,7 @@ namespace Mvm {
       if (SkinColor.Length != 0) hash ^= SkinColor.GetHashCode();
       if (EyeColor.Length != 0) hash ^= EyeColor.GetHashCode();
       if (Gender.Length != 0) hash ^= Gender.GetHashCode();
+      if (RoomBackground.Length != 0) hash ^= RoomBackground.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -9554,6 +9569,10 @@ namespace Mvm {
         output.WriteRawTag(106);
         output.WriteString(Gender);
       }
+      if (RoomBackground.Length != 0) {
+        output.WriteRawTag(114);
+        output.WriteString(RoomBackground);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -9616,6 +9635,10 @@ namespace Mvm {
         output.WriteRawTag(106);
         output.WriteString(Gender);
       }
+      if (RoomBackground.Length != 0) {
+        output.WriteRawTag(114);
+        output.WriteString(RoomBackground);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -9664,6 +9687,9 @@ namespace Mvm {
       }
       if (Gender.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Gender);
+      }
+      if (RoomBackground.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(RoomBackground);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -9715,6 +9741,9 @@ namespace Mvm {
       }
       if (other.Gender.Length != 0) {
         Gender = other.Gender;
+      }
+      if (other.RoomBackground.Length != 0) {
+        RoomBackground = other.RoomBackground;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -9783,6 +9812,10 @@ namespace Mvm {
             Gender = input.ReadString();
             break;
           }
+          case 114: {
+            RoomBackground = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -9848,6 +9881,10 @@ namespace Mvm {
           }
           case 106: {
             Gender = input.ReadString();
+            break;
+          }
+          case 114: {
+            RoomBackground = input.ReadString();
             break;
           }
         }

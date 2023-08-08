@@ -201,6 +201,7 @@ message AvatarSettings{
     string skinColor = 11;
     string eyeColor = 12;
     string gender = 13;
+    string roomBackground = 14;
 }
 
 // Socket messages 
