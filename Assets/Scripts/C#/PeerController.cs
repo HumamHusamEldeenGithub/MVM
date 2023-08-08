@@ -61,9 +61,9 @@ public class PeerController : MonoBehaviour
                 DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
                 
                 float seconds = (float)(now - unixEpoch).TotalSeconds;
-                PythonServerMessage responseMessage = PythonServerMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
+                DataChannelMessage responseMessage = DataChannelMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
 
-                Debug.Log($"Time difference = {seconds - responseMessage.Date}");
+                Debug.Log($"Time difference = {seconds - responseMessage.TrackingMessage.Date}");
 
                 SetTrackingData(responseMessage);
             }
@@ -84,9 +84,10 @@ public class PeerController : MonoBehaviour
         }
     }
 
-    public void SetTrackingData(PythonServerMessage message)
+    public void SetTrackingData(DataChannelMessage message)
     {
-        currentAnimator.SetBlendShapes(message.BlendShapes);
+        currentAnimator.SetBlendShapes(message.TrackingMessage.BlendShapes);
+        // TODO use keypoints 
     }
 
     public void SetTrack(AudioStreamTrack track)

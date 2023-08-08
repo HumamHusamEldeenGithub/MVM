@@ -3,9 +3,7 @@ using System.Net.Sockets;
 using UnityEngine;
 using System.Threading;
 using Mvm;
-using Newtonsoft.Json;
 using System.Collections;
-using System.Linq;
 
 public class TrackingReceiver : Singleton<TrackingReceiver>
 {
@@ -127,7 +125,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 int bytes = pyStream.Read(messageData, 0, messageData.Length);
                 if (bytes == 0) return;
 
-                PythonServerMessage response = PythonServerMessage.Parser.ParseFrom(messageData, 0, bytes);
+                DataChannelMessage response = DataChannelMessage.Parser.ParseFrom(messageData, 0, bytes);
                 peerController.SetTrackingData(response);
                 webRTCManager.SendMessageToDataChannel(response);
             }

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Mvm;
 
 class SignalingServerController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ class SignalingServerController : MonoBehaviour
 
     UserProfile userProfile;
     static ClientWebSocket webSocket;
-    OnlineStatus[] OnlineStatuses = { };
+    OnlineStatuses usersOnlineStatus;
 
     public WebRTCManager webRTCManager;
     #endregion
@@ -27,9 +28,6 @@ class SignalingServerController : MonoBehaviour
         userProfile = GetComponent<UserProfile>();
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
             new Action<bool>(InitWebSocketConnection));
-/*
-        EventsPool.Instance.AddListener(typeof(SignalingMessageEvent),
-            new Action<SignalingMessage>(SendMessageToServerAsync));*/
 
         serverThread = new Thread(() => {
             ConnectToSignalingServer();
@@ -120,7 +118,7 @@ class SignalingServerController : MonoBehaviour
 
                     case "user_enter":
                         Debug.Log("user enter with id " + socketMessage.FromId);
-                       await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+                        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
                         webRTCManager.SendOffer(socketMessage.FromId);
                         break;
 
@@ -133,15 +131,17 @@ class SignalingServerController : MonoBehaviour
 
                     case "get_users_online_status_list":
                         Debug.Log("get user online status  " + socketMessage.Data);
-/*                        OnlineStatuses = (OnlineStatus[])socketMessage.Data;
-                        foreach (OnlineStatus onlineStatus in OnlineStatuses)
+                        usersOnlineStatus = JsonConvert.DeserializeObject<OnlineStatuses>((string)socketMessage.Data);
+                        foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
                         {
-                            Debug.Log(onlineStatus.ID + "--" + onlineStatus.IsOnline);
-                        }*/
+                            Debug.Log($"User: {onlineStatus.Id} -- + IsOnline:{onlineStatus.IsOnline}");
+                        }
                         break;
 
                     case "user_status_changed":
-                        Debug.Log($"User {socketMessage.FromId} has changed his status to {(bool)socketMessage.Data}");
+                        var newOnlineStatus = JsonConvert.DeserializeObject<OnlineStatus>((string)socketMessage.Data);
+                        Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
+                        UpdateUserOnlineStatus(newOnlineStatus);
                         break;
 
                     default:
@@ -179,6 +179,20 @@ class SignalingServerController : MonoBehaviour
         webRTCManager.CaptureAudio();
         EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
     }
+
+    private void UpdateUserOnlineStatus(OnlineStatus newOnlineStatus)
+    {
+        foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
+        {
+            if (onlineStatus.Id == newOnlineStatus.Id)
+            {
+                onlineStatus.IsOnline = newOnlineStatus.IsOnline;
+                return;
+            }
+        }
+
+        usersOnlineStatus.Users.Add(newOnlineStatus);
+    }
 }
 [Serializable]
 public class SignalingMessage
@@ -195,12 +209,5 @@ public class PeerICE
     public string Candidate { get; set; }
     public string SdpMid { get; set; }
     public int? SdpMLineIndex { get; set; }
-}
-[Serializable]
-public class OnlineStatus
-{
-
-    public string ID { get; set; }
-    public bool IsOnline { get; set; }
 }
 

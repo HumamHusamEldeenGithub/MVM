@@ -1,5 +1,6 @@
 // protoc --go_out=./internal/pkg/generated  api/mvm.proto
 // protoc --csharp_out=../C# mvm.proto
+// protoc --python_out=../Python mvm.proto
 syntax = "proto3";
 package mvm;
 
@@ -200,6 +201,7 @@ message AvatarSettings{
     string skinColor = 11;
     string eyeColor = 12;
     string gender = 13;
+    string roomBackground = 14;
 }
 
 // Socket messages 
@@ -228,11 +230,35 @@ message ErrorMessage {
     string error = 2 ;
 }
 
-message PythonServerMessage{
+enum DataChannelMessageType {
+    TRACKING_MESSAGE = 0 ; 
+    CHAT_MESSAGE = 1 ;
+    AVATAR_MESSAGE = 3;
+}
+
+message ChatMessage {
+    string message = 1;
+}
+
+message DataChannelMessage {
+    DataChannelMessageType type = 1 ; 
+    optional TrackingMessage tracking_message = 2 ; 
+    optional ChatMessage chat_message = 3 ; 
+    optional AvatarSettings avatar_message = 4;
+    optional FaceRotationMessage face_rotation_message = 5;
+}
+
+message TrackingMessage{
     int64 index = 1 ; 
-    BlendShapes blend_shapes = 2 ; 
+    BlendShapes blendShapes = 2 ; 
     Keypoints keypoints = 3 ; 
     float date = 4 ; 
+}
+
+message FaceRotationMessage {
+    float rotationX = 1 ;
+    float rotationY = 2 ; 
+    float rotationZ = 3 ;  
 }
 
 message Keypoint {
@@ -248,9 +274,18 @@ message BlendShape {
 }
   
 message BlendShapes {
-    repeated BlendShape blend_shapes = 1 ; 
+    repeated BlendShape blendShapes = 1 ; 
 }
 
 message Keypoints {
     repeated Keypoint keypoints = 1 ; 
+}
+
+message OnlineStatuses {
+    repeated OnlineStatus users = 1;
+}
+
+message OnlineStatus {
+    string id = 1 ; 
+    bool isOnline = 2 ;
 }

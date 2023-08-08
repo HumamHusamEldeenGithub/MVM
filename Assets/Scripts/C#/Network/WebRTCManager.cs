@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 
 public class WebRTCManager : MonoBehaviour
 {
+    #region Properties
     SynchronizationContext syncContext;
     AudioStreamTrack localAudioStream;
     Dictionary<string,WebRTCController> webRTCConnections = new Dictionary<string, WebRTCController>();
+    #endregion
 
+    #region MonoBehaviour
     private void Awake()
     {
         syncContext = SynchronizationContext.Current;
@@ -38,6 +41,7 @@ public class WebRTCManager : MonoBehaviour
         localAudioSource.Play();
         localAudioStream = new AudioStreamTrack(localAudioSource);
     }
+    #endregion
 
     public async Task CreateNewWebRTCConnection(string peerId)
     {
@@ -101,7 +105,7 @@ public class WebRTCManager : MonoBehaviour
         
     }
 
-    public void SendMessageToDataChannel(PythonServerMessage message)
+    public void SendMessageToDataChannel(DataChannelMessage message)
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
@@ -109,7 +113,7 @@ public class WebRTCManager : MonoBehaviour
             DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
 
             float seconds = (float)(now - unixEpoch).TotalSeconds;
-            message.Date = seconds;
+            message.TrackingMessage.Date = seconds;
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {
@@ -125,6 +129,34 @@ public class WebRTCManager : MonoBehaviour
 
     }
 
+    public static void PublishAvatarSettingsToPeer(RTCDataChannel dataChannel)
+    {
+        byte[] byteArray;
+        using (var memoryStream = new MemoryStream())
+        {
+            UserProfile.Instance.userData.AvatarSettings.WriteTo(memoryStream);
+            byteArray = memoryStream.ToArray();
+        }
+        dataChannel.Send(byteArray);
+    }
+    public void PublishAvatarSettingsToAll()
+    {
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            byte[] byteArray;
+            using (var memoryStream = new MemoryStream())
+            {
+                UserProfile.Instance.userData.AvatarSettings.WriteTo(memoryStream);
+                byteArray = memoryStream.ToArray();
+            }
+            foreach (WebRTCController peer in webRTCConnections.Values)
+            {
+                peer.SendMessageToDataChannel(byteArray);
+            }
+        }), null);
+    }
+
+    #region Dispose
     void DisposeWebRTCConnection(string peerId)
     {
         syncContext.Post(new SendOrPostCallback(o =>
@@ -145,4 +177,5 @@ public class WebRTCManager : MonoBehaviour
             }
         }), null);
     }
+    #endregion
 }

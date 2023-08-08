@@ -294,8 +294,8 @@ public class WebRTCController : MonoBehaviour
                 Debug.Log($"IceConnectionState: Connected");
                 if (peerDataChannel != null)
                 {
-                    // TODO send user profile
                     peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
+                    WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
                 }
                 break;
             case RTCIceConnectionState.Disconnected:
