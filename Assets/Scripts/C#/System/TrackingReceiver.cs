@@ -3,9 +3,7 @@ using System.Net.Sockets;
 using UnityEngine;
 using System.Threading;
 using Mvm;
-using Newtonsoft.Json;
 using System.Collections;
-using System.Linq;
 
 public class TrackingReceiver : Singleton<TrackingReceiver>
 {
