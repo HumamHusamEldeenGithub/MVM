@@ -164,9 +164,9 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<GetProfileResponse>(res) : null;
     }
-    public static async Task<GetRoomsResponse> GetRooms()
+    public static async Task<GetRoomsResponse> GetRooms(string searchQuery)
     {
-        string res = await CreateGetCall("/rooms");
+        string res = await CreateGetCall($"/rooms?search={searchQuery}");
 
         return res != null ? JsonConvert.DeserializeObject<GetRoomsResponse>(res) : null;
     }

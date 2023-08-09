@@ -88,6 +88,7 @@ public class AvatarSettingsPanel : MonoBehaviour
        await Server.UpsertAvatarSettings(new UpsertAvatarSettingsRequest {
             Settings= avatarSettings
        });
+       UserProfile.Instance.GetMyProfile(true);
 
     }
 }

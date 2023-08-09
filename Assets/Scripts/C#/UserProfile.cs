@@ -58,31 +58,31 @@ public class UserProfile : Singleton<UserProfile>
         );
     }
 
-    private void GetMyProfile(bool loginStatus)
+    async void getMyProfile()
+    {
+        var userProfile = await Server.GetProfile();
+        userData.Id = userProfile.Profile.Id;
+        userData.Email = userProfile.Profile.Email;
+
+        if (userProfile.AvatarSettings == null)
+        {
+            userData.AvatarSettings = GetDefaultAvatarSettings().AvatarSettings;
+        }
+        else
+        {
+            userData.AvatarSettings = userProfile.AvatarSettings;
+        }
+        if (userProfile.UserRooms != null)
+        {
+            userData.Rooms = userProfile.UserRooms;
+        }
+    }
+
+    public void GetMyProfile(bool loginStatus)
     {
         if (loginStatus)
         {
             var runner = TaskPool.Instance;
-
-            async void getMyProfile()
-            {
-                var userProfile = await Server.GetProfile();
-                userData.Id = userProfile.Profile.Id;
-                userData.Email = userProfile.Profile.Email;
-                
-                if (userProfile.AvatarSettings == null)
-                {
-                    userData.AvatarSettings = GetDefaultAvatarSettings().AvatarSettings;
-                } 
-                else
-                {
-                    userData.AvatarSettings = userProfile.AvatarSettings;
-                }
-                if (userProfile.UserRooms !=null)
-                {
-                    userData.Rooms = userProfile.UserRooms;
-                }
-            }
             runner.AddTasks(new List<Action<CancellationToken>>
             {
                 token => getMyProfile(),

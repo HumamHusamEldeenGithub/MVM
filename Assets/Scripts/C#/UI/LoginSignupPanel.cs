@@ -9,7 +9,7 @@ public class LoginSignupPanel : MonoBehaviour
     #region Attributes
 
     [SerializeField]
-    private GameObject MainMenuPanel;
+    private GameObject mainMenuPanel;
 
     [SerializeField]
     private TMP_InputField usernameInp;
@@ -58,7 +58,7 @@ public class LoginSignupPanel : MonoBehaviour
         loginBtn.interactable = true;
 
         this.gameObject.SetActive(false);
-        MainMenuPanel.SetActive(true);
+        mainMenuPanel.SetActive(true);
 
     }
 

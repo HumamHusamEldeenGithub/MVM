@@ -4,18 +4,29 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MyRoomsPanel : MonoBehaviour
+public class SearchForRoomPanel : MonoBehaviour
 {
     [SerializeField]
     private Transform roomsScrollView;
 
     [SerializeField]
+    private TMP_InputField searchField;
+
+    [SerializeField]
     private GameObject roomRowPrefab;
+
+    [SerializeField]
+    private GameObject searchButton;
 
     [SerializeField]
     private SignalingServerController signalingServer;
 
-    private void OnEnable()
+    private void Awake()
+    {
+        searchButton.transform.GetComponent<Button>().onClick.AddListener(SearchForRoom);
+    }
+
+    private async void SearchForRoom()
     {
         int childCount = roomsScrollView.childCount;
 
@@ -24,7 +35,12 @@ public class MyRoomsPanel : MonoBehaviour
             Transform child = roomsScrollView.GetChild(i);
             Destroy(child.gameObject);
         }
-        foreach (var room in UserProfile.Instance.userData.Rooms)
+
+        string searchQuery = searchField.text.Trim();
+
+        var rooms = await Server.GetRooms(searchQuery);
+
+        foreach (var room in rooms.Rooms)
         {
             var element = Instantiate(roomRowPrefab);
 
@@ -37,7 +53,7 @@ public class MyRoomsPanel : MonoBehaviour
     }
 
     void JoinRoom(string roomId)
-    { 
+    {
         if (roomId.Length != 0)
         {
             signalingServer.ConnectToRoom(roomId);
