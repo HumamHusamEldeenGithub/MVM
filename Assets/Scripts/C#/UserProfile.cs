@@ -3,6 +3,7 @@ using Mvm;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf.Collections;
 
 public class UserProfile : Singleton<UserProfile>
 {
@@ -77,7 +78,10 @@ public class UserProfile : Singleton<UserProfile>
                 {
                     userData.AvatarSettings = userProfile.AvatarSettings;
                 }
-                // TODO : add rooms to userData
+                if (userProfile.UserRooms !=null)
+                {
+                    userData.Rooms = userProfile.UserRooms;
+                }
             }
             runner.AddTasks(new List<Action<CancellationToken>>
             {
@@ -100,6 +104,7 @@ public class UserProfile : Singleton<UserProfile>
         public Gender UserGender { get; set; }
         public int Age { get; set; }
         public Mvm.AvatarSettings AvatarSettings { get; set; }
+        public RepeatedField<Room> Rooms { get; set; }
     }
 
     public class PeerData

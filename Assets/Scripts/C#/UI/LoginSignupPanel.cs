@@ -9,6 +9,9 @@ public class LoginSignupPanel : MonoBehaviour
     #region Attributes
 
     [SerializeField]
+    private GameObject MainMenuPanel;
+
+    [SerializeField]
     private TMP_InputField usernameInp;
 
     [SerializeField]
@@ -53,6 +56,10 @@ public class LoginSignupPanel : MonoBehaviour
             //errorMsgGO.gameObject.SetActive(true);
         }
         loginBtn.interactable = true;
+
+        this.gameObject.SetActive(false);
+        MainMenuPanel.SetActive(true);
+
     }
 
 }

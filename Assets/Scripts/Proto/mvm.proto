@@ -43,7 +43,7 @@ message GetProfileRequest {}
 
 message GetProfileResponse {
     UserProfile profile = 1;
-    repeated Room user_rooms = 2;
+    repeated Room userRooms = 2;
     AvatarSettings avatarSettings = 3 ; 
 }
 
@@ -53,7 +53,7 @@ message GetUserByUsernameRequest {
 
 message GetUserByUsernameResponse {
     UserProfile profile = 1;
-    repeated Room user_rooms = 2;
+    repeated Room userRooms = 2;
 }
 
 message CreateFriendRequestRequest {
@@ -158,11 +158,11 @@ message GetIceResponse{
 
 message Room {
     string id = 1;
-    string owner_id = 2 ; 
+    string ownerId = 2 ; 
     string title  = 3 ; 
     repeated string users = 4;
-    bool is_private = 5; 
-    bool friends_only = 6 ;
+    bool isPrivate = 5; 
+    bool friendsOnly = 6 ;
     repeated string invitations = 7 ;
 }
 
@@ -201,7 +201,7 @@ message AvatarSettings{
     string skinColor = 11;
     string eyeColor = 12;
     string gender = 13;
-    string roomBackground = 14;
+    string roomBackgroundColor = 14;
 }
 
 // Socket messages 
