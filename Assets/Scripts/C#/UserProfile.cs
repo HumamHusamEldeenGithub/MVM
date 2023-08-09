@@ -58,6 +58,47 @@ public class UserProfile : Singleton<UserProfile>
         );
     }
 
+    private void CreateUser(string username,string email,string phonenumber, string password)
+    {
+        this.Username = username;
+        this.Password = password;
+
+        var runner = TaskPool.Instance;
+
+        async void createUser(string username, string email, string phonenumber, string password)
+        {
+            CreateUserResponse res = await Server.CreateUser(new CreateUserRequest { Username = username, Email = email, Password = password });
+
+            if (res == null)
+            {
+                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
+                return;
+            }
+            
+            userData = new UserData
+            {
+                Id = res.Id,
+                Username = username,
+                Password = password,
+                Token = res.Token,
+                RefreshToken = res.RefreshToken,
+            };
+
+            Token = res.Token;
+            RefreshToken = res.RefreshToken;
+            getMyProfile();
+
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+        }
+
+        runner.AddTasks(new List<Action<CancellationToken>>
+            {
+                token => createUser(username,email,phonenumber, password),
+            },
+            out _
+        );
+    }
+
     async void getMyProfile()
     {
         var userProfile = await Server.GetProfile();
@@ -118,6 +159,7 @@ public class UserProfile : Singleton<UserProfile>
     override protected void Awake()
     {
         base.Awake();
+        EventsPool.Instance.AddListener(typeof(SubmitCreateUserEvent), new Action<string,string,string,string>(CreateUser));
         EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
     }
@@ -141,20 +183,20 @@ public class UserProfile : Singleton<UserProfile>
     {
         Mvm.AvatarSettings avatarSettings = new Mvm.AvatarSettings
         {
-            HeadStyle = "0" , 
+            HeadStyle = "0",
             HairStyle = "0",
-            EyebrowsStyle = "0" , 
-            EyeStyle="0",
+            EyebrowsStyle = "0",
+            EyeStyle = "0",
             NoseStyle = "0",
-            MouthStyle="0",
-            SkinImperfection="0",
-            Tattoo ="0" , 
-            HairColor = "#000000FF" , 
+            MouthStyle = "0",
+            SkinImperfection = "0",
+            Tattoo = "0",
+            HairColor = "#000000FF",
             BrowsColor = "#000000FF",
             SkinColor = "#dbc488FF",
             EyeColor = "#000000FF",
             Gender = "Male",
-            RoomBackground= "#000000FF",
+            RoomBackgroundColor= "#000000FF",
         };
         return new PeerData
         {
