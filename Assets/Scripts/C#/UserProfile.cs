@@ -101,7 +101,7 @@ public class UserProfile : Singleton<UserProfile>
 
     async void getMyProfile()
     {
-        var userProfile = await Server.GetProfile();
+        var userProfile = await Server.GetProfile("");
         userData.Id = userProfile.Profile.Id;
         userData.Email = userProfile.Profile.Email;
 

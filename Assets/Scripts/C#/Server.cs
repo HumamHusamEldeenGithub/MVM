@@ -158,9 +158,9 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<SearchForUsersResponse>(res) : null;
     }
-    public static async Task<GetProfileResponse> GetProfile()
+    public static async Task<GetProfileResponse> GetProfile(string userId)
     {
-        string res = await CreateGetCall("/user");
+        string res = await CreateGetCall($"/user?user={userId}");
 
         return res != null ? JsonConvert.DeserializeObject<GetProfileResponse>(res) : null;
     }

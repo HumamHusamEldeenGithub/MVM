@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Mvm;
+using UnityEngine.UI;
 
 public class OnlinePanel : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class OnlinePanel : MonoBehaviour
 
     [SerializeField]
     private GameObject onlineUserPrefab;
+
+    [SerializeField]
+    private PublicProfilePanel publicProfilePanel;
 
     private void Awake()
     {
@@ -44,8 +48,13 @@ public class OnlinePanel : MonoBehaviour
         {
             var element = Instantiate(onlineUserPrefab);
 
-            element.transform.GetChild(1).GetComponent<TMP_Text>().text = user.Username;
-            // TODO activate username button
+            var usernameElement = element.transform.GetChild(1);
+
+            usernameElement.GetComponent<TMP_Text>().text = user.Username;
+            usernameElement.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                publicProfilePanel.ShowProfile(user.Id, this.transform);
+            });
 
             element.transform.SetParent(onlineUsersScrollView);
         }
