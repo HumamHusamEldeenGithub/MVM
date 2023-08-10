@@ -664,6 +664,7 @@ GameObject:
   - component: {fileID: 348991971}
   - component: {fileID: 348991970}
   - component: {fileID: 348991969}
+  - component: {fileID: 348991972}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -737,6 +738,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 8.05, y: 0, z: 0}
+--- !u!114 &348991972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348991968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &408538087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,7 +1512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &690974202
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1628,7 +1662,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 756717186}
+      - m_Target: {fileID: 756717187}
         m_TargetAssemblyTypeName: SignalingServerController, Assembly-CSharp
         m_MethodName: ConnectToRoom
         m_Mode: 5
@@ -1689,12 +1723,11 @@ GameObject:
   - component: {fileID: 756717180}
   - component: {fileID: 756717179}
   - component: {fileID: 756717181}
-  - component: {fileID: 756717186}
-  - component: {fileID: 756717187}
-  - component: {fileID: 756717182}
   - component: {fileID: 756717184}
   - component: {fileID: 756717185}
+  - component: {fileID: 756717186}
   - component: {fileID: 756717183}
+  - component: {fileID: 756717187}
   m_Layer: 0
   m_Name: SelfManager
   m_TagString: Untagged
@@ -1744,20 +1777,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Token: 
   RefreshToken: 
---- !u!114 &756717182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756717178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006163d4067b2a4499aacb47bbce6ca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peerId: 
-  audioSourcePrefab: {fileID: 4058095923496747409, guid: f05e69312cb39734faff3bd1d89faddc, type: 3}
 --- !u!82 &756717183
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1888,10 +1907,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 756717178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 982a762c43766264f8df259eba8abf1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e27bc91fa6fc94c9fa582a8471bee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webRTCManager: {fileID: 756717187}
 --- !u!114 &756717187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,9 +1919,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 756717178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e27bc91fa6fc94c9fa582a8471bee2, type: 3}
+  m_Script: {fileID: 11500000, guid: 982a762c43766264f8df259eba8abf1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  webRTCManager: {fileID: 756717186}
 --- !u!1 &788052406
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,7 +2567,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 960, y: -540}
-  m_SizeDelta: {x: 0, y: 1080}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &899203605
 MonoBehaviour:
@@ -3963,8 +3982,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -1350}
-  m_SizeDelta: {x: 0, y: 540}
+  m_AnchoredPosition: {x: 960, y: -810}
+  m_SizeDelta: {x: 960, y: 540}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1693251730
 MonoBehaviour:
@@ -4346,8 +4365,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 2880, y: -540}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: 1440, y: -270}
+  m_SizeDelta: {x: 960, y: 540}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1974499261
 MonoBehaviour:

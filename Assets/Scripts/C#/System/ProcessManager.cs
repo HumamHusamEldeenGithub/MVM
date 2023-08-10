@@ -133,7 +133,7 @@ public class ProcessManager : Singleton<ProcessManager>
         pyProcess.StartInfo.FileName = pyPath;
         pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {0}" + $" {localPort}";
         pyProcess.StartInfo.UseShellExecute = false;
-        pyProcess.StartInfo.RedirectStandardOutput = true;
+        pyProcess.StartInfo.RedirectStandardOutput = false;
         pyProcess.StartInfo.CreateNoWindow = true;
         pyProcess.Start();
 

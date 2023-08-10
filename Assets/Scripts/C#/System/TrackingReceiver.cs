@@ -126,6 +126,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 if (bytes == 0) return;
 
                 DataChannelMessage response = DataChannelMessage.Parser.ParseFrom(messageData, 0, bytes);
+                Debug.Log(response.TrackingMessage.Keypoints.Keypoints_[0]);
                 peerController.SetTrackingData(response);
                 webRTCManager.SendMessageToDataChannel(response);
             }

@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5c79d39edda374eab0aa6d9c3a2b85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maleAnimator: {fileID: 0}
-  femaleAnimator: {fileID: 0}
+  maleAnimator: {fileID: 1480251929089740687}
+  femaleAnimator: {fileID: 5775647648239387784}
   peerID: 
 --- !u!82 &1237323915488678516
 AudioSource:
@@ -335,6 +335,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dbb391c7764c3c24884d6599b5781916, type: 3}
   m_PrefabInstance: {fileID: 1874079155892238569}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3144265940133480419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640287463843202488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 658705d23a80eed4e98b9e661cdee8fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hair_Renderer: {fileID: 1505114800090469887}
+  skin_Renderer: {fileID: 6442226118286387906}
 --- !u!114 &5775647648239387784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,23 +367,9 @@ MonoBehaviour:
   enablenose: 0
   enableSimultaneouslyeyesOpenClose: 0
   enableSimultaneouslyFrown: 0
-  eyeWideMethod: 0
-  mouthCloseMethod: 1
-  mouthSmileFrownMethod: 0
---- !u!114 &3144265940133480419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1640287463843202488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 658705d23a80eed4e98b9e661cdee8fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hair_Renderer: {fileID: 1505114800090469887}
-  skin_Renderer: {fileID: 6442226118286387906}
+  eyeWideMethod: 1
+  mouthCloseMethod: 3
+  mouthSmileFrownMethod: 2
 --- !u!4 &2128136011670544130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dbb391c7764c3c24884d6599b5781916, type: 3}
@@ -474,9 +474,9 @@ MonoBehaviour:
   enablenose: 0
   enableSimultaneouslyeyesOpenClose: 0
   enableSimultaneouslyFrown: 0
-  eyeWideMethod: 0
-  mouthCloseMethod: 1
-  mouthSmileFrownMethod: 0
+  eyeWideMethod: 1
+  mouthCloseMethod: 3
+  mouthSmileFrownMethod: 2
 --- !u!114 &4377440347619996540
 MonoBehaviour:
   m_ObjectHideFlags: 0
