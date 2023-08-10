@@ -2,22 +2,10 @@ using Mvm;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MouthExpression
-{
-    Normal_Closed,
-    Normal_Open,
-
-    Smiling_Closed,
-    Smiling_Open,
-
-    Upset_Closed,
-    Upset_Open
-}
-
 public class OrientationProcessor : MonoBehaviour
 {
     [Range(0.1f, 1.0f)]
-    private float AveragingValue = 0.5f;
+    private float AveragingValue = 0.9f;
 
     private List<Vector3> points;
 
@@ -30,14 +18,14 @@ public class OrientationProcessor : MonoBehaviour
         get { return points != null; }
     }
 
-    public void SetPoints(Keypoints kpoints)
+    public void SetPoints(List<Keypoint> kpoints)
     {
         if (points == null)
         {
             points = new List<Vector3>();
-            for (int i = 0; i < kpoints.Keypoints_.Count; i++)
+            for (int i = 0; i < kpoints.Count; i++)
             {
-                var kpt = kpoints.Keypoints_[i];
+                var kpt = kpoints[i];
                 var pt = new Vector3(kpt.X, kpt.Y, kpt.Z);
                 pt.x = 2 * pt.x - 1;
                 pt.y = 2 * pt.y - 1;
@@ -48,9 +36,9 @@ public class OrientationProcessor : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < kpoints.Keypoints_.Count; i++)
+            for (int i = 0; i < kpoints.Count; i++)
             {
-                var kpt = kpoints.Keypoints_[i];
+                var kpt = kpoints[i];
                 var pt = new Vector3(kpt.X, kpt.Y, kpt.Z);
                 pt.x = 2 * pt.x - 1;
                 pt.y = 2 * pt.y - 1;
@@ -72,16 +60,8 @@ public class OrientationProcessor : MonoBehaviour
                 points[i] = Vector3.Lerp(points[i], pt, AveragingValue);
             }
         }
-        FaceArea = Vector3.Distance(points[10], points[152]);
+        FaceArea = Vector3.Distance(points[3], points[1]);
         //Debug.Log("Area is " + FaceArea);
-    }
-
-    public Vector3 NosePoint
-    {
-        get
-        {
-            return points[1];
-        }
     }
 
     public float Y_ANGLE
@@ -89,12 +69,12 @@ public class OrientationProcessor : MonoBehaviour
         get
         {
             var Angle = Vector3.Angle(
-                    points[454] - points[234],
+                    points[2] - points[0],
                     Vector3.left);
 
-            Angle *= points[234].z > points[454].z ? 1 : -1;
+            Angle *= points[0].z > points[2].z ? 1 : -1;
 
-            return Angle / FaceArea;
+            return Angle;
         }
     }
 
@@ -103,37 +83,12 @@ public class OrientationProcessor : MonoBehaviour
         get
         {
             var Angle = Vector3.Angle(
-                    points[152] - points[10],
+                    points[1] - points[3],
                     Vector3.down);
 
-            Angle *= points[10].z > points[152].z ? 1 : -1;
+            Angle *= points[3].z > points[1].z ? 1 : -1;
 
-            return Angle / FaceArea;
-        }
-    }
-
-    public bool Eye_Left_Open
-    {
-        get
-        {
-            Debug.Log((points[159] - points[145]).magnitude / FaceArea);
-            return (points[159] - points[145]).magnitude / FaceArea > 0.02f;
-        }
-    }
-    public bool Eye_Right_Open
-    {
-        get
-        {
-            Debug.Log((points[386] - points[374]).magnitude / FaceArea);
-            return (points[386] - points[374]).magnitude / FaceArea > 0.02f;
-        }
-    }
-
-    public bool MouthOpened
-    {
-        get
-        {
-            return (points[13] - points[14]).magnitude > 0.0005f;
+            return Angle;
         }
     }
 

@@ -1,5 +1,6 @@
 using Mvm;
 using System;
+using System.Collections.Generic;
 using Unity.WebRTC;
 using UnityEngine;
 
@@ -87,7 +88,13 @@ public class PeerController : MonoBehaviour
     public void SetTrackingData(DataChannelMessage message)
     {
         currentAnimator.SetBlendShapes(message.TrackingMessage.BlendShapes);
-        // TODO use keypoints 
+        orProcessor.SetPoints(new List<Keypoint>()
+                {
+                    message.TrackingMessage.Keypoints.Keypoints_[234],
+                    message.TrackingMessage.Keypoints.Keypoints_[152],
+                    message.TrackingMessage.Keypoints.Keypoints_[454],
+                    message.TrackingMessage.Keypoints.Keypoints_[10]
+                });
     }
 
     public void SetTrack(AudioStreamTrack track)

@@ -1,9 +1,7 @@
 using Mvm;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using static UserProfile;
 
 public class FaceAnimator : MonoBehaviour
 {
@@ -23,6 +21,9 @@ public class FaceAnimator : MonoBehaviour
     [SerializeField] private int eyeWideMethod;
     [SerializeField] private int mouthCloseMethod = 1;
     [SerializeField] private int mouthSmileFrownMethod;
+
+    [SerializeField]
+    private Transform headBone;
 
     class LocalBlendShape
     {
@@ -116,8 +117,6 @@ public class FaceAnimator : MonoBehaviour
                 weight = 0,
                 index = m_Renderer.sharedMesh.GetBlendShapeIndex(name)
             });
-
-            Debug.Log(m_Renderer.sharedMesh.GetBlendShapeIndex(name));
         }
 
         if (userData != null)
@@ -132,7 +131,6 @@ public class FaceAnimator : MonoBehaviour
     {
         foreach(var bs in blendShapes.BlendShapes_)
         {
-            Debug.Log("Set + " + bs.Score);
             try
             {
                 blendshapeKeys[bs.CategoryName].weight = bs.Score * 100;
@@ -140,23 +138,6 @@ public class FaceAnimator : MonoBehaviour
             catch(Exception e)
             {
                 Debug.LogWarning(e);
-            }
-        }
-    }
-
-    private void UpdateBlendShapes()
-    {
-        if (blendshapeKeys != null)
-        {
-            foreach (var key in blendshapeKeys.Keys)
-            {
-                LocalBlendShape localBlendShape;
-                if (blendshapeKeys.TryGetValue(key, out localBlendShape))
-                {
-                    var curValue = m_Renderer.GetBlendShapeWeight(localBlendShape.index);
-                    curValue = Mathf.Lerp(curValue, localBlendShape.weight * 100, 15 * Time.deltaTime);
-                    //m_Renderer.SetBlendShapeWeight(localBlendShape.index, curValue);
-                }
             }
         }
     }

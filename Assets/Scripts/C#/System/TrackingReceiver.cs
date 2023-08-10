@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Threading;
 using Mvm;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TrackingReceiver : Singleton<TrackingReceiver>
 {
@@ -19,7 +20,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     NetworkStream pyStream;
     WebRTCManager webRTCManager;
     ClientsManager selfController;
-    OrientationProcessor selfOrProcessor;
 
     #endregion
 
@@ -61,7 +61,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         blendShapesReadyEvent = new BlendShapesReadyEvent();
         processManager = ProcessManager.Instance;
 
-        selfOrProcessor = GetComponentInChildren<OrientationProcessor>();
         selfController = GetComponentInChildren<ClientsManager>();
         webRTCManager = GetComponentInChildren<WebRTCManager>();
     }
@@ -126,7 +125,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 if (bytes == 0) return;
 
                 DataChannelMessage response = DataChannelMessage.Parser.ParseFrom(messageData, 0, bytes);
-                Debug.Log(response.TrackingMessage.Keypoints.Keypoints_[0]);
+
                 peerController.SetTrackingData(response);
                 webRTCManager.SendMessageToDataChannel(response);
             }
