@@ -31,9 +31,7 @@ public class FaceAnimator : MonoBehaviour
     }
 
     private SkinnedMeshRenderer m_Renderer;
-    private Material eyesMaterial;
-    private Material skinMaterial;
-    private Material hairMaterial;
+    private AvatarCustomizer avatarCustomizer;
 
     private List<string> blendShapeNames = new List<string>()
     {
@@ -97,18 +95,8 @@ public class FaceAnimator : MonoBehaviour
 
     private void Awake()
     {
+        avatarCustomizer = GetComponent<AvatarCustomizer>();
         m_Renderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        foreach (Material mat in m_Renderer.materials)
-        {
-            if (mat.name.ToLower().Contains("eye"))
-            {
-                eyesMaterial = mat;
-            }
-            else if (mat.name.ToLower().Contains("skin"))
-            {
-                skinMaterial = mat;
-            }
-        }
     }
 
     private void Update()
@@ -134,106 +122,9 @@ public class FaceAnimator : MonoBehaviour
 
         if (userData != null)
         {
-            SetAvatarSettings(userData.AvatarSettings);
+            avatarCustomizer.SetAvatarSettings(userData.AvatarSettings);
         }
     }
-
-    public void SetAvatarSettings(AvatarSettings avatarSettings)
-    {
-        SetHeadStyle(int.Parse(avatarSettings.HeadStyle));
-        SetHairStyle(int.Parse(avatarSettings.HairStyle));
-        SetbrowsStyle(int.Parse(avatarSettings.EyebrowsStyle));
-        SeteyeStyle(int.Parse(avatarSettings.EyeStyle));
-        SetnoseStyle(int.Parse(avatarSettings.NoseStyle));
-        SetMouthStyle(int.Parse(avatarSettings.MouthStyle));
-        SetSkinImperfection(int.Parse(avatarSettings.SkinImperfection));
-        SetTattoo(int.Parse(avatarSettings.Tattoo));
-
-        SetHairColor(avatarSettings.HairColor);
-        SetbrowsColor(avatarSettings.BrowsColor);
-        SetSkinColor(avatarSettings.SkinColor);
-        SeteyesColor(avatarSettings.EyeColor);
-    }
-
-    #region Facial Features
-
-    protected void SetHeadStyle(int headStyleInd)
-    {
-        // TODO
-    }
-
-    protected void SetHairStyle(int hairStyleInd)
-    {
-        // TODO
-    }
-
-    protected void SetbrowsStyle(int browsStyleInd)
-    {
-        // TODO _browsTexture
-    }
-
-    protected void SeteyeStyle(int eyeStyleInd)
-    {
-        // TODO 
-    }
-
-    protected void SetnoseStyle(int noseStyleInd)
-    {
-        // TODO 
-    }
-
-    protected void SetMouthStyle(int mouthStyleInd)
-    {
-        // TODO
-    }
-
-    protected void SetSkinImperfection(int skinImperfectionInd)
-    {
-        // TODO _FaceImperfectionTexture
-    }
-
-    protected void SetTattoo(int tattooInd)
-    {
-        // TODO _FaceTattooTexture
-    }
-
-    protected void SetHairColor(string colorHex)
-    {
-        Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color) && hairMaterial)
-        {
-            hairMaterial.color = color;
-        }
-    }
-
-    protected void SetbrowsColor(string colorHex)
-    {
-        Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color) && skinMaterial)
-        {
-            skinMaterial.SetColor("_browsColor", color);
-        }
-    }
-
-    protected void SetSkinColor(string colorHex)
-    {
-        Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color) && skinMaterial)
-        {
-            skinMaterial.SetColor("_SkinColor", color);
-        }
-    }
-
-    protected void SeteyesColor(string colorHex)
-    {
-        Color color;
-        if (ColorUtility.TryParseHtmlString(colorHex, out color) && eyesMaterial)
-        {
-            eyesMaterial.SetColor("_IrisColor", color);
-        }
-    }
-
-    #endregion
 
     #region BlendShapes
 

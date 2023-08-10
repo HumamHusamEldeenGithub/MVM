@@ -9,7 +9,7 @@ public class AvatarCustomizer : MonoBehaviour
     [SerializeField]
     private SkinnedMeshRenderer skin_Renderer;
 
-    public Mesh[] hairMeshes;
+    private Mesh[] hairMeshes;
     private Texture[] hairTextures;
     private Texture[] browsTextures;
     private Texture[] skinImperfectionTextures;
