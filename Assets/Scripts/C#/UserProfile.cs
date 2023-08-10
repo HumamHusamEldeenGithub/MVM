@@ -141,8 +141,6 @@ public class UserProfile : Singleton<UserProfile>
         public string Email { get; set; }
         public string Token { get; set; }
         public string RefreshToken { get; set; }
-        public FacialFeatures UserFeatures { get; set; }
-        public Gender UserGender { get; set; }
         public int Age { get; set; }
         public Mvm.AvatarSettings AvatarSettings { get; set; }
         public RepeatedField<Room> Rooms { get; set; }

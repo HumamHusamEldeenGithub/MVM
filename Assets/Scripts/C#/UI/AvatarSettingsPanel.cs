@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mvm;
@@ -8,23 +5,23 @@ using Mvm;
 public class AvatarSettingsPanel : MonoBehaviour
 {
     [SerializeField]
-    private Slider GenderSlider;
+    private SwitchButton GenderSwitch;
     [SerializeField]
     private Slider HeadStyleSlider;
     [SerializeField]
-    private GameObject SkinColorPicker;
+    private Button SkinColorPicker;
     [SerializeField]
     private Slider HairStyleSlider;
     [SerializeField]
-    private GameObject HairColorPicker;
+    private Button HairColorPicker;
     [SerializeField]
     private Slider EyesStyleSlider;
     [SerializeField]
-    private GameObject EyesColorPicker;
+    private Button EyesColorPicker;
     [SerializeField]
     private Slider EyesBrowsStyleSlider;
     [SerializeField]
-    private GameObject EyesBrowsColorPicker;
+    private Button EyesBrowsColorPicker;
     [SerializeField]
     private Slider NoseStyleSlider;
     [SerializeField]
@@ -35,7 +32,31 @@ public class AvatarSettingsPanel : MonoBehaviour
     private Slider TattooSlider;
 
     [SerializeField]
+    private ColorPicker colorPicker;
+
+    [SerializeField]
     private GameObject SaveChangesButton;
+
+    [SerializeField]
+    private HeadCustomizer headCustomizer;
+
+    private AvatarSettings avatarSettings = new AvatarSettings()
+    {
+        HeadStyle = "0",
+        BrowsColor = "#FFFFFFFF",
+        EyeStyle = "0",
+        EyebrowsStyle = "0",
+        HairStyle = "0", 
+        MouthStyle = "0", 
+        NoseStyle = "0",
+        SkinColor = "#FFFFFFFF",
+        EyeColor = "#FFFFFFFF",
+        HairColor = "#FFFFFFFF",
+        Gender = "male",
+        RoomBackgroundColor = "#FFFFFFFF",
+        SkinImperfection = "0",
+        Tattoo = "0",
+    };
 
 
     private void Awake()
@@ -43,11 +64,18 @@ public class AvatarSettingsPanel : MonoBehaviour
         SaveChangesButton.GetComponent<Button>().onClick.AddListener(SaveChanges);
     }
 
+    private void Start()
+    {
+        InitializeActions();
+        headCustomizer.SetSettings(avatarSettings);
+    }
+
     private void OnEnable()
     {
-        var avatarSettings = UserProfile.Instance.userData.AvatarSettings;
+        if (UserProfile.Instance.userData != null)
+            avatarSettings = UserProfile.Instance.userData.AvatarSettings;
 
-        GenderSlider.value = avatarSettings.Gender == "male" ? 0 : 1;
+        GenderSwitch.value = avatarSettings.Gender.ToLower() == "male" ? 0 : 1;
         HeadStyleSlider.value = float.Parse(avatarSettings.HeadStyle);
         HairStyleSlider.value = float.Parse(avatarSettings.HairStyle);
         EyesStyleSlider.value = float.Parse(avatarSettings.EyeStyle);
@@ -56,39 +84,93 @@ public class AvatarSettingsPanel : MonoBehaviour
         SkinImperfectionSlider.value = float.Parse(avatarSettings.SkinImperfection);
         TattooSlider.value = float.Parse(avatarSettings.Tattoo);
 
-        // TODO : modify this code to set the color to color picker
-        /*
-        SkinColorPicker.GetComponent<Slider>().value = float.Parse(avatarSettings.SkinColor);
-        HairColorPicker.GetComponent<Slider>().value = float.Parse(avatarSettings.HairColor);
-        EyesColorPicker.GetComponent<Slider>().value = float.Parse(avatarSettings.EyeColor);
-        EyesBrowsColorPicker.GetComponent<Slider>().value = float.Parse(avatarSettings.BrowsColor);
-        */
+        Color color;
+        if (ColorUtility.TryParseHtmlString(avatarSettings.SkinColor, out color))
+            SkinColorPicker.GetComponent<Image>().color = color;
+        if (ColorUtility.TryParseHtmlString(avatarSettings.HairColor, out color))
+            HairColorPicker.GetComponent<Image>().color = color;
+        if (ColorUtility.TryParseHtmlString(avatarSettings.EyeColor, out color))
+            EyesColorPicker.GetComponent<Image>().color = color;
+        if (ColorUtility.TryParseHtmlString(avatarSettings.BrowsColor, out color))
+            EyesBrowsColorPicker.GetComponent<Image>().color = color;
     }
 
     private async void SaveChanges()
     {
-        Mvm.AvatarSettings avatarSettings = new Mvm.AvatarSettings { };
-
-        avatarSettings.Gender = GenderSlider.GetComponent<Slider>().value == 0 ? "male" : "female";
-        avatarSettings.HeadStyle = HeadStyleSlider.GetComponent<Slider>().value.ToString();
-        avatarSettings.HairStyle = HairStyleSlider.GetComponent<Slider>().value.ToString();
-        avatarSettings.EyeStyle = EyesStyleSlider.GetComponent<Slider>().value.ToString();
-        avatarSettings.EyebrowsStyle = EyesBrowsStyleSlider.GetComponent<Slider>().value.ToString();
-        avatarSettings.NoseStyle = NoseStyleSlider.GetComponent<Slider>().value.ToString();
-        avatarSettings.SkinImperfection = SkinImperfectionSlider.GetComponent<Slider>().value.ToString();
-        avatarSettings.Tattoo = TattooSlider.GetComponent<Slider>().value.ToString();
-
-        // TODO : modify this code to get the color from color picker
-        /*
-        avatarSettings.Tattoo = SkinColorPicker.GetComponent<>().value ;
-        avatarSettings.HairColor =  HairColorPicker.GetComponent<>().value ;
-        avatarSettings.EyesColor = EyesColorPicker.GetComponent<>().value;
-        avatarSettings.BrowsColor =  EyesBrowsColorPicker.GetComponent<>().value ;
-        */
        await Server.UpsertAvatarSettings(new UpsertAvatarSettingsRequest {
-            Settings= avatarSettings
+            Settings = avatarSettings
        });
-       UserProfile.Instance.GetMyProfile(true);
+    }
 
+
+    private void InitializeActions()
+    {
+        GenderSwitch.onValueChange.AddListener((int option) => { avatarSettings.Gender = option == 1 ? "female" : "male"; headCustomizer.SetSettings(avatarSettings); });
+
+        HeadStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.HeadStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        HairStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.HairStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        EyesStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyeStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        EyesBrowsStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyebrowsStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        NoseStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.NoseStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        MouthStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.MouthStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        SkinImperfectionSlider.onValueChanged.AddListener((float option) => { avatarSettings.SkinImperfection = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        TattooSlider.onValueChanged.AddListener((float option) => { avatarSettings.Tattoo = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+
+        SkinColorPicker.onClick.AddListener(() =>
+        {
+            Image img = SkinColorPicker.GetComponent<Image>();
+            colorPicker.gameObject.SetActive(true);
+            colorPicker.onColorChanged.RemoveAllListeners();
+
+            colorPicker.color = img.color;
+            colorPicker.onColorChanged.AddListener((Color color) =>
+            {
+                img.color = color;
+                avatarSettings.SkinColor = ColorUtility.ToHtmlStringRGB(color);
+                headCustomizer.SetSettings(avatarSettings);
+            });
+        });
+        HairColorPicker.onClick.AddListener(() =>
+        {
+            Image img = HairColorPicker.GetComponent<Image>();
+            colorPicker.gameObject.SetActive(true);
+            colorPicker.onColorChanged.RemoveAllListeners();
+
+            colorPicker.color = img.color;
+            colorPicker.onColorChanged.AddListener((Color color) =>
+            {
+                img.color = color;
+                avatarSettings.HairColor = ColorUtility.ToHtmlStringRGB(color);
+                headCustomizer.SetSettings(avatarSettings);
+            });
+        });
+        EyesBrowsColorPicker.onClick.AddListener(() =>
+        {
+            Image img = EyesBrowsColorPicker.GetComponent<Image>();
+            colorPicker.gameObject.SetActive(true);
+            colorPicker.onColorChanged.RemoveAllListeners();
+
+            colorPicker.color = img.color;
+            colorPicker.onColorChanged.AddListener((Color color) =>
+            {
+                img.color = color;
+                avatarSettings.BrowsColor = ColorUtility.ToHtmlStringRGB(color);
+                headCustomizer.SetSettings(avatarSettings);
+            });
+        });
+        EyesColorPicker.onClick.AddListener(() =>
+        {
+            Image img = EyesColorPicker.GetComponent<Image>();
+            colorPicker.gameObject.SetActive(true);
+            colorPicker.onColorChanged.RemoveAllListeners();
+
+            colorPicker.color = img.color;
+            colorPicker.onColorChanged.AddListener((Color color) =>
+            {
+                img.color = color;
+                avatarSettings.EyeColor = ColorUtility.ToHtmlStringRGB(color);
+                headCustomizer.SetSettings(avatarSettings);
+            });
+        });
     }
 }
