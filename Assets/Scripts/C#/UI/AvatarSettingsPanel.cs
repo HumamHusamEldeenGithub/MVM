@@ -35,10 +35,15 @@ public class AvatarSettingsPanel : MonoBehaviour
     private ColorPicker colorPicker;
 
     [SerializeField]
-    private GameObject SaveChangesButton;
+    private HeadCustomizer headCustomizer;
 
     [SerializeField]
-    private HeadCustomizer headCustomizer;
+    private Button SaveChangesButton;
+
+    [SerializeField]
+    private Button backButton;
+
+
 
     private AvatarSettings avatarSettings = new AvatarSettings()
     {
@@ -61,7 +66,9 @@ public class AvatarSettingsPanel : MonoBehaviour
 
     private void Awake()
     {
-        SaveChangesButton.GetComponent<Button>().onClick.AddListener(SaveChanges);
+        SaveChangesButton.onClick.AddListener(SaveChanges);
+        backButton.onClick.AddListener(TransitionToMainSceneScene);
+
     }
 
     private void Start()
@@ -172,5 +179,10 @@ public class AvatarSettingsPanel : MonoBehaviour
                 headCustomizer.SetSettings(avatarSettings);
             });
         });
+    }
+
+    private void TransitionToMainSceneScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

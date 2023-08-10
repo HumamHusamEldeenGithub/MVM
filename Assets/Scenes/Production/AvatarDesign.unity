@@ -180,8 +180,9 @@ MonoBehaviour:
   SkinImperfectionSlider: {fileID: 1434941547933874764}
   TattooSlider: {fileID: 1434941548112026670}
   colorPicker: {fileID: 2110332243}
-  SaveChangesButton: {fileID: 1969724918}
   headCustomizer: {fileID: 1972104913}
+  SaveChangesButton: {fileID: 1969724918}
+  backButton: {fileID: 1910530022}
 --- !u!1 &195500531
 GameObject:
   m_ObjectHideFlags: 0
@@ -2884,6 +2885,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3150177069308173252, guid: 11c637a7427e67e4da79438ce22eed21, type: 3}
   m_PrefabInstance: {fileID: 1910530020}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1910530022 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 614377654521249536, guid: 11c637a7427e67e4da79438ce22eed21, type: 3}
+  m_PrefabInstance: {fileID: 1910530020}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &1932007098 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -3418718139891169728, guid: da71eca7a7926f74daffe068668d5724, type: 3}
@@ -3094,11 +3106,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c637a7427e67e4da79438ce22eed21, type: 3}
---- !u!1 &1969724918 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3749109575567019460, guid: 11c637a7427e67e4da79438ce22eed21, type: 3}
+--- !u!114 &1969724918 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 614377654521249536, guid: 11c637a7427e67e4da79438ce22eed21, type: 3}
   m_PrefabInstance: {fileID: 1969724917}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1969724919 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3150177069308173252, guid: 11c637a7427e67e4da79438ce22eed21, type: 3}

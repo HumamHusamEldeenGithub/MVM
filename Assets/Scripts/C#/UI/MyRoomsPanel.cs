@@ -24,6 +24,10 @@ public class MyRoomsPanel : MonoBehaviour
             Transform child = roomsScrollView.GetChild(i);
             Destroy(child.gameObject);
         }
+
+        Debug.Log(UserProfile.Instance.userData);
+
+
         foreach (var room in UserProfile.Instance.userData.Rooms)
         {
             var element = Instantiate(roomRowPrefab);

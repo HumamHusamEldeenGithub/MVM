@@ -44,6 +44,10 @@ public class LoginSignupPanel : MonoBehaviour
     #endregion
     private void OnEnable()
     {
+        if (UserProfile.Instance.userData != null && UserProfile.Instance.userData.Token != "") {
+            OnLogin(true);
+            return;
+        }
         if (!usernameInp || !passwordInp || !loginBtn )
         {
             Debug.LogWarning("Username or Password isn't populated");

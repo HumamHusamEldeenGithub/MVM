@@ -290,5 +290,6 @@ message OnlineStatuses {
 
 message OnlineStatus {
     string id = 1 ; 
-    bool isOnline = 2 ;
+    string username = 2;
+    bool isOnline = 3 ;
 }

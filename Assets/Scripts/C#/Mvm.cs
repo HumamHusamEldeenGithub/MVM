@@ -110,12 +110,12 @@ namespace Mvm {
             "U2hhcGVzEiQKC2JsZW5kU2hhcGVzGAEgAygLMg8ubXZtLkJsZW5kU2hhcGUi",
             "LQoJS2V5cG9pbnRzEiAKCWtleXBvaW50cxgBIAMoCzINLm12bS5LZXlwb2lu",
             "dCIyCg5PbmxpbmVTdGF0dXNlcxIgCgV1c2VycxgBIAMoCzIRLm12bS5Pbmxp",
-            "bmVTdGF0dXMiLAoMT25saW5lU3RhdHVzEgoKAmlkGAEgASgJEhAKCGlzT25s",
-            "aW5lGAIgASgIKkEKEVNvY2tldE1lc3NhZ2VUeXBlEhAKDFJPT01fTUVTU0FH",
-            "RRAAEg8KC1VTRVJfSk9JTkVEEAESCQoFRVJST1IQAipUChZEYXRhQ2hhbm5l",
-            "bE1lc3NhZ2VUeXBlEhQKEFRSQUNLSU5HX01FU1NBR0UQABIQCgxDSEFUX01F",
-            "U1NBR0UQARISCg5BVkFUQVJfTUVTU0FHRRADQglaBy4vbXZtUGJiBnByb3Rv",
-            "Mw=="));
+            "bmVTdGF0dXMiPgoMT25saW5lU3RhdHVzEgoKAmlkGAEgASgJEhAKCHVzZXJu",
+            "YW1lGAIgASgJEhAKCGlzT25saW5lGAMgASgIKkEKEVNvY2tldE1lc3NhZ2VU",
+            "eXBlEhAKDFJPT01fTUVTU0FHRRAAEg8KC1VTRVJfSk9JTkVEEAESCQoFRVJS",
+            "T1IQAipUChZEYXRhQ2hhbm5lbE1lc3NhZ2VUeXBlEhQKEFRSQUNLSU5HX01F",
+            "U1NBR0UQABIQCgxDSEFUX01FU1NBR0UQARISCg5BVkFUQVJfTUVTU0FHRRAD",
+            "QglaBy4vbXZtUGJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), typeof(global::Mvm.DataChannelMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -178,7 +178,7 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShapes), global::Mvm.BlendShapes.Parser, new[]{ "BlendShapes_" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Keypoints), global::Mvm.Keypoints.Parser, new[]{ "Keypoints_" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.OnlineStatuses), global::Mvm.OnlineStatuses.Parser, new[]{ "Users" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.OnlineStatus), global::Mvm.OnlineStatus.Parser, new[]{ "Id", "IsOnline" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.OnlineStatus), global::Mvm.OnlineStatus.Parser, new[]{ "Id", "Username", "IsOnline" }, null, null, null, null)
           }));
     }
     #endregion
@@ -13020,6 +13020,7 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OnlineStatus(OnlineStatus other) : this() {
       id_ = other.id_;
+      username_ = other.username_;
       isOnline_ = other.isOnline_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -13042,8 +13043,20 @@ namespace Mvm {
       }
     }
 
+    /// <summary>Field number for the "username" field.</summary>
+    public const int UsernameFieldNumber = 2;
+    private string username_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Username {
+      get { return username_; }
+      set {
+        username_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "isOnline" field.</summary>
-    public const int IsOnlineFieldNumber = 2;
+    public const int IsOnlineFieldNumber = 3;
     private bool isOnline_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -13070,6 +13083,7 @@ namespace Mvm {
         return true;
       }
       if (Id != other.Id) return false;
+      if (Username != other.Username) return false;
       if (IsOnline != other.IsOnline) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -13079,6 +13093,7 @@ namespace Mvm {
     public override int GetHashCode() {
       int hash = 1;
       if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (Username.Length != 0) hash ^= Username.GetHashCode();
       if (IsOnline != false) hash ^= IsOnline.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -13102,8 +13117,12 @@ namespace Mvm {
         output.WriteRawTag(10);
         output.WriteString(Id);
       }
+      if (Username.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Username);
+      }
       if (IsOnline != false) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteBool(IsOnline);
       }
       if (_unknownFields != null) {
@@ -13120,8 +13139,12 @@ namespace Mvm {
         output.WriteRawTag(10);
         output.WriteString(Id);
       }
+      if (Username.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Username);
+      }
       if (IsOnline != false) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteBool(IsOnline);
       }
       if (_unknownFields != null) {
@@ -13136,6 +13159,9 @@ namespace Mvm {
       int size = 0;
       if (Id.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      }
+      if (Username.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Username);
       }
       if (IsOnline != false) {
         size += 1 + 1;
@@ -13154,6 +13180,9 @@ namespace Mvm {
       }
       if (other.Id.Length != 0) {
         Id = other.Id;
+      }
+      if (other.Username.Length != 0) {
+        Username = other.Username;
       }
       if (other.IsOnline != false) {
         IsOnline = other.IsOnline;
@@ -13177,7 +13206,11 @@ namespace Mvm {
             Id = input.ReadString();
             break;
           }
-          case 16: {
+          case 18: {
+            Username = input.ReadString();
+            break;
+          }
+          case 24: {
             IsOnline = input.ReadBool();
             break;
           }
@@ -13200,7 +13233,11 @@ namespace Mvm {
             Id = input.ReadString();
             break;
           }
-          case 16: {
+          case 18: {
+            Username = input.ReadString();
+            break;
+          }
+          case 24: {
             IsOnline = input.ReadBool();
             break;
           }

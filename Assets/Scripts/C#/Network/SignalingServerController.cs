@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Mvm;
 
-class SignalingServerController : MonoBehaviour
+class SignalingServerController : Singleton<SignalingServerController>
 {
     #region Properties
     Thread serverThread = null;
@@ -16,14 +16,15 @@ class SignalingServerController : MonoBehaviour
 
     UserProfile userProfile;
     static ClientWebSocket webSocket;
-    OnlineStatuses usersOnlineStatus;
+    public OnlineStatuses usersOnlineStatus;
 
     public WebRTCManager webRTCManager;
     #endregion
 
     #region MonoBehaviour
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         syncContext = SynchronizationContext.Current;
         userProfile = GetComponent<UserProfile>();
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
@@ -34,7 +35,7 @@ class SignalingServerController : MonoBehaviour
             ReceiveServerMessagesAsync();
         });
     }
-    async void OnDestroy()
+    private async void OnApplicationQuit()
     {
         threadRunning = false;
 
@@ -134,8 +135,9 @@ class SignalingServerController : MonoBehaviour
                         usersOnlineStatus = JsonConvert.DeserializeObject<OnlineStatuses>((string)socketMessage.Data);
                         foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
                         {
-                            Debug.Log($"User: {onlineStatus.Id} -- + IsOnline:{onlineStatus.IsOnline}");
+                            Debug.Log($"ID: {onlineStatus.Id} -- Username: {onlineStatus.Username} -- + IsOnline:{onlineStatus.IsOnline}");
                         }
+                        EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent),usersOnlineStatus);
                         break;
 
                     case "user_status_changed":
