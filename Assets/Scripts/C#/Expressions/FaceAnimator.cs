@@ -133,6 +133,7 @@ public class FaceAnimator : MonoBehaviour
         {
             try
             {
+                if (bs.CategoryName == "_neutral") continue;
                 blendshapeKeys[bs.CategoryName].weight = bs.Score * 100;
             }
             catch(Exception e)

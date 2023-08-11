@@ -26,7 +26,7 @@ public class WebRTCController : MonoBehaviour
     private void Awake()
     {
         EventsPool.Instance.AddListener(typeof(MaxDelayPacketsReachedEvent), 
-            new Action<string>(DropCurrentDataChannel));
+            new Action<string>(DropAndReopenCurrentDataChannel));
     }
 
     RTCConfiguration GetSelectedSdpSemantics()
@@ -302,7 +302,7 @@ public class WebRTCController : MonoBehaviour
                 if (peerDataChannel != null)
                 {
                     peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
-                    WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
+                    //WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
                 }
                 break;
             case RTCIceConnectionState.Disconnected:
@@ -324,8 +324,6 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Data Channel
-
-    // TODO : check null bug 
     public void SendMessageToDataChannel(string message)
     {
         if (peerDataChannel != null && peerDataChannel.ReadyState == RTCDataChannelState.Open)
@@ -353,12 +351,25 @@ public class WebRTCController : MonoBehaviour
         }
     }
 
-    private void DropCurrentDataChannel(string id)
+    private void DropAndReopenCurrentDataChannel(string id)
     {
         if (id == peerId)
         {
             peerDataChannel.Close();
         }
+
+        RTCDataChannelInit conf = new RTCDataChannelInit
+        {
+            ordered = true,
+            maxRetransmits = 0,
+        };
+
+        RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
+        dataChannel.OnOpen = OnDataChannelOpened;
+
+        peerDataChannel = dataChannel;
+
+        EventsPool.Instance.InvokeEvent(typeof(ReopenDatachannelEvent), peerId,peerDataChannel);
     }
 
     #endregion

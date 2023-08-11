@@ -127,6 +127,7 @@ public class WebRTCManager : MonoBehaviour
 
     public static void PublishAvatarSettingsToPeer(RTCDataChannel dataChannel)
     {
+
         byte[] byteArray;
         using (var memoryStream = new MemoryStream())
         {

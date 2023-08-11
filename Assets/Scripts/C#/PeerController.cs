@@ -31,6 +31,8 @@ public class PeerController : MonoBehaviour
     {
         orProcessor = GetComponent<OrientationProcessor>();
         audioSource = GetComponent<AudioSource>();
+        EventsPool.Instance.AddListener(typeof(ReopenDatachannelEvent),
+            new Action<string,RTCDataChannel>(ReopenDatachannel));
     }
 
     public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile.PeerData userData)
@@ -56,35 +58,7 @@ public class PeerController : MonoBehaviour
         currentAnimator.gameObject.SetActive(true);
         currentAnimator.InitializeFace(userData);
 
-
-        void OnDataChannelMessage(byte[] bytes)
-        {
-            try
-            {
-                Debug.Log("Bytes size : " + bytes.Length);
-
-                
-                DataChannelMessage responseMessage = DataChannelMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
-
-                CheckDelayThreshold(responseMessage.TrackingMessage.Date);
-
-                SetTrackingData(responseMessage);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-        if(dataChannel != null)
-        {
-            dataChannel.OnMessage += OnDataChannelMessage;
-
-            Debug.Log(dataChannel.Id);
-        }
-        else
-        {
-            Debug.Log("No channel");
-        }
+        SetupDatachannel(this.dataChannel);
     }
 
     public void SetTrackingData(DataChannelMessage message)
@@ -129,6 +103,45 @@ public class PeerController : MonoBehaviour
             {
                 delayCounter--;
             }
+        }
+    }
+    
+    public void SetupDatachannel(RTCDataChannel dataChannel)
+    {
+        void OnDataChannelMessage(byte[] bytes)
+        {
+            try
+            {
+                Debug.Log("Bytes size : " + bytes.Length);
+
+                DataChannelMessage responseMessage = DataChannelMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
+
+                CheckDelayThreshold(responseMessage.TrackingMessage.Date);
+
+                SetTrackingData(responseMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+        if (dataChannel != null)
+        {
+            dataChannel.OnMessage += OnDataChannelMessage;
+
+            Debug.Log(dataChannel.Id);
+        }
+        else
+        {
+            Debug.Log("No channel");
+        }
+    }
+
+    void ReopenDatachannel(string peerId , RTCDataChannel dataChannel)
+    {
+        if (peerId == this.peerID)
+        {
+            SetupDatachannel(dataChannel);
         }
     }
 }
