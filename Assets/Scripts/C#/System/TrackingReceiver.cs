@@ -126,6 +126,13 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
                 DataChannelMessage response = DataChannelMessage.Parser.ParseFrom(messageData, 0, bytes);
 
+                response.FaceRotationMessage.Point1 = response.TrackingMessage.Keypoints.Keypoints_[234];
+                response.FaceRotationMessage.Point2 = response.TrackingMessage.Keypoints.Keypoints_[152];
+                response.FaceRotationMessage.Point3 = response.TrackingMessage.Keypoints.Keypoints_[454];
+                response.FaceRotationMessage.Point4 = response.TrackingMessage.Keypoints.Keypoints_[10];
+
+                response.TrackingMessage.Keypoints = null;
+
                 peerController.SetTrackingData(response);
                 webRTCManager.SendMessageToDataChannel(response);
             }

@@ -66,10 +66,10 @@ public class PeerController : MonoBehaviour
         currentAnimator.SetBlendShapes(message.TrackingMessage.BlendShapes);
         orProcessor.SetPoints(new List<Keypoint>()
                 {
-                    message.TrackingMessage.Keypoints.Keypoints_[234],
-                    message.TrackingMessage.Keypoints.Keypoints_[152],
-                    message.TrackingMessage.Keypoints.Keypoints_[454],
-                    message.TrackingMessage.Keypoints.Keypoints_[10]
+                    message.FaceRotationMessage.Point1,
+                    message.FaceRotationMessage.Point2,
+                    message.FaceRotationMessage.Point3,
+                    message.FaceRotationMessage.Point4
                 });
     }
 

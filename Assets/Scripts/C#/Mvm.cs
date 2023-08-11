@@ -92,30 +92,32 @@ namespace Mvm {
             "B21lc3NhZ2UYAiABKAlIAIgBARIgCglrZXlwb2ludHMYAyADKAsyDS5tdm0u",
             "S2V5cG9pbnRCCgoIX21lc3NhZ2UiMgoMRXJyb3JNZXNzYWdlEhMKC3N0YXR1",
             "c19jb2RlGAEgASgDEg0KBWVycm9yGAIgASgJIh4KC0NoYXRNZXNzYWdlEg8K",
-            "B21lc3NhZ2UYASABKAki5AIKEkRhdGFDaGFubmVsTWVzc2FnZRIpCgR0eXBl",
+            "B21lc3NhZ2UYASABKAki7QIKEkRhdGFDaGFubmVsTWVzc2FnZRIpCgR0eXBl",
             "GAEgASgOMhsubXZtLkRhdGFDaGFubmVsTWVzc2FnZVR5cGUSMwoQdHJhY2tp",
             "bmdfbWVzc2FnZRgCIAEoCzIULm12bS5UcmFja2luZ01lc3NhZ2VIAIgBARIr",
             "CgxjaGF0X21lc3NhZ2UYAyABKAsyEC5tdm0uQ2hhdE1lc3NhZ2VIAYgBARIw",
             "Cg5hdmF0YXJfbWVzc2FnZRgEIAEoCzITLm12bS5BdmF0YXJTZXR0aW5nc0gC",
-            "iAEBEjwKFWZhY2Vfcm90YXRpb25fbWVzc2FnZRgFIAEoCzIYLm12bS5GYWNl",
-            "Um90YXRpb25NZXNzYWdlSAOIAQFCEwoRX3RyYWNraW5nX21lc3NhZ2VCDwoN",
-            "X2NoYXRfbWVzc2FnZUIRCg9fYXZhdGFyX21lc3NhZ2VCGAoWX2ZhY2Vfcm90",
-            "YXRpb25fbWVzc2FnZSJ4Cg9UcmFja2luZ01lc3NhZ2USDQoFaW5kZXgYASAB",
-            "KAMSJQoLYmxlbmRTaGFwZXMYAiABKAsyEC5tdm0uQmxlbmRTaGFwZXMSIQoJ",
-            "a2V5cG9pbnRzGAMgASgLMg4ubXZtLktleXBvaW50cxIMCgRkYXRlGAQgASgJ",
-            "Ik4KE0ZhY2VSb3RhdGlvbk1lc3NhZ2USEQoJcm90YXRpb25YGAEgASgCEhEK",
-            "CXJvdGF0aW9uWRgCIAEoAhIRCglyb3RhdGlvbloYAyABKAIiKwoIS2V5cG9p",
-            "bnQSCQoBeBgBIAEoAhIJCgF5GAIgASgCEgkKAXoYAyABKAIiQQoKQmxlbmRT",
-            "aGFwZRINCgVpbmRleBgBIAEoAxINCgVzY29yZRgCIAEoAhIVCg1jYXRlZ29y",
-            "eV9uYW1lGAMgASgJIjMKC0JsZW5kU2hhcGVzEiQKC2JsZW5kU2hhcGVzGAEg",
-            "AygLMg8ubXZtLkJsZW5kU2hhcGUiLQoJS2V5cG9pbnRzEiAKCWtleXBvaW50",
-            "cxgBIAMoCzINLm12bS5LZXlwb2ludCIyCg5PbmxpbmVTdGF0dXNlcxIgCgV1",
-            "c2VycxgBIAMoCzIRLm12bS5PbmxpbmVTdGF0dXMiPgoMT25saW5lU3RhdHVz",
-            "EgoKAmlkGAEgASgJEhAKCHVzZXJuYW1lGAIgASgJEhAKCGlzT25saW5lGAMg",
-            "ASgIKkEKEVNvY2tldE1lc3NhZ2VUeXBlEhAKDFJPT01fTUVTU0FHRRAAEg8K",
-            "C1VTRVJfSk9JTkVEEAESCQoFRVJST1IQAipUChZEYXRhQ2hhbm5lbE1lc3Nh",
-            "Z2VUeXBlEhQKEFRSQUNLSU5HX01FU1NBR0UQABIQCgxDSEFUX01FU1NBR0UQ",
-            "ARISCg5BVkFUQVJfTUVTU0FHRRADQglaBy4vbXZtUGJiBnByb3RvMw=="));
+            "iAEBEkUKFWZhY2Vfcm90YXRpb25fbWVzc2FnZRgFIAEoCzIhLm12bS5GYWNl",
+            "Um90YXRpb25LZXlwb2ludHNNZXNzYWdlSAOIAQFCEwoRX3RyYWNraW5nX21l",
+            "c3NhZ2VCDwoNX2NoYXRfbWVzc2FnZUIRCg9fYXZhdGFyX21lc3NhZ2VCGAoW",
+            "X2ZhY2Vfcm90YXRpb25fbWVzc2FnZSJ4Cg9UcmFja2luZ01lc3NhZ2USDQoF",
+            "aW5kZXgYASABKAMSJQoLYmxlbmRTaGFwZXMYAiABKAsyEC5tdm0uQmxlbmRT",
+            "aGFwZXMSIQoJa2V5cG9pbnRzGAMgASgLMg4ubXZtLktleXBvaW50cxIMCgRk",
+            "YXRlGAQgASgJIpoBChxGYWNlUm90YXRpb25LZXlwb2ludHNNZXNzYWdlEh0K",
+            "BnBvaW50MRgBIAEoCzINLm12bS5LZXlwb2ludBIdCgZwb2ludDIYAiABKAsy",
+            "DS5tdm0uS2V5cG9pbnQSHQoGcG9pbnQzGAMgASgLMg0ubXZtLktleXBvaW50",
+            "Eh0KBnBvaW50NBgEIAEoCzINLm12bS5LZXlwb2ludCIrCghLZXlwb2ludBIJ",
+            "CgF4GAEgASgCEgkKAXkYAiABKAISCQoBehgDIAEoAiJBCgpCbGVuZFNoYXBl",
+            "Eg0KBWluZGV4GAEgASgDEg0KBXNjb3JlGAIgASgCEhUKDWNhdGVnb3J5X25h",
+            "bWUYAyABKAkiMwoLQmxlbmRTaGFwZXMSJAoLYmxlbmRTaGFwZXMYASADKAsy",
+            "Dy5tdm0uQmxlbmRTaGFwZSItCglLZXlwb2ludHMSIAoJa2V5cG9pbnRzGAEg",
+            "AygLMg0ubXZtLktleXBvaW50IjIKDk9ubGluZVN0YXR1c2VzEiAKBXVzZXJz",
+            "GAEgAygLMhEubXZtLk9ubGluZVN0YXR1cyI+CgxPbmxpbmVTdGF0dXMSCgoC",
+            "aWQYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSEAoIaXNPbmxpbmUYAyABKAgq",
+            "QQoRU29ja2V0TWVzc2FnZVR5cGUSEAoMUk9PTV9NRVNTQUdFEAASDwoLVVNF",
+            "Ul9KT0lORUQQARIJCgVFUlJPUhACKlQKFkRhdGFDaGFubmVsTWVzc2FnZVR5",
+            "cGUSFAoQVFJBQ0tJTkdfTUVTU0FHRRAAEhAKDENIQVRfTUVTU0FHRRABEhIK",
+            "DkFWQVRBUl9NRVNTQUdFEANCCVoHLi9tdm1QYmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), typeof(global::Mvm.DataChannelMessageType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -172,7 +174,7 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.ChatMessage), global::Mvm.ChatMessage.Parser, new[]{ "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.DataChannelMessage), global::Mvm.DataChannelMessage.Parser, new[]{ "Type", "TrackingMessage", "ChatMessage", "AvatarMessage", "FaceRotationMessage" }, new[]{ "TrackingMessage", "ChatMessage", "AvatarMessage", "FaceRotationMessage" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.TrackingMessage), global::Mvm.TrackingMessage.Parser, new[]{ "Index", "BlendShapes", "Keypoints", "Date" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.FaceRotationMessage), global::Mvm.FaceRotationMessage.Parser, new[]{ "RotationX", "RotationY", "RotationZ" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.FaceRotationKeypointsMessage), global::Mvm.FaceRotationKeypointsMessage.Parser, new[]{ "Point1", "Point2", "Point3", "Point4" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.Keypoint), global::Mvm.Keypoint.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShape), global::Mvm.BlendShape.Parser, new[]{ "Index", "Score", "CategoryName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.BlendShapes), global::Mvm.BlendShapes.Parser, new[]{ "BlendShapes_" }, null, null, null, null),
@@ -11106,10 +11108,10 @@ namespace Mvm {
 
     /// <summary>Field number for the "face_rotation_message" field.</summary>
     public const int FaceRotationMessageFieldNumber = 5;
-    private global::Mvm.FaceRotationMessage faceRotationMessage_;
+    private global::Mvm.FaceRotationKeypointsMessage faceRotationMessage_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Mvm.FaceRotationMessage FaceRotationMessage {
+    public global::Mvm.FaceRotationKeypointsMessage FaceRotationMessage {
       get { return faceRotationMessage_; }
       set {
         faceRotationMessage_ = value;
@@ -11276,7 +11278,7 @@ namespace Mvm {
       }
       if (other.faceRotationMessage_ != null) {
         if (faceRotationMessage_ == null) {
-          FaceRotationMessage = new global::Mvm.FaceRotationMessage();
+          FaceRotationMessage = new global::Mvm.FaceRotationKeypointsMessage();
         }
         FaceRotationMessage.MergeFrom(other.FaceRotationMessage);
       }
@@ -11322,7 +11324,7 @@ namespace Mvm {
           }
           case 42: {
             if (faceRotationMessage_ == null) {
-              FaceRotationMessage = new global::Mvm.FaceRotationMessage();
+              FaceRotationMessage = new global::Mvm.FaceRotationKeypointsMessage();
             }
             input.ReadMessage(FaceRotationMessage);
             break;
@@ -11369,7 +11371,7 @@ namespace Mvm {
           }
           case 42: {
             if (faceRotationMessage_ == null) {
-              FaceRotationMessage = new global::Mvm.FaceRotationMessage();
+              FaceRotationMessage = new global::Mvm.FaceRotationKeypointsMessage();
             }
             input.ReadMessage(FaceRotationMessage);
             break;
@@ -11699,16 +11701,16 @@ namespace Mvm {
 
   }
 
-  public sealed partial class FaceRotationMessage : pb::IMessage<FaceRotationMessage>
+  public sealed partial class FaceRotationKeypointsMessage : pb::IMessage<FaceRotationKeypointsMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<FaceRotationMessage> _parser = new pb::MessageParser<FaceRotationMessage>(() => new FaceRotationMessage());
+    private static readonly pb::MessageParser<FaceRotationKeypointsMessage> _parser = new pb::MessageParser<FaceRotationKeypointsMessage>(() => new FaceRotationKeypointsMessage());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<FaceRotationMessage> Parser { get { return _parser; } }
+    public static pb::MessageParser<FaceRotationKeypointsMessage> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -11724,7 +11726,7 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FaceRotationMessage() {
+    public FaceRotationKeypointsMessage() {
       OnConstruction();
     }
 
@@ -11732,73 +11734,87 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FaceRotationMessage(FaceRotationMessage other) : this() {
-      rotationX_ = other.rotationX_;
-      rotationY_ = other.rotationY_;
-      rotationZ_ = other.rotationZ_;
+    public FaceRotationKeypointsMessage(FaceRotationKeypointsMessage other) : this() {
+      point1_ = other.point1_ != null ? other.point1_.Clone() : null;
+      point2_ = other.point2_ != null ? other.point2_.Clone() : null;
+      point3_ = other.point3_ != null ? other.point3_.Clone() : null;
+      point4_ = other.point4_ != null ? other.point4_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FaceRotationMessage Clone() {
-      return new FaceRotationMessage(this);
+    public FaceRotationKeypointsMessage Clone() {
+      return new FaceRotationKeypointsMessage(this);
     }
 
-    /// <summary>Field number for the "rotationX" field.</summary>
-    public const int RotationXFieldNumber = 1;
-    private float rotationX_;
+    /// <summary>Field number for the "point1" field.</summary>
+    public const int Point1FieldNumber = 1;
+    private global::Mvm.Keypoint point1_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float RotationX {
-      get { return rotationX_; }
+    public global::Mvm.Keypoint Point1 {
+      get { return point1_; }
       set {
-        rotationX_ = value;
+        point1_ = value;
       }
     }
 
-    /// <summary>Field number for the "rotationY" field.</summary>
-    public const int RotationYFieldNumber = 2;
-    private float rotationY_;
+    /// <summary>Field number for the "point2" field.</summary>
+    public const int Point2FieldNumber = 2;
+    private global::Mvm.Keypoint point2_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float RotationY {
-      get { return rotationY_; }
+    public global::Mvm.Keypoint Point2 {
+      get { return point2_; }
       set {
-        rotationY_ = value;
+        point2_ = value;
       }
     }
 
-    /// <summary>Field number for the "rotationZ" field.</summary>
-    public const int RotationZFieldNumber = 3;
-    private float rotationZ_;
+    /// <summary>Field number for the "point3" field.</summary>
+    public const int Point3FieldNumber = 3;
+    private global::Mvm.Keypoint point3_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float RotationZ {
-      get { return rotationZ_; }
+    public global::Mvm.Keypoint Point3 {
+      get { return point3_; }
       set {
-        rotationZ_ = value;
+        point3_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "point4" field.</summary>
+    public const int Point4FieldNumber = 4;
+    private global::Mvm.Keypoint point4_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Mvm.Keypoint Point4 {
+      get { return point4_; }
+      set {
+        point4_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as FaceRotationMessage);
+      return Equals(other as FaceRotationKeypointsMessage);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(FaceRotationMessage other) {
+    public bool Equals(FaceRotationKeypointsMessage other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RotationX, other.RotationX)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RotationY, other.RotationY)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RotationZ, other.RotationZ)) return false;
+      if (!object.Equals(Point1, other.Point1)) return false;
+      if (!object.Equals(Point2, other.Point2)) return false;
+      if (!object.Equals(Point3, other.Point3)) return false;
+      if (!object.Equals(Point4, other.Point4)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -11806,9 +11822,10 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (RotationX != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RotationX);
-      if (RotationY != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RotationY);
-      if (RotationZ != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RotationZ);
+      if (point1_ != null) hash ^= Point1.GetHashCode();
+      if (point2_ != null) hash ^= Point2.GetHashCode();
+      if (point3_ != null) hash ^= Point3.GetHashCode();
+      if (point4_ != null) hash ^= Point4.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -11827,17 +11844,21 @@ namespace Mvm {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (RotationX != 0F) {
-        output.WriteRawTag(13);
-        output.WriteFloat(RotationX);
+      if (point1_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Point1);
       }
-      if (RotationY != 0F) {
-        output.WriteRawTag(21);
-        output.WriteFloat(RotationY);
+      if (point2_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Point2);
       }
-      if (RotationZ != 0F) {
-        output.WriteRawTag(29);
-        output.WriteFloat(RotationZ);
+      if (point3_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Point3);
+      }
+      if (point4_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Point4);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -11849,17 +11870,21 @@ namespace Mvm {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (RotationX != 0F) {
-        output.WriteRawTag(13);
-        output.WriteFloat(RotationX);
+      if (point1_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Point1);
       }
-      if (RotationY != 0F) {
-        output.WriteRawTag(21);
-        output.WriteFloat(RotationY);
+      if (point2_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Point2);
       }
-      if (RotationZ != 0F) {
-        output.WriteRawTag(29);
-        output.WriteFloat(RotationZ);
+      if (point3_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Point3);
+      }
+      if (point4_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Point4);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -11871,14 +11896,17 @@ namespace Mvm {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (RotationX != 0F) {
-        size += 1 + 4;
+      if (point1_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Point1);
       }
-      if (RotationY != 0F) {
-        size += 1 + 4;
+      if (point2_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Point2);
       }
-      if (RotationZ != 0F) {
-        size += 1 + 4;
+      if (point3_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Point3);
+      }
+      if (point4_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Point4);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -11888,18 +11916,33 @@ namespace Mvm {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(FaceRotationMessage other) {
+    public void MergeFrom(FaceRotationKeypointsMessage other) {
       if (other == null) {
         return;
       }
-      if (other.RotationX != 0F) {
-        RotationX = other.RotationX;
+      if (other.point1_ != null) {
+        if (point1_ == null) {
+          Point1 = new global::Mvm.Keypoint();
+        }
+        Point1.MergeFrom(other.Point1);
       }
-      if (other.RotationY != 0F) {
-        RotationY = other.RotationY;
+      if (other.point2_ != null) {
+        if (point2_ == null) {
+          Point2 = new global::Mvm.Keypoint();
+        }
+        Point2.MergeFrom(other.Point2);
       }
-      if (other.RotationZ != 0F) {
-        RotationZ = other.RotationZ;
+      if (other.point3_ != null) {
+        if (point3_ == null) {
+          Point3 = new global::Mvm.Keypoint();
+        }
+        Point3.MergeFrom(other.Point3);
+      }
+      if (other.point4_ != null) {
+        if (point4_ == null) {
+          Point4 = new global::Mvm.Keypoint();
+        }
+        Point4.MergeFrom(other.Point4);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -11916,16 +11959,32 @@ namespace Mvm {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 13: {
-            RotationX = input.ReadFloat();
+          case 10: {
+            if (point1_ == null) {
+              Point1 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point1);
             break;
           }
-          case 21: {
-            RotationY = input.ReadFloat();
+          case 18: {
+            if (point2_ == null) {
+              Point2 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point2);
             break;
           }
-          case 29: {
-            RotationZ = input.ReadFloat();
+          case 26: {
+            if (point3_ == null) {
+              Point3 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point3);
+            break;
+          }
+          case 34: {
+            if (point4_ == null) {
+              Point4 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point4);
             break;
           }
         }
@@ -11943,16 +12002,32 @@ namespace Mvm {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 13: {
-            RotationX = input.ReadFloat();
+          case 10: {
+            if (point1_ == null) {
+              Point1 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point1);
             break;
           }
-          case 21: {
-            RotationY = input.ReadFloat();
+          case 18: {
+            if (point2_ == null) {
+              Point2 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point2);
             break;
           }
-          case 29: {
-            RotationZ = input.ReadFloat();
+          case 26: {
+            if (point3_ == null) {
+              Point3 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point3);
+            break;
+          }
+          case 34: {
+            if (point4_ == null) {
+              Point4 = new global::Mvm.Keypoint();
+            }
+            input.ReadMessage(Point4);
             break;
           }
         }

@@ -24,7 +24,13 @@ public class ClientsManager : Singleton<ClientsManager>
 
     public RoomSpaceController CreateNewRoomSpace(string peerID = "self", RTCDataChannel dataChannel = null, UserProfile.PeerData user = null)
     {
-        RoomSpaceController newPeer = InstantiateRoomSpace(peerID);
+        RoomSpaceController newPeer;
+        if (participantsRoomSpaces.TryGetValue(peerID, out newPeer))
+        {
+            // This is for reponening.
+            return newPeer;
+        }
+        newPeer = InstantiateRoomSpace(peerID);
         pos += new Vector3(50, 0, 0);
         newPeer.transform.position = pos;
 
