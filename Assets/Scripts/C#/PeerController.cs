@@ -21,6 +21,10 @@ public class PeerController : MonoBehaviour
     private OrientationProcessor orProcessor;
     private AudioSource audioSource;
 
+    private const float delayThreshold = 5.0f;
+    private const int delayMaxcounter = 30;
+    private int delayCounter = 0;
+
     #endregion
 
     private void Awake()
@@ -58,13 +62,11 @@ public class PeerController : MonoBehaviour
             try
             {
                 Debug.Log("Bytes size : " + bytes.Length);
-                DateTime now = DateTime.Now;
-                DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
+
                 
-                float seconds = (float)(now - unixEpoch).TotalSeconds;
                 DataChannelMessage responseMessage = DataChannelMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
 
-                Debug.Log($"Time difference = {seconds - responseMessage.TrackingMessage.Date}");
+                CheckDelayThreshold(responseMessage.TrackingMessage.Date);
 
                 SetTrackingData(responseMessage);
             }
@@ -103,5 +105,30 @@ public class PeerController : MonoBehaviour
         audioSource.loop = true;
         audioSource.volume = 1.0f;
         audioSource.Play();
+    }
+
+    public void CheckDelayThreshold(string responseDate)
+    {
+        var delayTime = (float)(TimestampController.apiDate - 
+            DateTime.Parse(responseDate)).TotalSeconds;
+        Debug.Log($"Time difference = {delayTime}");
+
+        if (delayTime > delayThreshold)
+        {
+            delayCounter++; 
+            if (delayCounter >= delayMaxcounter)
+            {
+                // Send event to drop the current datachannel
+                EventsPool.Instance.InvokeEvent(typeof(MaxDelayPacketsReachedEvent), peerID);
+                delayCounter = 0;
+            }
+        }
+        else
+        {
+            if (delayCounter > 0)
+            {
+                delayCounter--;
+            }
+        }
     }
 }

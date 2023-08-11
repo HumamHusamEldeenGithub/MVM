@@ -22,6 +22,13 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Init Peer
+
+    private void Awake()
+    {
+        EventsPool.Instance.AddListener(typeof(MaxDelayPacketsReachedEvent), 
+            new Action<string>(DropCurrentDataChannel));
+    }
+
     RTCConfiguration GetSelectedSdpSemantics()
     {
         Debug.Log("GetSelectedSdpSemantics");
@@ -343,6 +350,14 @@ public class WebRTCController : MonoBehaviour
         {
             Debug.Log("Audio Stream Not Null");
             OnAddTrack(this.remoteStreamTrack);
+        }
+    }
+
+    private void DropCurrentDataChannel(string id)
+    {
+        if (id == peerId)
+        {
+            peerDataChannel.Close();
         }
     }
 

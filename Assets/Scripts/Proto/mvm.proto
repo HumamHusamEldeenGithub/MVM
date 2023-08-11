@@ -256,7 +256,7 @@ message TrackingMessage{
     int64 index = 1 ; 
     BlendShapes blendShapes = 2 ; 
     Keypoints keypoints = 3 ; 
-    float date = 4 ; 
+    string date = 4 ; 
 }
 
 message FaceRotationMessage {

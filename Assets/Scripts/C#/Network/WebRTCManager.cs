@@ -109,11 +109,7 @@ public class WebRTCManager : MonoBehaviour
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            DateTime now = DateTime.Now;
-            DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
-
-            float seconds = (float)(now - unixEpoch).TotalSeconds;
-            message.TrackingMessage.Date = seconds;
+            message.TrackingMessage.Date = TimestampController.apiDate.ToString();
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {
