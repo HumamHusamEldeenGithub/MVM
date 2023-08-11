@@ -24,6 +24,7 @@ public class PeerController : MonoBehaviour
     private const float delayThreshold = 5.0f;
     private const int delayMaxcounter = 30;
     private int delayCounter = 0;
+    private Queue<DataChannelMessage> dataChannelMessages = new Queue<DataChannelMessage>();
 
     #endregion
 
@@ -33,6 +34,15 @@ public class PeerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         EventsPool.Instance.AddListener(typeof(ReopenDatachannelEvent),
             new Action<string,RTCDataChannel>(ReopenDatachannel));
+    }
+
+    private void Update()
+    {
+        if(dataChannelMessages.Count > 0)
+        {
+            var dm = dataChannelMessages.Dequeue();
+            SetTrackingData(dm);
+        }
     }
 
     public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile.PeerData userData)
@@ -118,7 +128,7 @@ public class PeerController : MonoBehaviour
 
                 CheckDelayThreshold(responseMessage.TrackingMessage.Date);
 
-                SetTrackingData(responseMessage);
+                dataChannelMessages.Enqueue(responseMessage);
             }
             catch (Exception e)
             {
@@ -142,6 +152,7 @@ public class PeerController : MonoBehaviour
         if (peerId == this.peerID)
         {
             SetupDatachannel(dataChannel);
+            dataChannelMessages.Clear();
         }
     }
 }
