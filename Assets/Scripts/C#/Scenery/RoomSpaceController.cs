@@ -33,11 +33,6 @@ public class RoomSpaceController : MonoBehaviour
         SelfInitialize();
         peerController.Initialize(peerID, dataChannel, user);
         CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
-
-        if (dataChannel != null)
-        {
-            dataChannel.OnClose += Dispose;
-        }
     }
 
     private void SelfInitialize()
@@ -57,7 +52,7 @@ public class RoomSpaceController : MonoBehaviour
         CurrentRoomRenderTexture.renderTexture.Release();
     }
 
-    private void Dispose()
+    public void Dispose()
     {
         CurrentRoomRenderTexture.renderTexture.Release();
         EventsPool.Instance.InvokeEvent(typeof(RemoveScreenEvent), CurrentRoomRenderTexture);

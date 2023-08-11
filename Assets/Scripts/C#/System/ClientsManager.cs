@@ -18,6 +18,7 @@ public class ClientsManager : Singleton<ClientsManager>
     override protected void Awake()
     {
         base.Awake();
+        EventsPool.Instance.AddListener(typeof(WebRTCConnectionClosedEvent), new Action<string>(ClosePeer));
         EventsPool.Instance.AddListener(typeof(RemoveScreenEvent), new Action<RoomSpaceController.RoomRenderTexture>(RemovePeer));
     }
 
@@ -42,6 +43,13 @@ public class ClientsManager : Singleton<ClientsManager>
     private void RemovePeer(RoomSpaceController.RoomRenderTexture rt)
     {
         participantsRoomSpaces.Remove(rt.renderTexture.name);
+    }
+
+    private void ClosePeer(string peerID)
+    {
+        RoomSpaceController ctrl;
+        participantsRoomSpaces.TryGetValue(peerID, out ctrl);
+        ctrl.Dispose();
     }
 
 }
