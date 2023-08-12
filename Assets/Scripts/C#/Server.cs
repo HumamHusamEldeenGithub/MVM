@@ -9,6 +9,7 @@ public class Server : MonoBehaviour
 {
     #region Static
     public static string ServerUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com";
+    public static string PythonServerUrl = "localhost";
     public static string Port = "3000";
     #endregion
 
@@ -83,6 +84,31 @@ public class Server : MonoBehaviour
             return null;
         }
     }
+
+    public static async Task<string> UploadFile(byte[] fileBytes)
+    {
+        string fileName = "Photo_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
+        using HttpClient httpClient = new HttpClient();
+        try
+        {
+            using MultipartFormDataContent form = new MultipartFormDataContent();
+            ByteArrayContent content = new ByteArrayContent(fileBytes);
+            content.Headers.Add("Content-Disposition", $"form-data; name=\"file\"; filename=\"{fileName}\"");
+            form.Add(content, "file", fileName);
+
+            HttpResponseMessage response = await httpClient.PostAsync(PythonServerUrl, form);
+            response.EnsureSuccessStatusCode();
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Debug.Log("File upload successful. Response: " + responseBody);
+            return responseBody;
+        }
+        catch (HttpRequestException ex)
+        {
+            Debug.LogError("Error uploading file: " + ex.Message);
+            return null;
+        }
+    }
     #endregion
 
     #region API
@@ -106,15 +132,21 @@ public class Server : MonoBehaviour
     }
     public static async Task<CreateFriendRequestResponse> CreateFriendRequest(CreateFriendRequestRequest req)
     {
-        string res = await CreatePostCall("/friends/send", req);
+        string res = await CreatePostCall("/friends/requests/send", req);
 
         return res != null ? JsonConvert.DeserializeObject<CreateFriendRequestResponse>(res) : null;
     }
     public static async Task<DeleteFriendRequestResponse> DeleteFriendRequest(DeleteFriendRequestRequest req)
     {
-        string res = await CreatePostCall("/friends/ignore", req);
+        string res = await CreatePostCall("/friends/requests/delete", req);
 
         return res != null ? JsonConvert.DeserializeObject<DeleteFriendRequestResponse>(res) : null;
+    }
+    public static async Task<GetPendingFriendsResponse> GetPendingFriendRequests()
+    {
+        string res = await CreateGetCall("/friends/requests/pending");
+
+        return res != null ? JsonConvert.DeserializeObject<GetPendingFriendsResponse>(res) : null;
     }
     public static async Task<AddFriendResponse> AddFriend(AddFriendRequest req)
     {

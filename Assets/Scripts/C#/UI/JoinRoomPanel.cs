@@ -13,9 +13,6 @@ public class JoinRoomPanel : MonoBehaviour
     private Button joinRoomBtn;
 
     [SerializeField]
-    private SignalingServerController signalingServer;
-
-    [SerializeField]
     private GameObject roomPanel;
 
     private void Awake()
@@ -33,7 +30,7 @@ public class JoinRoomPanel : MonoBehaviour
         string roomId = roomIdField.text;
         if (roomId.Length != 0)
         {
-            signalingServer.ConnectToRoom(roomId);
+            SignalingServerController.Instance.ConnectToRoom(roomId);
         }
     }
 

@@ -18,9 +18,6 @@ public class SearchForRoomPanel : MonoBehaviour
     [SerializeField]
     private GameObject searchButton;
 
-    [SerializeField]
-    private SignalingServerController signalingServer;
-
     private void Awake()
     {
         searchButton.transform.GetComponent<Button>().onClick.AddListener(SearchForRoom);
@@ -56,7 +53,7 @@ public class SearchForRoomPanel : MonoBehaviour
     {
         if (roomId.Length != 0)
         {
-            signalingServer.ConnectToRoom(roomId);
+            SignalingServerController.Instance.ConnectToRoom(roomId);
         }
     }
 }

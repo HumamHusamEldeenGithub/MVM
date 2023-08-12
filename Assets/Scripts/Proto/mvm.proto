@@ -16,17 +16,17 @@ message LoginUserRequest{
 message LoginUserResponse{
     string id = 1;
     string token = 2;
-    string refresh_token = 3;
+    string refreshToken = 3;
 }
 
 message LoginByRefreshTokenRequest {
-    string refresh_token = 1;
+    string refreshToken = 1;
 }
 
 message LoginByRefreshTokenResponse {
     string id = 1;
     string token = 2;
-    string refresh_token = 3;
+    string refreshToken = 3;
 }
 
 message CreateUserRequest {
@@ -39,7 +39,7 @@ message CreateUserRequest {
 message CreateUserResponse {
     string id = 1 ;
     string token = 2;
-    string refresh_token = 3;
+    string refreshToken = 3;
 }
 
 message GetProfileRequest {}
@@ -60,25 +60,25 @@ message GetUserByUsernameResponse {
 }
 
 message CreateFriendRequestRequest {
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message CreateFriendRequestResponse {}
 
 message DeleteFriendRequestRequest {
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message DeleteFriendRequestResponse {}
 
 message AddFriendRequest {
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message AddFriendResponse {}
 
 message DeleteFriendRequest{
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message DeleteFriendResponse {}
@@ -96,7 +96,7 @@ message GetPendingFriendsResponse {
 }
 
 message SearchForUsersRequest {
-    string search_input = 1 ;
+    string searchInput = 1 ;
 }
 
 message SearchForUsersResponse {
@@ -105,7 +105,7 @@ message SearchForUsersResponse {
 
 message CreateRoomRequest{
     string title  = 1 ; 
-    bool is_private = 2; 
+    bool isPrivate = 2; 
     bool friends_only = 3;
 }
 
@@ -120,7 +120,7 @@ message GetRoomsResponse {
 }
 
 message GetUserRoomsRequest {
-    string user_id = 1;
+    string userId = 1;
 }
 
 message GetUserRoomsResponse {
@@ -128,23 +128,23 @@ message GetUserRoomsResponse {
 }
 
 message DeleteRoomRequest {
-    string room_id = 1 ; 
+    string roomId = 1 ; 
 }
 
 message DeleteRoomResponse {
-    string room_id = 1 ; 
+    string roomId = 1 ; 
 }
 
 message CreateRoomInvitationRequest {
-    string room_id = 1 ;
-    string user_id = 2 ;
+    string roomId = 1 ;
+    string userId = 2 ;
 }
 
 message CreateRoomInvitationResponse {}
 
 message DeleteRoomInvitationRequest {
-    string room_id = 1 ;
-    string user_id = 2 ;
+    string roomId = 1 ;
+    string userId = 2 ;
 }
 
 message DeleteRoomInvitationResponse {}

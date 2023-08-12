@@ -56,7 +56,6 @@ public class WebRTCController : MonoBehaviour
             Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
 
-            // TODO send user profile
             this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
             Debug.Log("Call Audio Stream in onDataChannel");
             if (this.remoteStreamTrack != null)

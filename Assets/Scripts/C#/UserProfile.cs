@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf.Collections;
+using UnityEngine;
 
 public class UserProfile : Singleton<UserProfile>
 {
@@ -47,12 +48,56 @@ public class UserProfile : Singleton<UserProfile>
             Token = res.Token;
             RefreshToken = res.RefreshToken;
 
+            RefreshTokenManager.Instance.StoreRefreshToken(res.RefreshToken);
+
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+            var friends = await Server.GetFriends();
+            userData.Friends = friends.Profiles;
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
             {
                 token => login(username, password),
+            },
+            out _
+        );
+    }
+
+    private void LoginUserWithRefreshToken(string refreshToken)
+    {
+        var runner = TaskPool.Instance;
+
+        async void loginWithRefreshToken(string refreshToken)
+        {
+            LoginByRefreshTokenResponse res = await Server.LoginByRefreshToken(new LoginByRefreshTokenRequest { RefreshToken = refreshToken });
+
+            if (res == null)
+            {
+                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
+                return;
+            }
+
+            userData = new UserData
+            {
+                Id = res.Id,
+                Token = res.Token,
+                RefreshToken = res.RefreshToken,
+            };
+
+            Token = res.Token;
+            RefreshToken = res.RefreshToken;
+
+            getMyProfile();
+
+            RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+            var friends = await Server.GetFriends();
+            userData.Friends = friends.Profiles;
+        }
+
+        runner.AddTasks(new List<Action<CancellationToken>>
+            {
+                token => loginWithRefreshToken(refreshToken),
             },
             out _
         );
@@ -87,7 +132,8 @@ public class UserProfile : Singleton<UserProfile>
             Token = res.Token;
             RefreshToken = res.RefreshToken;
             getMyProfile();
-
+            RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
+            EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
         }
 
@@ -103,6 +149,7 @@ public class UserProfile : Singleton<UserProfile>
     {
         var userProfile = await Server.GetProfile("");
         userData.Id = userProfile.Profile.Id;
+        userData.Username = userProfile.Profile.Username;
         userData.Email = userProfile.Profile.Email;
 
         if (userProfile.AvatarSettings == null)
@@ -142,6 +189,7 @@ public class UserProfile : Singleton<UserProfile>
         public string Token { get; set; }
         public string RefreshToken { get; set; }
         public int Age { get; set; }
+        public RepeatedField<Mvm.UserProfile>  Friends { get; set; }
         public Mvm.AvatarSettings AvatarSettings { get; set; }
         public RepeatedField<Room> Rooms { get; set; }
     }
@@ -159,6 +207,7 @@ public class UserProfile : Singleton<UserProfile>
         base.Awake();
         EventsPool.Instance.AddListener(typeof(SubmitCreateUserEvent), new Action<string,string,string,string>(CreateUser));
         EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string>(LoginUser));
+        EventsPool.Instance.AddListener(typeof(LoginWithRefreshTokenEvent), new Action<string>(LoginUserWithRefreshToken));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
     }
 

@@ -12,9 +12,6 @@ public class MyRoomsPanel : MonoBehaviour
     [SerializeField]
     private GameObject roomRowPrefab;
 
-    [SerializeField]
-    private SignalingServerController signalingServer;
-
     private void OnEnable()
     {
         int childCount = roomsScrollView.childCount;
@@ -44,7 +41,7 @@ public class MyRoomsPanel : MonoBehaviour
     { 
         if (roomId.Length != 0)
         {
-            signalingServer.ConnectToRoom(roomId);
+            SignalingServerController.Instance.ConnectToRoom(roomId);
         }
     }
 }
