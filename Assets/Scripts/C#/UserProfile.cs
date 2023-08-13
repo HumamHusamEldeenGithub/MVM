@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class UserProfile : Singleton<UserProfile>
 {
+
+
     public UserData userData;
     public string Token, RefreshToken;
 
@@ -51,8 +53,9 @@ public class UserProfile : Singleton<UserProfile>
             RefreshTokenManager.Instance.StoreRefreshToken(res.RefreshToken);
 
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
-            var friends = await Server.GetFriends();
-            userData.Friends = friends.Profiles;
+
+            await GetMyFriends();
+            await GetMyNotifications();
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
@@ -93,8 +96,9 @@ public class UserProfile : Singleton<UserProfile>
 
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
-            var friends = await Server.GetFriends();
-            userData.Friends = friends.Profiles;
+
+            await GetMyFriends();
+            await GetMyNotifications();
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
@@ -168,6 +172,14 @@ public class UserProfile : Singleton<UserProfile>
         }
     }
 
+    public async Task GetMyFriends()
+    {
+        var friends = await Server.GetFriends();
+        userData.Friends = friends.Profiles;
+        userData.PendingFriendRequests = friends.Pending;
+        userData.SentFriendRequests = friends.SentRequests;
+    }
+
     public void GetMyProfile(bool loginStatus)
     {
         if (loginStatus)
@@ -182,6 +194,12 @@ public class UserProfile : Singleton<UserProfile>
 
         }
     }
+    public async Task GetMyNotifications()
+    {
+        var notifications = await Server.GetNotifications();
+        userData.Notifications = notifications.Notifications;
+    }
+
     public class UserData
     {
         public string Id { get; set; }
@@ -192,6 +210,9 @@ public class UserProfile : Singleton<UserProfile>
         public string RefreshToken { get; set; }
         public int Age { get; set; }
         public RepeatedField<Mvm.UserProfile>  Friends { get; set; }
+        public RepeatedField<string> PendingFriendRequests { get; set; }
+        public RepeatedField<string> SentFriendRequests { get; set; }
+        public RepeatedField<Mvm.Notification> Notifications { get; set; }
         public Mvm.AvatarSettings AvatarSettings { get; set; }
         public RepeatedField<Room> Rooms { get; set; }
     }

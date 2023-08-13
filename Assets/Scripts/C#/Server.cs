@@ -163,7 +163,7 @@ public class Server : MonoBehaviour
     }
     public static async Task<AddFriendResponse> AddFriend(AddFriendRequest req)
     {
-        string res = await CreatePostCall("/friends/accept", req);
+        string res = await CreatePostCall("/friends/add", req);
 
         return res != null ? JsonConvert.DeserializeObject<AddFriendResponse>(res) : null;
     }
@@ -246,6 +246,20 @@ public class Server : MonoBehaviour
         string res = await CreatePostCall("/user/features", req);
 
         return res != null ? JsonConvert.DeserializeObject<GetUserProfileFeaturesResponse>(res) : null;
+    }
+
+    public static async Task<GetNotificationsResponse> GetNotifications()
+    {
+        string res = await CreateGetCall("/notifications");
+
+        return res != null ? JsonConvert.DeserializeObject<GetNotificationsResponse>(res) : null;
+    }
+
+    public static async Task<DeleteNotificationResponse> DeleteNotifications()
+    {
+        string res = await CreateDeleteCall("/notifications",new DeleteNotificationRequest { });
+
+        return res != null ? JsonConvert.DeserializeObject<DeleteNotificationResponse>(res) : null;
     }
 
     #endregion

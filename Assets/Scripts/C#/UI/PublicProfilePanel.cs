@@ -40,6 +40,7 @@ public class PublicProfilePanel : MonoBehaviour
 
     private IEnumerator SetUpAddRemoveFriendBtn(string userId)
     {
+        addRemoveBtn.onClick.RemoveAllListeners();
         while (UserProfile.Instance.userData.Friends == null)
         {
             yield return null; 
@@ -55,9 +56,49 @@ public class PublicProfilePanel : MonoBehaviour
                     {
                         FriendId = userId
                     });
-                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Freind has been deleted successfully");
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend has been deleted successfully");
+                    await UserProfile.Instance.GetMyFriends();
+                    StartCoroutine(SetUpAddRemoveFriendBtn(userId));
                 });
                 yield break; 
+            }
+        }
+
+        foreach (var req in UserProfile.Instance.userData.PendingFriendRequests)
+        {
+            if (req == userId)
+            {
+                addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Accept friend request";
+                addRemoveBtn.onClick.AddListener(async () =>
+                {
+                    await Server.AddFriend(new Mvm.AddFriendRequest
+                    {
+                        FriendId = userId
+                    });
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been accepted successfully");
+                    await UserProfile.Instance.GetMyFriends();
+                    StartCoroutine(SetUpAddRemoveFriendBtn(userId));
+                });
+                yield break;
+            }
+        }
+
+        foreach (var req in UserProfile.Instance.userData.SentFriendRequests)
+        {
+            if (req == userId)
+            {
+                addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Cancel friend request";
+                addRemoveBtn.onClick.AddListener(async () =>
+                {
+                    await Server.DeleteFriendRequest(new Mvm.DeleteFriendRequestRequest
+                    {
+                        FriendId = userId
+                    });
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been deleted successfully");
+                    await UserProfile.Instance.GetMyFriends();
+                    StartCoroutine(SetUpAddRemoveFriendBtn(userId));
+                });
+                yield break;
             }
         }
 
@@ -69,7 +110,10 @@ public class PublicProfilePanel : MonoBehaviour
             {
                 FriendId = userId
             });
-            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Freind request has been sent");
+
+            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been sent");
+            await UserProfile.Instance.GetMyFriends();
+            StartCoroutine(SetUpAddRemoveFriendBtn(userId));
         });
         yield break;
     }

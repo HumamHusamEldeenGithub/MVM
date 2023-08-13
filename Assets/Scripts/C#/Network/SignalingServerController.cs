@@ -148,7 +148,7 @@ class SignalingServerController : Singleton<SignalingServerController>
 
                     case "notification":
                         var newNotification = JsonConvert.DeserializeObject<Mvm.Notification>((string)socketMessage.Data);
-                        Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}");
+                        Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}  -- {newNotification.Type}");
                         break;
 
                     default:

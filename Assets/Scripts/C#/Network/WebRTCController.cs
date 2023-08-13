@@ -10,6 +10,8 @@ public class WebRTCController : MonoBehaviour
 
     public string peerId;
 
+    UserProfile.PeerData userData;
+
     public RTCPeerConnection pc;
 
     RTCDataChannel peerDataChannel;
@@ -44,6 +46,7 @@ public class WebRTCController : MonoBehaviour
     public void InitPeerConnection(AudioStreamTrack localAudioStream, string peerId , UserProfile.PeerData userData)
     {
         this.peerId = peerId;
+        this.userData = userData;
 
         var configuration = GetSelectedSdpSemantics();
         pc = new RTCPeerConnection(ref configuration);
@@ -53,10 +56,10 @@ public class WebRTCController : MonoBehaviour
         pc.OnIceConnectionChange = OnIceConnectionChange;
         pc.OnDataChannel = channel =>
         {
-            Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
 
-            this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
+            //this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
+
             Debug.Log("Call Audio Stream in onDataChannel");
             if (this.remoteStreamTrack != null)
             {
@@ -300,7 +303,7 @@ public class WebRTCController : MonoBehaviour
                 Debug.Log($"IceConnectionState: Connected");
                 if (peerDataChannel != null)
                 {
-                    peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
+                    peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
                     //WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
                 }
                 break;

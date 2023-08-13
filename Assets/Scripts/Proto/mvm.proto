@@ -87,6 +87,8 @@ message GetFriendsRequest {}
 
 message GetFriendsResponse {
     repeated UserProfile profiles = 1;
+    repeated string pending = 2;
+    repeated string sentRequests = 3;
 }
 
 message GetPendingFriendsRequest {}
@@ -208,13 +210,13 @@ message AvatarSettings{
     string roomBackgroundColor = 14;
 }
 
-message GetNotifications {
+message GetNotificationsResponse {
     repeated Notification notifications = 1;
 }
 
-message DeleteNotification {
-    string id = 1 ; 
-}
+message DeleteNotificationRequest {}
+
+message DeleteNotificationResponse {}
 
 // Socket messages 
 
@@ -305,14 +307,15 @@ message OnlineStatus {
 }
 
 enum NotificationType{
-    FRIEND_REQUEST = 0 ;
-    ROOM_INVITATION = 1 ;
+    DEFAULT = 0 ;
+    FRIEND_REQUEST = 1 ;
+    ROOM_INVITATION = 2 ;
 }
 
 message Notification{
     string id = 1;
     string userId = 2;
-    NotificationType type = 3;
+    int32 type = 3;
     string fromUser = 4 ;
     optional string entityId = 5 ;
     optional string message = 6;
