@@ -146,6 +146,11 @@ class SignalingServerController : Singleton<SignalingServerController>
                         UpdateUserOnlineStatus(newOnlineStatus);
                         break;
 
+                    case "notification":
+                        var newNotification = JsonConvert.DeserializeObject<Mvm.Notification>((string)socketMessage.Data);
+                        Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}");
+                        break;
+
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type + " No events assigned to this type");
                         break;

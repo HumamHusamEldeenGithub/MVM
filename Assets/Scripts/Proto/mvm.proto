@@ -208,6 +208,14 @@ message AvatarSettings{
     string roomBackgroundColor = 14;
 }
 
+message GetNotifications {
+    repeated Notification notifications = 1;
+}
+
+message DeleteNotification {
+    string id = 1 ; 
+}
+
 // Socket messages 
 
 message SocketMessage  {
@@ -294,4 +302,18 @@ message OnlineStatus {
     string id = 1 ; 
     string username = 2;
     bool isOnline = 3 ;
+}
+
+enum NotificationType{
+    FRIEND_REQUEST = 0 ;
+    ROOM_INVITATION = 1 ;
+}
+
+message Notification{
+    string id = 1;
+    string userId = 2;
+    NotificationType type = 3;
+    string fromUser = 4 ;
+    optional string entityId = 5 ;
+    optional string message = 6;
 }

@@ -107,6 +107,7 @@ public class AvatarSettingsPanel : MonoBehaviour
        await Server.UpsertAvatarSettings(new UpsertAvatarSettingsRequest {
             Settings = avatarSettings
        });
+       EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Saved !");
     }
 
 

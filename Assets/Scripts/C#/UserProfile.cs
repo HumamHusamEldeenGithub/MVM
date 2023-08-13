@@ -67,6 +67,8 @@ public class UserProfile : Singleton<UserProfile>
     {
         var runner = TaskPool.Instance;
 
+        
+
         async void loginWithRefreshToken(string refreshToken)
         {
             LoginByRefreshTokenResponse res = await Server.LoginByRefreshToken(new LoginByRefreshTokenRequest { RefreshToken = refreshToken });

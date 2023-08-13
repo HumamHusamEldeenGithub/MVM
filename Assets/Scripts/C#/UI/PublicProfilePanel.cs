@@ -40,11 +40,11 @@ public class PublicProfilePanel : MonoBehaviour
 
     private IEnumerator SetUpAddRemoveFriendBtn(string userId)
     {
-        while (UserProfile.Instance.userData.Friends.Count == 0)
+        while (UserProfile.Instance.userData.Friends == null)
         {
             yield return null; 
         }
-        foreach (var user in SignalingServerController.Instance.usersOnlineStatus.Users)
+        foreach (var user in UserProfile.Instance.userData.Friends)
         {
             if (user.Id == userId)
             {
@@ -55,19 +55,23 @@ public class PublicProfilePanel : MonoBehaviour
                     {
                         FriendId = userId
                     });
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Freind has been deleted successfully");
                 });
-                yield return null ;
+                yield break; 
             }
         }
+
         addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Add friend";
         addRemoveBtn.onClick.AddListener(async () =>
         {
+
             await Server.CreateFriendRequest(new Mvm.CreateFriendRequestRequest
             {
                 FriendId = userId
             });
+            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Freind request has been sent");
         });
-        yield return null;
+        yield break;
     }
 
     private void SwitchPanel(bool switchCase, Transform prevPanel)
