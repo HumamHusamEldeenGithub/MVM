@@ -102,25 +102,19 @@ class SignalingServerController : Singleton<SignalingServerController>
                 switch (socketMessage.Type)
                 {
                     case "offer":
-                        Debug.Log("Received Offer from " + socketMessage.FromId);
-                        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
-                        webRTCManager.ReceiveOffer(socketMessage.FromId, socketMessage);
+                        await HandleOfferMessage(socketMessage);
                         break;
 
                     case "answer":
-                        Debug.Log("Received answer from " + socketMessage.FromId);
-                        webRTCManager.ReceiveAnswer(socketMessage.FromId, socketMessage);
+                        HandleAnswerMessage(socketMessage);
                         break;
 
                     case "ice":
-                        Debug.Log("Received Ice from " + socketMessage.FromId);
-                        webRTCManager.ReceiveICE(socketMessage.FromId, socketMessage);
+                        HandleICEMessage(socketMessage);
                         break;
 
                     case "user_enter":
-                        Debug.Log("user enter with id " + socketMessage.FromId);
-                        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
-                        webRTCManager.SendOffer(socketMessage.FromId);
+                        HandleUserEnterMessage(socketMessage);
                         break;
 
                     case "leave_room":
@@ -131,24 +125,15 @@ class SignalingServerController : Singleton<SignalingServerController>
                         break;
 
                     case "get_users_online_status_list":
-                        Debug.Log("get user online status  " + socketMessage.Data);
-                        usersOnlineStatus = JsonConvert.DeserializeObject<OnlineStatuses>((string)socketMessage.Data);
-                        foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
-                        {
-                            Debug.Log($"ID: {onlineStatus.Id} -- Username: {onlineStatus.Username} -- + IsOnline:{onlineStatus.IsOnline}");
-                        }
-                        EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent),usersOnlineStatus);
+                        HandleGetUsersOnlineStatus(socketMessage);
                         break;
 
                     case "user_status_changed":
-                        var newOnlineStatus = JsonConvert.DeserializeObject<OnlineStatus>((string)socketMessage.Data);
-                        Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
-                        UpdateUserOnlineStatus(newOnlineStatus);
+                        HandleUserStatusChanged(socketMessage);
                         break;
 
                     case "notification":
-                        var newNotification = JsonConvert.DeserializeObject<Mvm.Notification>((string)socketMessage.Data);
-                        Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}  -- {newNotification.Type}");
+                        HandleNotificationMessage(socketMessage);
                         break;
 
                     default:
@@ -161,6 +146,59 @@ class SignalingServerController : Singleton<SignalingServerController>
                 Debug.LogWarning(e.ToString());
             }
         }
+    }
+
+    private async Task HandleOfferMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("Received Offer from " + socketMessage.FromId);
+        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+        webRTCManager.ReceiveOffer(socketMessage.FromId, socketMessage);
+    }
+
+    private void HandleAnswerMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("Received answer from " + socketMessage.FromId);
+        webRTCManager.ReceiveAnswer(socketMessage.FromId, socketMessage);
+    }
+
+    private void HandleICEMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("Received Ice from " + socketMessage.FromId);
+        webRTCManager.ReceiveICE(socketMessage.FromId, socketMessage);
+    }
+
+    private async void HandleUserEnterMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("user enter with id " + socketMessage.FromId);
+        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
+        webRTCManager.SendOffer(socketMessage.FromId);
+    }
+
+    private void HandleNotificationMessage(SignalingMessage socketMessage)
+    {
+        var newNotification = JsonConvert.DeserializeObject<Mvm.Notification>((string)socketMessage.Data);
+        Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}  -- {newNotification.Type}");
+
+        UserProfile.Instance.userData.Notifications.Add(newNotification);
+        EventsPool.Instance.InvokeEvent(typeof(ReceivedNotificationEvent));
+    }
+
+    private void HandleGetUsersOnlineStatus(SignalingMessage socketMessage)
+    {
+        Debug.Log("get user online status  " + socketMessage.Data);
+        usersOnlineStatus = JsonConvert.DeserializeObject<OnlineStatuses>((string)socketMessage.Data);
+        foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
+        {
+            Debug.Log($"ID: {onlineStatus.Id} -- Username: {onlineStatus.Username} -- + IsOnline:{onlineStatus.IsOnline}");
+        }
+        EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
+    }
+
+    private void HandleUserStatusChanged(SignalingMessage socketMessage)
+    {
+        var newOnlineStatus = JsonConvert.DeserializeObject<OnlineStatus>((string)socketMessage.Data);
+        Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
+        UpdateUserOnlineStatus(newOnlineStatus);
     }
 
     public static async Task SendMessageToServerAsync(SignalingMessage message)

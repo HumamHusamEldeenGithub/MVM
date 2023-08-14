@@ -304,7 +304,7 @@ public class WebRTCController : MonoBehaviour
                 if (peerDataChannel != null)
                 {
                     peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
-                    //WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
+                    WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
                 }
                 break;
             case RTCIceConnectionState.Disconnected:

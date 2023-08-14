@@ -51,8 +51,9 @@ public class UserProfile : Singleton<UserProfile>
             RefreshToken = res.RefreshToken;
 
             RefreshTokenManager.Instance.StoreRefreshToken(res.RefreshToken);
-
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+
+            getMyProfile();
 
             await GetMyFriends();
             await GetMyNotifications();
@@ -91,8 +92,6 @@ public class UserProfile : Singleton<UserProfile>
 
             Token = res.Token;
             RefreshToken = res.RefreshToken;
-
-            getMyProfile();
 
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
@@ -137,7 +136,9 @@ public class UserProfile : Singleton<UserProfile>
 
             Token = res.Token;
             RefreshToken = res.RefreshToken;
+
             getMyProfile();
+
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,6 +6,14 @@ using UnityEngine;
 
 public class NotificationIconController : MonoBehaviour
 {
+    private void Awake()
+    {
+        EventsPool.Instance.AddListener(typeof(ReceivedNotificationEvent), new Action(() =>
+        {
+            StartCoroutine(SetupNotificationCounter());
+        }));
+    }
+
     private void OnEnable()
     {
         StartCoroutine(SetupNotificationCounter());
