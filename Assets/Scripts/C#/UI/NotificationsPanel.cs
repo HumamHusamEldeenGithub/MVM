@@ -58,9 +58,13 @@ public class NotificationsPanel : MonoBehaviour
 
     void OnClickNotification(Mvm.Notification notification)
     {
-        if (notification.Type == 1)
+        if (notification.Type == 1 || notification.Type == 3)
         {
             publicProfilePanel.ShowProfile(notification.FromUser, this.transform);
+        }
+        if (notification.Type == 2)
+        {
+            // TODO : add join room action
         }
     }
 }
