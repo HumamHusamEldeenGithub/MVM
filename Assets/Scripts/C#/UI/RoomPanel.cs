@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class RoomPanel : MonoBehaviour
 {
-    public void Hangup()
-    {
-        EventsPool.Instance.AddListener(typeof(HangupEvent))
-    }
+
 }
