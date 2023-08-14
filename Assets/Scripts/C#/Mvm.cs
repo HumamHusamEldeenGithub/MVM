@@ -124,9 +124,9 @@ namespace Mvm {
             "eXBlEhAKDFJPT01fTUVTU0FHRRAAEg8KC1VTRVJfSk9JTkVEEAESCQoFRVJS",
             "T1IQAipUChZEYXRhQ2hhbm5lbE1lc3NhZ2VUeXBlEhQKEFRSQUNLSU5HX01F",
             "U1NBR0UQABIQCgxDSEFUX01FU1NBR0UQARISCg5BVkFUQVJfTUVTU0FHRRAD",
-            "KkgKEE5vdGlmaWNhdGlvblR5cGUSCwoHREVGQVVMVBAAEhIKDkZSSUVORF9S",
-            "RVFVRVNUEAESEwoPUk9PTV9JTlZJVEFUSU9OEAJCCVoHLi9tdm1QYmIGcHJv",
-            "dG8z"));
+            "KlwKEE5vdGlmaWNhdGlvblR5cGUSCwoHREVGQVVMVBAAEhIKDkZSSUVORF9S",
+            "RVFVRVNUEAESEwoPUk9PTV9JTlZJVEFUSU9OEAISEgoOQUNDRVBUX1JFUVVF",
+            "U1QQA0IJWgcuL212bVBiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), typeof(global::Mvm.DataChannelMessageType), typeof(global::Mvm.NotificationType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -216,6 +216,7 @@ namespace Mvm {
     [pbr::OriginalName("DEFAULT")] Default = 0,
     [pbr::OriginalName("FRIEND_REQUEST")] FriendRequest = 1,
     [pbr::OriginalName("ROOM_INVITATION")] RoomInvitation = 2,
+    [pbr::OriginalName("ACCEPT_REQUEST")] AcceptRequest = 3,
   }
 
   #endregion

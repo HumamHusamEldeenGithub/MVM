@@ -310,6 +310,7 @@ enum NotificationType{
     DEFAULT = 0 ;
     FRIEND_REQUEST = 1 ;
     ROOM_INVITATION = 2 ;
+    ACCEPT_REQUEST = 3 ;
 }
 
 message Notification{
