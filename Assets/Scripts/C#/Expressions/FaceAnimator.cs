@@ -151,7 +151,7 @@ public class FaceAnimator : MonoBehaviour
         Updateeyes();
 
         // Apply mouth smile and frown values
-        UpdatemouthSmileFrownWeights();
+        UpdateMouthSmileFrownWeights();
 
         // mouths
         mouthDirection();
@@ -271,14 +271,14 @@ public class FaceAnimator : MonoBehaviour
 
     }
 
-    private void UpdatemouthSmileFrownWeights()
+    private void UpdateMouthSmileFrownWeights()
     {
         if (mouthSmileFrownMethod == 1)
         {
-            blendshapeKeys["mouthSmileRight"].weight = MappingEffect(blendshapeKeys["mouthSmileRight"].weight - 40, 60, 100, 0);
-            blendshapeKeys["mouthSmileLeft"].weight = MappingEffect(blendshapeKeys["mouthSmileLeft"].weight - 40, 60, 100, 0);
-            blendshapeKeys["mouthDimpleLeft"].weight = MappingEffect(blendshapeKeys["mouthDimpleLeft"].weight - 40, 60, 100, 0);
-            blendshapeKeys["mouthDimpleRight"].weight = MappingEffect(blendshapeKeys["mouthDimpleRight"].weight - 40, 60, 100, 0);
+            blendshapeKeys["mouthSmileRight"].weight = MappingEffect(blendshapeKeys["mouthSmileRight"].weight, 60, 100, 0);
+            blendshapeKeys["mouthSmileLeft"].weight = MappingEffect(blendshapeKeys["mouthSmileLeft"].weight, 60, 100, 0);
+            blendshapeKeys["mouthDimpleLeft"].weight = MappingEffect(blendshapeKeys["mouthDimpleLeft"].weight, 60, 100, 0);
+            blendshapeKeys["mouthDimpleRight"].weight = MappingEffect(blendshapeKeys["mouthDimpleRight"].weight, 60, 100, 0);
 
         }
 

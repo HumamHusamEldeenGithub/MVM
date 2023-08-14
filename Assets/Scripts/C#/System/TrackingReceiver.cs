@@ -18,7 +18,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     #region CachedVars
 
     NetworkStream pyStream;
-    WebRTCManager webRTCManager;
     ClientsManager selfController;
 
     #endregion
@@ -62,7 +61,6 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         processManager = ProcessManager.Instance;
 
         selfController = GetComponentInChildren<ClientsManager>();
-        webRTCManager = GetComponentInChildren<WebRTCManager>();
     }
 
     public void StartReceiving(bool success)
@@ -137,7 +135,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 response.TrackingMessage.Keypoints = null;
 
                 peerController.SetTrackingData(response);
-                webRTCManager.SendMessageToDataChannel(response);
+                WebRTCManager.Instance.SendMessageToDataChannel(response);
             }
         }
     }

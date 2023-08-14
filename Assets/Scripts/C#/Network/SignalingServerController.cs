@@ -18,7 +18,6 @@ class SignalingServerController : Singleton<SignalingServerController>
     static ClientWebSocket webSocket;
     public OnlineStatuses usersOnlineStatus;
 
-    public WebRTCManager webRTCManager;
     #endregion
 
     #region MonoBehaviour
@@ -30,16 +29,23 @@ class SignalingServerController : Singleton<SignalingServerController>
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
             new Action<bool>(InitWebSocketConnection));
 
+        EventsPool.Instance.AddListener(typeof(HangupEvent),
+            new Action(() =>
+            {
+                WebRTCManager.Instance.DisposeAllWebRTCConnections();
+            }));
+
         serverThread = new Thread(() => {
             ConnectToSignalingServer();
             ReceiveServerMessagesAsync();
         });
     }
+
     private async void OnApplicationQuit()
     {
         threadRunning = false;
 
-        webRTCManager.DisposeAllWebRTCConnections();
+        WebRTCManager.Instance.DisposeAllWebRTCConnections();
 
         if (serverThread?.IsAlive == true)
             serverThread?.Join();
@@ -47,6 +53,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         if (webSocket != null && webSocket?.State != WebSocketState.Closed)
             await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
     }
+
     #endregion
 
     public void InitWebSocketConnection(bool isLoggedIn)
@@ -151,27 +158,27 @@ class SignalingServerController : Singleton<SignalingServerController>
     private async Task HandleOfferMessage(SignalingMessage socketMessage)
     {
         Debug.Log("Received Offer from " + socketMessage.FromId);
-        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
-        webRTCManager.ReceiveOffer(socketMessage.FromId, socketMessage);
+        await WebRTCManager.Instance.CreateNewWebRTCConnection(socketMessage.FromId);
+        WebRTCManager.Instance.ReceiveOffer(socketMessage.FromId, socketMessage);
     }
 
     private void HandleAnswerMessage(SignalingMessage socketMessage)
     {
         Debug.Log("Received answer from " + socketMessage.FromId);
-        webRTCManager.ReceiveAnswer(socketMessage.FromId, socketMessage);
+        WebRTCManager.Instance.ReceiveAnswer(socketMessage.FromId, socketMessage);
     }
 
     private void HandleICEMessage(SignalingMessage socketMessage)
     {
         Debug.Log("Received Ice from " + socketMessage.FromId);
-        webRTCManager.ReceiveICE(socketMessage.FromId, socketMessage);
+        WebRTCManager.Instance.ReceiveICE(socketMessage.FromId, socketMessage);
     }
 
     private async void HandleUserEnterMessage(SignalingMessage socketMessage)
     {
         Debug.Log("user enter with id " + socketMessage.FromId);
-        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
-        webRTCManager.SendOffer(socketMessage.FromId);
+        await WebRTCManager.Instance.CreateNewWebRTCConnection(socketMessage.FromId);
+        WebRTCManager.Instance.SendOffer(socketMessage.FromId);
     }
 
     private void HandleNotificationMessage(SignalingMessage socketMessage)
@@ -221,7 +228,7 @@ class SignalingServerController : Singleton<SignalingServerController>
     public void ConnectToRoom(string roomId)
     {
         SendJoinRoomEvent(roomId);
-        webRTCManager.CaptureAudio();
+        WebRTCManager.Instance.CaptureAudio();
         EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
     }
 

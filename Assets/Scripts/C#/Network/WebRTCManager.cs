@@ -10,7 +10,7 @@ using Google.Protobuf;
 using System.IO;
 using System.Threading.Tasks;
 
-public class WebRTCManager : MonoBehaviour
+public class WebRTCManager : Singleton<WebRTCManager>
 {
     #region Properties
     SynchronizationContext syncContext;
