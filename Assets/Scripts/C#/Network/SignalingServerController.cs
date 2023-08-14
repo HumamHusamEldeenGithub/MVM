@@ -181,12 +181,16 @@ class SignalingServerController : Singleton<SignalingServerController>
         WebRTCManager.Instance.SendOffer(socketMessage.FromId);
     }
 
-    private void HandleNotificationMessage(SignalingMessage socketMessage)
+    private async void HandleNotificationMessage(SignalingMessage socketMessage)
     {
         var newNotification = JsonConvert.DeserializeObject<Mvm.Notification>((string)socketMessage.Data);
         Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}  -- {newNotification.Type}");
 
         UserProfile.Instance.userData.Notifications.Add(newNotification);
+        if (newNotification.Type == 1 || newNotification.Type == 3)
+        {
+            await UserProfile.Instance.GetMyFriends();
+        }
         EventsPool.Instance.InvokeEvent(typeof(ReceivedNotificationEvent));
     }
 
