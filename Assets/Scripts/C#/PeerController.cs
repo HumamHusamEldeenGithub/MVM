@@ -126,9 +126,16 @@ public class PeerController : MonoBehaviour
 
                 DataChannelMessage responseMessage = DataChannelMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
 
-                CheckDelayThreshold(responseMessage.TrackingMessage.Date);
+                if (responseMessage.AvatarMessage != null)
+                {
+                    Debug.Log($"Received avatar message {responseMessage.AvatarMessage}");
+                }
+                else if (responseMessage.TrackingMessage != null)
+                {
+                    CheckDelayThreshold(responseMessage.TrackingMessage.Date);
 
-                dataChannelMessages.Enqueue(responseMessage);
+                    dataChannelMessages.Enqueue(responseMessage);
+                }
             }
             catch (Exception e)
             {
