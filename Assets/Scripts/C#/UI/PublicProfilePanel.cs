@@ -59,6 +59,10 @@ public class PublicProfilePanel : MonoBehaviour
                     EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend has been deleted successfully");
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
+                    await SignalingServerController.SendMessageToServerAsync(new SignalingMessage
+                    {
+                        Type = "refreshFriends"
+                    });
                 });
                 yield break; 
             }
@@ -78,6 +82,10 @@ public class PublicProfilePanel : MonoBehaviour
                     EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been accepted successfully");
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
+                    await SignalingServerController.SendMessageToServerAsync(new SignalingMessage
+                    {
+                        Type = "refreshFriends"
+                    });
                 });
                 yield break;
             }
