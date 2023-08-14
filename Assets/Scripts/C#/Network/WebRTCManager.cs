@@ -170,6 +170,7 @@ public class WebRTCManager : Singleton<WebRTCManager>
         {
             foreach (string key in webRTCConnections.Keys)
             {
+                Debug.Log(key);
                 DisposeWebRTCConnection(key);
             }
         }), null);

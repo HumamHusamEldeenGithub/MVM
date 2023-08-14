@@ -99,7 +99,16 @@ public class AvatarCustomizer : MonoBehaviour
     protected void SetBrowsStyle(int browsStyleInd)
     {
         browsStyleInd = Mathf.Clamp(browsStyleInd, 0, browsTextures.Length - 1);
-        skinMaterial.SetTexture("_BrowsTexture", browsTextures[browsStyleInd]);
+
+        skinMaterial.SetTexture("_BrowsTexture", null);
+        for (int i = 0; i < browsTextures.Length; i++)
+        {
+            if (browsTextures[i].name == browsStyleInd.ToString())
+            {
+                skinMaterial.SetTexture("_BrowsTexture", browsTextures[i]);
+                break;
+            }
+        }
     }
 
     protected void SetEyeStyle(int eyeStyleInd)
@@ -144,13 +153,31 @@ public class AvatarCustomizer : MonoBehaviour
     protected void SetSkinImperfection(int skinImperfectionInd)
     {
         skinImperfectionInd = Mathf.Clamp(skinImperfectionInd, 0, skinImperfectionTextures.Length - 1);
-        skinMaterial.SetTexture("_FaceImperfectionTexture", skinImperfectionTextures[skinImperfectionInd]);
+
+        skinMaterial.SetTexture("_FaceImperfectionTexture", null);
+        for (int i = 0; i < skinImperfectionTextures.Length; i++)
+        {
+            if (skinImperfectionTextures[i].name == skinImperfectionInd.ToString())
+            {
+                skinMaterial.SetTexture("_FaceImperfectionTexture", skinImperfectionTextures[i]);
+                break;
+            }
+        }
     }
 
     protected void SetTattoo(int tattooInd)
     {
         tattooInd = Mathf.Clamp(tattooInd, 0, tattooTextures.Length - 1);
-        skinMaterial.SetTexture("_FaceTattooTexture", tattooTextures[tattooInd]);
+
+        skinMaterial.SetTexture("_FaceTattooTexture", null);
+        for (int i = 0; i < tattooTextures.Length; i++)
+        {
+            if (tattooTextures[i].name == tattooInd.ToString())
+            {
+                skinMaterial.SetTexture("_FaceTattooTexture", tattooTextures[i]);
+                break;
+            }
+        }
     }
 
     protected void SetHairColor(string colorHex)
