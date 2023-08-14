@@ -58,7 +58,7 @@ public class WebRTCController : MonoBehaviour
         {
             this.peerDataChannel = channel;
 
-            //this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
+            this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
 
             Debug.Log("Call Audio Stream in onDataChannel");
             if (this.remoteStreamTrack != null)
@@ -304,7 +304,7 @@ public class WebRTCController : MonoBehaviour
                 if (peerDataChannel != null)
                 {
                     peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
-                    WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
+                    peerDataChannel.OnOpen += () => { WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel); };
                 }
                 break;
             case RTCIceConnectionState.Disconnected:

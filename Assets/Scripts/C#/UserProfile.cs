@@ -8,19 +8,11 @@ using UnityEngine;
 
 public class UserProfile : Singleton<UserProfile>
 {
-
-
     public UserData userData;
     public string Token, RefreshToken;
 
-    public string Username
-    {
-        get; private set;
-    }
-    public string Password
-    {
-        get; private set;
-    }
+    public string Username { get; private set; }
+    public string Password { get; private set; }
 
     private void LoginUser(string username, string password)
     {
@@ -69,9 +61,7 @@ public class UserProfile : Singleton<UserProfile>
 
     private void LoginUserWithRefreshToken(string refreshToken)
     {
-        var runner = TaskPool.Instance;
-
-        
+        var runner = TaskPool.Instance; 
 
         async void loginWithRefreshToken(string refreshToken)
         {
