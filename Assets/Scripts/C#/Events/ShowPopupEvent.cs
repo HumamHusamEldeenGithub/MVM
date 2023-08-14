@@ -1,3 +1,4 @@
-﻿using UnityEngine.Events;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
-public class ShowPopupEvent : UnityEvent<string>{}
+public class ShowPopupEvent : UnityEvent<string, float, Color>{}

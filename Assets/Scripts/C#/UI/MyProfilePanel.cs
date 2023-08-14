@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,9 +19,22 @@ public class MyProfilePanel : MonoBehaviour
     private void Awake()
     {
         avatarSettingsBtn.onClick.AddListener(TransitionToAvatarSettingsScene);
+        if (UserProfile.Instance.userData != null)
+        {
+            Initialize();
+        }
+        else
+        {
+            EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
+                new Action<bool>((bool s) =>
+                {
+                    if (s)
+                        Initialize();
+                }));
+        }
     }
 
-    private void OnEnable()
+    private void Initialize()
     {
         usernameField.text = UserProfile.Instance.userData.Username;
         emailField.text = UserProfile.Instance.userData.Email;

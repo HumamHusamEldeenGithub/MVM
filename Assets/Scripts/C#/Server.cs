@@ -16,7 +16,7 @@ public class Server : MonoBehaviour
     #region POST - GET - Delete
     private static async Task<string> CreateGetCall(string route)
     {
-        EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), true);
+        
 
         using HttpClient client = new HttpClient();
         try
@@ -28,20 +28,20 @@ public class Server : MonoBehaviour
 
             string responseContent = await response.Content.ReadAsStringAsync();
             Debug.Log(responseContent);
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return responseContent;
         }
         catch (HttpRequestException ex)
         {
             // handle exception
             Debug.LogError($"Error retrieving data from API: {ex.Message}");
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return null;
         }
     }
     private static async Task<string> CreatePostCall(string route,System.Object body)
     {
-        EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), true);
+        
         using HttpClient client = new HttpClient();
         try
         {
@@ -53,20 +53,20 @@ public class Server : MonoBehaviour
 
             string responseContent = await response.Content.ReadAsStringAsync();
             Debug.Log(responseContent);
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return responseContent;
         }
         catch (HttpRequestException ex)
         {
             // handle exception
             Debug.LogError($"Error retrieving data from API: {ex.Message}");
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return null;
         }
     }
     private static async Task<string> CreateDeleteCall(string route, System.Object body)
     {
-        EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), true);
+        
         using HttpClient client = new HttpClient();
         try
         {
@@ -83,21 +83,21 @@ public class Server : MonoBehaviour
 
             string responseContent = await response.Content.ReadAsStringAsync();
             Debug.Log(responseContent);
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return responseContent;
         }
         catch (HttpRequestException ex)
         {
             // handle exception
             Debug.LogError($"Error retrieving data from API: {ex.Message}");
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return null;
         }
     }
 
     public static async Task<string> UploadFile(byte[] fileBytes)
     {
-        EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), true);
+        
         string fileName = "Photo_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
         using HttpClient httpClient = new HttpClient();
         try
@@ -112,13 +112,13 @@ public class Server : MonoBehaviour
 
             string responseBody = await response.Content.ReadAsStringAsync();
             Debug.Log("File upload successful. Response: " + responseBody);
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return responseBody;
         }
         catch (HttpRequestException ex)
         {
             Debug.LogError("Error uploading file: " + ex.Message);
-            EventsPool.Instance.InvokeEvent(typeof(ShowLoadingPanelEvent), false);
+            
             return null;
         }
     }

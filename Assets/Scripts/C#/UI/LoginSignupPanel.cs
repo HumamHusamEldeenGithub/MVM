@@ -41,9 +41,6 @@ public class LoginSignupPanel : MonoBehaviour
     [SerializeField]
     private CameraPanel cameraPanel;
 
-    [SerializeField]
-    private GameObject errorMsgGO;
-
     #endregion
     private void OnEnable()
     {
@@ -70,7 +67,6 @@ public class LoginSignupPanel : MonoBehaviour
     {
         if (UserProfile.Instance.userData == null)
         {
-            // TODO : Add loading 
             var refreshToken = RefreshTokenManager.Instance.GetRefreshToken();
             if (refreshToken != null && refreshToken != "")
             {
@@ -106,12 +102,14 @@ public class LoginSignupPanel : MonoBehaviour
         if (!success)
         {
             Debug.Log("Active");
-            //errorMsgGO.gameObject.SetActive(true);
-        }
-        loginBtn.interactable = true;
+            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                "An error has occured while logging in",
+                3f,
+                Color.red
+            });
 
-        this.gameObject.SetActive(false);
-        mainMenuPanel.SetActive(true);
+            loginBtn.interactable = true;
+        }
 
     }
 }

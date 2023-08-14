@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +25,12 @@ public class NotificationsPanel : MonoBehaviour
             await Server.DeleteNotifications();
             UserProfile.Instance.userData.Notifications.Clear();
         });
+
+        EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>((bool s) =>
+        {
+            if (s)
+                Initialize();
+        }));
     }
 
     private void DestroyPrevoiusNotifications()
@@ -37,7 +44,7 @@ public class NotificationsPanel : MonoBehaviour
         }
     }
 
-    private async void OnEnable()
+    private async void Initialize()
     {
         await UserProfile.Instance.GetMyNotifications();
 

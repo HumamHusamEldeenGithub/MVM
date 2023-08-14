@@ -23,32 +23,38 @@ public class UserProfile : Singleton<UserProfile>
 
         async void login(string username, string password)
         {
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
             LoginUserResponse res = await Server.Login(new LoginUserRequest { Username = username, Password = password });
 
             if (res == null)
             {
-                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false); 
+                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
                 return;
             }
-            userData = new UserData
+            else
             {
-                Id = res.Id,
-                Username = username,
-                Password = password,
-                Token = res.Token,
-                RefreshToken = res.RefreshToken,
-            };
+                userData = new UserData
+                {
+                    Id = res.Id,
+                    Username = username,
+                    Password = password,
+                    Token = res.Token,
+                    RefreshToken = res.RefreshToken,
+                };
 
-            Token = res.Token;
-            RefreshToken = res.RefreshToken;
+                Token = res.Token;
+                RefreshToken = res.RefreshToken;
 
-            RefreshTokenManager.Instance.StoreRefreshToken(res.RefreshToken);
-            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+                RefreshTokenManager.Instance.StoreRefreshToken(res.RefreshToken);
 
-            getMyProfile();
+                await GetMyProfile();
+                await GetMyFriends();
+                await GetMyNotifications();
 
-            await GetMyFriends();
-            await GetMyNotifications();
+                EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
+            }
+
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
@@ -65,29 +71,36 @@ public class UserProfile : Singleton<UserProfile>
 
         async void loginWithRefreshToken(string refreshToken)
         {
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
             LoginByRefreshTokenResponse res = await Server.LoginByRefreshToken(new LoginByRefreshTokenRequest { RefreshToken = refreshToken });
 
             if (res == null)
             {
                 EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
-                return;
+            }
+            else
+            {
+
+                userData = new UserData
+                {
+                    Id = res.Id,
+                    Token = res.Token,
+                    RefreshToken = res.RefreshToken,
+                };
+
+                Token = res.Token;
+                RefreshToken = res.RefreshToken;
+
+                RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
+
+                await GetMyProfile();
+                await GetMyFriends();
+                await GetMyNotifications();
+
+                EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
             }
 
-            userData = new UserData
-            {
-                Id = res.Id,
-                Token = res.Token,
-                RefreshToken = res.RefreshToken,
-            };
-
-            Token = res.Token;
-            RefreshToken = res.RefreshToken;
-
-            RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
-            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
-
-            await GetMyFriends();
-            await GetMyNotifications();
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
@@ -127,7 +140,7 @@ public class UserProfile : Singleton<UserProfile>
             Token = res.Token;
             RefreshToken = res.RefreshToken;
 
-            getMyProfile();
+            await GetMyProfile();
 
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
@@ -142,7 +155,7 @@ public class UserProfile : Singleton<UserProfile>
         );
     }
 
-    async void getMyProfile()
+    async Task GetMyProfile()
     {
         var userProfile = await Server.GetProfile("");
         userData.Id = userProfile.Profile.Id;
@@ -178,7 +191,7 @@ public class UserProfile : Singleton<UserProfile>
             var runner = TaskPool.Instance;
             runner.AddTasks(new List<Action<CancellationToken>>
             {
-                token => getMyProfile(),
+                token => GetMyProfile(),
             },
                 out _
             );

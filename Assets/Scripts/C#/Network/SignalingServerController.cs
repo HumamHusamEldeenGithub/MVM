@@ -26,8 +26,8 @@ class SignalingServerController : Singleton<SignalingServerController>
         base.Awake();
         syncContext = SynchronizationContext.Current;
         userProfile = GetComponent<UserProfile>();
-        EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
-            new Action<bool>(InitWebSocketConnection));
+        EventsPool.Instance.AddListener(typeof(ConnectToServerEvent),
+            new Action(InitWebSocketConnection));
 
         EventsPool.Instance.AddListener(typeof(HangupEvent),
             new Action(() =>
@@ -56,13 +56,10 @@ class SignalingServerController : Singleton<SignalingServerController>
 
     #endregion
 
-    public void InitWebSocketConnection(bool isLoggedIn)
+    public void InitWebSocketConnection()
     {
-        if (isLoggedIn)
-        {
-            threadRunning = true;
-            serverThread?.Start();
-        }
+        threadRunning = true;
+        serverThread?.Start();
     }
 
     async void ConnectToSignalingServer()
@@ -84,12 +81,12 @@ class SignalingServerController : Singleton<SignalingServerController>
             // Connect to the server
             await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
 
-            Debug.Log("Connected to MVM server");
-            
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
         }
         catch (Exception e)
         {
             Console.WriteLine("Exception: {0}", e);
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
         }
     }
 

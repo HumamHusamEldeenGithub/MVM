@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,8 +13,17 @@ public class MyRoomsPanel : MonoBehaviour
     [SerializeField]
     private GameObject roomRowPrefab;
 
-    private void OnEnable()
+    private void Awake()
     {
+        EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
+    }
+
+    private void OnLogin(bool status)
+    {
+        if (!status)
+        {
+            return;
+        }
         int childCount = roomsScrollView.childCount;
 
         for (int i = childCount - 1; i >= 0; i--)
@@ -22,7 +32,7 @@ public class MyRoomsPanel : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        Debug.Log(UserProfile.Instance.userData);
+        Debug.Log(UserProfile.Instance.userData.Rooms);
 
 
         foreach (var room in UserProfile.Instance.userData.Rooms)
@@ -37,7 +47,7 @@ public class MyRoomsPanel : MonoBehaviour
         }
     }
 
-    void JoinRoom(string roomId)
+    private void JoinRoom(string roomId)
     { 
         if (roomId.Length != 0)
         {
