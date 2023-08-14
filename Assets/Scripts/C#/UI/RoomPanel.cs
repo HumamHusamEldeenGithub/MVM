@@ -6,6 +6,5 @@ public class RoomPanel : MonoBehaviour
     public void Hangup()
     {
         EventsPool.Instance.InvokeEvent(typeof(HangupEvent));
-        SceneManager.LoadScene(0);
     }
 }
