@@ -9,6 +9,9 @@ public class LoginSignupPanel : MonoBehaviour
     #region Attributes
 
     [SerializeField]
+    private Animator loginPanel;
+
+    [SerializeField]
     private GameObject mainMenuPanel;
 
     [SerializeField]
@@ -44,6 +47,7 @@ public class LoginSignupPanel : MonoBehaviour
     #endregion
     private void OnEnable()
     {
+        loginPanel.SetTrigger("FadeIn");
         cameraPanel.ActiveEventListener();
         if (UserProfile.Instance.userData != null && UserProfile.Instance.userData.Token != "")
         {

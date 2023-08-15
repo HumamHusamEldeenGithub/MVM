@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +17,10 @@ public class SearchForUserPanel : MonoBehaviour
     private GameObject searchButton;
 
     [SerializeField]
-    private PublicProfilePanel publicProfilePanel;
+    private Animator homeMenuPanel;
+
+    [SerializeField]
+    private Animator publicProfilePanel;
 
     private void Awake()
     {
@@ -51,7 +52,9 @@ public class SearchForUserPanel : MonoBehaviour
             btn.GetComponent<TMP_Text>().text = user.Username;
             btn.GetComponent<Button>().onClick.AddListener(() =>
             {
-                publicProfilePanel.ShowProfile(user.Id, GetComponent<Animator>());
+                EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), user.Id, GetComponent<Animator>());
+                GetComponent<Animator>().SetTrigger("FadeOut");
+                publicProfilePanel.SetTrigger("FadeIn");
             });
             element.transform.SetParent(usersScrollView);
         }

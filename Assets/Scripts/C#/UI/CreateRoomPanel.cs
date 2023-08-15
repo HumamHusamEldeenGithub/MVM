@@ -25,6 +25,7 @@ public class CreateRoomPanel : MonoBehaviour
 
     private async void  CreateRoom()
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         string roomTitle = roomtitleField.text;
         if (roomTitle != "")
         {
@@ -36,5 +37,6 @@ public class CreateRoomPanel : MonoBehaviour
             });
             UserProfile.Instance.GetMyProfile(true);
         }
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 }

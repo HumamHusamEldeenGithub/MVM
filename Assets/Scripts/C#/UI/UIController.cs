@@ -55,10 +55,10 @@ public class UIController : MonoBehaviour
 
     private void SwitchToPanel(Animator panel_1, Animator panel_2)
     {
-        if(panel_1 != null)
+        if (panel_1 != null && panel_1.GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
             panel_1?.SetTrigger("FadeOut");
 
-        if (panel_2 != null)
+        if (panel_2 != null && panel_2.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
             panel_2?.SetTrigger("FadeIn");
     }
 

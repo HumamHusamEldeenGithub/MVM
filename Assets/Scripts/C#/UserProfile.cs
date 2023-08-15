@@ -39,6 +39,7 @@ public class UserProfile : Singleton<UserProfile>
             if (res == null)
             {
                 EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
+                EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
                 return;
             }
             else

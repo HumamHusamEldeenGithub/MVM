@@ -48,6 +48,11 @@ public class RoomSpaceController : MonoBehaviour
         roomCamera.targetTexture = rt;
     }
 
+    private void ChangeRoomSpace()
+    {
+
+    }
+
     private void OnDestroy()
     {
         CurrentRoomRenderTexture.renderTexture.Release();

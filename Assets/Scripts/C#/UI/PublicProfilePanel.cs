@@ -37,6 +37,7 @@ public class PublicProfilePanel : MonoBehaviour
 
     public async void ShowProfile(string userId, Animator prevPanel)
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         var profile = await Server.GetProfile(userId);
         if (profile == null) return;
 
@@ -50,6 +51,8 @@ public class PublicProfilePanel : MonoBehaviour
             GetComponent<Animator>().SetTrigger("FadeOut");
             prevPanel.SetTrigger("FadeIn");
         });
+
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 
     private IEnumerator SetUpAddRemoveFriendBtn(string userId)

@@ -17,9 +17,9 @@ public class MyRoomsPanel : MonoBehaviour
     {
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
     }
+
     private void OnEnable()
     {
-
         if (UserProfile.Instance.userData != null)
         {
             // already logged in
@@ -41,16 +41,12 @@ public class MyRoomsPanel : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        Debug.Log(UserProfile.Instance.userData.Rooms);
-
-
         foreach (var room in UserProfile.Instance.userData.Rooms)
         {
             var element = Instantiate(roomRowPrefab);
 
             element.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Title;
             element.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Id));
-            // TODO activate join button
 
             element.transform.SetParent(roomsScrollView);
         }
