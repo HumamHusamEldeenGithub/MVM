@@ -64,6 +64,7 @@ public class TrackingReceiver : MonoBehaviour
         {
             mainThread.Join();
         }
+        processManager.DestroyPythonServer();
     }
 
     private void StartReceiving(bool success)

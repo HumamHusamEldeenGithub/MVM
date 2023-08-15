@@ -70,9 +70,11 @@ public class ClientsManager : Singleton<ClientsManager>
     {
         Debug.LogWarning("DISPOSE");
         RoomSpaceController ctrl;
-        participantsRoomSpaces.TryGetValue(peerID, out ctrl);
-        ctrl.Dispose();
-        participantsRoomSpaces.Remove(peerID);
+        if (participantsRoomSpaces.TryGetValue(peerID, out ctrl))
+        {
+            ctrl.Dispose();
+            participantsRoomSpaces.Remove(peerID);
+        }
     }
 
 }

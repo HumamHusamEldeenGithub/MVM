@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using Unity.WebRTC;
 using UnityEngine;
 
@@ -16,10 +15,11 @@ public class RoomSpaceController : MonoBehaviour
     }
 
     [SerializeField] PeerController peerController;
-    [SerializeField] RoomSpace roomSpace;
-    [SerializeField] MeshRenderer backgroundMesh;
+    [SerializeField] GameObject[] roomSpaces;
     [SerializeField] Camera roomCamera;
     [SerializeField] TextMeshProUGUI usernameText;
+
+    private GameObject decorationBackground;
 
 
     public RoomRenderTexture CurrentRoomRenderTexture
@@ -31,18 +31,22 @@ public class RoomSpaceController : MonoBehaviour
 
     public void Initialize(string peerID, RTCDataChannel dataChannel, UserProfile.PeerData user)
     {
-        SelfInitialize();
+        SelfInitialize(user.AvatarSettings.RoomBackgroundColor);
         peerController.Initialize(peerID, dataChannel, user);
         usernameText.text = user.Username;
         CurrentRoomRenderTexture.renderTexture.name = peerController.peerID;
     }
 
-    private void SelfInitialize()
+    private void SelfInitialize(string backgroundID)
     {
-        if (roomSpace != null && backgroundMesh != null)
-        {
-            backgroundMesh.material.color = roomSpace.BackgroundColor;
+        int id;
+        if (int.TryParse(backgroundID, out id)) {
+            id = Mathf.Clamp(id, 0, roomSpaces.Length - 1);
+            decorationBackground = Instantiate(roomSpaces[id]);
+            decorationBackground.transform.SetParent(transform, false);
+            decorationBackground.transform.localPosition = Vector3.zero;
         }
+
         var rt = new RenderTexture(1920, 1080, 16);
         CurrentRoomRenderTexture = new RoomRenderTexture (ref rt);
         roomCamera.targetTexture = rt;
