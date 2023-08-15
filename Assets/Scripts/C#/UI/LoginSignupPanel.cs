@@ -45,12 +45,13 @@ public class LoginSignupPanel : MonoBehaviour
     private void OnEnable()
     {
         cameraPanel.ActiveEventListener();
-        if (UserProfile.Instance.userData != null && UserProfile.Instance.userData.Token != "") {
+        if (UserProfile.Instance.userData != null && UserProfile.Instance.userData.Token != "")
+        {
             OnLogin(true);
             return;
         }
 
-        if (!usernameInp || !passwordInp || !loginBtn )
+        if (!usernameInp || !passwordInp || !loginBtn)
         {
             Debug.LogWarning("Username or Password isn't populated");
         }
@@ -61,20 +62,6 @@ public class LoginSignupPanel : MonoBehaviour
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
             new Action<bool>(OnLogin));
 
-    }
-
-    private void Start()
-    {
-        if (UserProfile.Instance.userData == null)
-        {
-            var refreshToken = RefreshTokenManager.Instance.GetRefreshToken();
-            if (refreshToken != null && refreshToken != "")
-            {
-                Debug.Log("RefreshToken found");
-                EventsPool.Instance.InvokeEvent(typeof(LoginWithRefreshTokenEvent), refreshToken);
-                return;
-            }
-        }
     }
 
     private void Login()

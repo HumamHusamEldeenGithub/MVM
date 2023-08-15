@@ -104,10 +104,12 @@ public class AvatarSettingsPanel : MonoBehaviour
 
     private async void SaveChanges()
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
        await Server.UpsertAvatarSettings(new UpsertAvatarSettingsRequest {
             Settings = avatarSettings
        });
-       EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Saved !");
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
+        EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Saved !", 3, Color.black);
     }
 
 

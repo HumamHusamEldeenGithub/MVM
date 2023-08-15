@@ -26,17 +26,40 @@ public class UIController : MonoBehaviour
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
         EventsPool.Instance.AddListener(typeof(RoomConnectedStatusEvent), new Action<bool>(OnRoomConnected));
 
-        EventsPool.Instance.AddListener(typeof(ShowPopupEvent), new Action<string, float>(OnShowPopup));
+        EventsPool.Instance.AddListener(typeof(ShowPopupEvent), new Action<string, float, Color>(OnShowPopup));
         EventsPool.Instance.AddListener(typeof(ToggleLoadingPanelEvent), new Action<bool>(OnToggleLoadingPanel));
 
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
+
+        popupPanel.SetActive(false);
+
+        if (UserProfile.Instance.userData == null)
+        {
+            var refreshToken = RefreshTokenManager.Instance.GetRefreshToken();
+            if (refreshToken != null && refreshToken != "")
+            {
+                Debug.Log("RefreshToken found");
+                EventsPool.Instance.InvokeEvent(typeof(LoginWithRefreshTokenEvent), refreshToken);
+                return;
+            }
+            else
+            {
+                SwitchToPanel(null, loginPanel);
+            }
+        }
+        else
+        {
+            SwitchToPanel(loginPanel, mainPanel);
+        }
     }
 
     private void SwitchToPanel(Animator panel_1, Animator panel_2)
     {
-        Debug.Log("Wa22el");
-        panel_1.SetTrigger("FadeOut");
-        panel_2.SetTrigger("FadeIn");
+        if(panel_1 != null)
+            panel_1?.SetTrigger("FadeOut");
+
+        if (panel_2 != null)
+            panel_2?.SetTrigger("FadeIn");
     }
 
     private void OnLogin(bool sucess)
@@ -44,6 +67,10 @@ public class UIController : MonoBehaviour
         if (sucess)
         {
             SwitchToPanel(loginPanel, mainPanel);
+        }
+        else
+        {
+            SwitchToPanel(null, loginPanel);
         }
     }
 
@@ -57,14 +84,17 @@ public class UIController : MonoBehaviour
 
     private void OnToggleLoadingPanel(bool status)
     {
-        loadingPanel?.SetTrigger(status == false ? "FadeOut" : "FadeIn");
+        if (loadingPanel == null) return;
+        loadingPanel.SetTrigger(status == false ? "FadeOut" : "FadeIn");
     }
 
 
-    public void OnShowPopup(string popupText, float seconds)
+    public void OnShowPopup(string popupText, float seconds, Color color)
     {
         if (popupPanel == null) return;
-        popupPanel.GetComponentInChildren<TMP_Text>().text = popupText;
+        var tmp = popupPanel.GetComponentInChildren<TMP_Text>();
+        tmp.color = color;
+        tmp.text = popupText;
         popupPanel.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(HidePopup(seconds));

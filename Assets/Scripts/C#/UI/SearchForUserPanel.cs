@@ -28,6 +28,7 @@ public class SearchForUserPanel : MonoBehaviour
 
     private async void SearchForUser()
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         int childCount = usersScrollView.childCount;
 
         for (int i = childCount - 1; i >= 0; i--)
@@ -54,5 +55,6 @@ public class SearchForUserPanel : MonoBehaviour
             });
             element.transform.SetParent(usersScrollView);
         }
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 }

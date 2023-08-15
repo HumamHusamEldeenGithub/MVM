@@ -39,6 +39,7 @@ public class EventsPool : Singleton<EventsPool>
 
     public void InvokeEvent(Type eventType, params object[] args)
     {
+        UnityEngine.Debug.Log(eventType);
         Delegate thisEvent;
         if (eventsDictionary.TryGetValue(eventType, out thisEvent))
         {

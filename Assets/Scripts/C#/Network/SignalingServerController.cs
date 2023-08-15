@@ -216,7 +216,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    public async void SendJoinRoomEvent(string roomId)
+    public async Task SendJoinRoomEvent(string roomId)
     {
         var message = new SignalingMessage
         {
@@ -226,11 +226,15 @@ class SignalingServerController : Singleton<SignalingServerController>
         await SendMessageToServerAsync(message);
     }
 
-    public void ConnectToRoom(string roomId)
+    public async void ConnectToRoom(string roomId)
     {
-        SendJoinRoomEvent(roomId);
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+        await SendJoinRoomEvent(roomId);
         WebRTCManager.Instance.CaptureAudio();
         EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
+
+        await Task.Delay(2000);
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 
     private void UpdateUserOnlineStatus(OnlineStatus newOnlineStatus)

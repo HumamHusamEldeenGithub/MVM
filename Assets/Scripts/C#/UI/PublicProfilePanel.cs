@@ -1,30 +1,42 @@
+using Google.MaterialDesign.Icons;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PublicProfilePanel : MonoBehaviour
 {
     [SerializeField]
-    private TMP_InputField usernameField;
+    private TextMeshProUGUI usernameField;
 
     [SerializeField]
-    private TMP_InputField emailField;
+    private TextMeshProUGUI emailField;
 
     [SerializeField]
-    private TMP_InputField phonenumberField;
+    private TextMeshProUGUI phonenumberField;
 
     [SerializeField]
     private Button addRemoveBtn;
 
     [SerializeField]
+    private string addFriendIcon;
+    [SerializeField]
+    private string removeFriendIcon;
+    [SerializeField]
+    private string acceptFriendIcon;
+
+    [SerializeField]
     private Button backBtn;
 
-    public async void ShowProfile(string userId,Transform prevPanel)
+    private void Awake()
     {
-        SwitchPanel(true, prevPanel);
+        EventsPool.Instance.AddListener(typeof(ShowProfileEvent), new Action<string, Transform>(ShowProfile));
+    }
 
+    public async void ShowProfile(string userId, Transform prevPanel)
+    {
         var profile = await Server.GetProfile(userId);
         if (profile == null) return;
 
@@ -32,9 +44,11 @@ public class PublicProfilePanel : MonoBehaviour
         emailField.text = profile.Profile.Email;
         phonenumberField.text = profile.Profile.Phonenumber;
         StartCoroutine(SetUpAddRemoveFriendBtn(userId));
+
         backBtn.onClick.AddListener(() =>
         {
-            SwitchPanel(false, prevPanel);
+            GetComponent<Animator>().SetTrigger("FadeOut");
+            prevPanel.GetComponent<Animator>().SetTrigger("FadeIn");
         });
     }
 
@@ -49,7 +63,9 @@ public class PublicProfilePanel : MonoBehaviour
         {
             if (user.Id == userId)
             {
-                addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Unfriend";
+                var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
+                btnIcon.iconUnicode = removeFriendIcon;
+                btnIcon.color = Color.red;
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
                     await Server.DeleteFriend(new Mvm.DeleteFriendRequest
@@ -72,7 +88,9 @@ public class PublicProfilePanel : MonoBehaviour
         {
             if (req == userId)
             {
-                addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Accept friend request";
+                var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
+                btnIcon.iconUnicode = addFriendIcon;
+                btnIcon.color = Color.green;
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
                     await Server.AddFriend(new Mvm.AddFriendRequest
@@ -95,7 +113,9 @@ public class PublicProfilePanel : MonoBehaviour
         {
             if (req == userId)
             {
-                addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Cancel friend request";
+                var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
+                btnIcon.iconUnicode = removeFriendIcon;
+                btnIcon.color = Color.red;
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
                     await Server.DeleteFriendRequest(new Mvm.DeleteFriendRequestRequest
@@ -110,7 +130,9 @@ public class PublicProfilePanel : MonoBehaviour
             }
         }
 
-        addRemoveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = "Add friend";
+        var icon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
+        icon.iconUnicode = addFriendIcon;
+        icon.color = Color.white;
         addRemoveBtn.onClick.AddListener(async () =>
         {
 
@@ -124,11 +146,5 @@ public class PublicProfilePanel : MonoBehaviour
             StartCoroutine(SetUpAddRemoveFriendBtn(userId));
         });
         yield break;
-    }
-
-    private void SwitchPanel(bool switchCase, Transform prevPanel)
-    {
-        this.transform.gameObject.SetActive(switchCase);
-        prevPanel.gameObject.SetActive(!switchCase);
     }
 }

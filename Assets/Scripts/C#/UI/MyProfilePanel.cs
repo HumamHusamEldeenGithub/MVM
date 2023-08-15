@@ -8,10 +8,13 @@ using UnityEngine.UI;
 public class MyProfilePanel : MonoBehaviour
 {
     [SerializeField]
-    private TMP_InputField usernameField;
+    private TextMeshProUGUI usernameField;
 
     [SerializeField]
-    private TMP_InputField emailField;
+    private TextMeshProUGUI emailField;
+
+    [SerializeField]
+    private TextMeshProUGUI phoneField;
 
     [SerializeField]
     private Button avatarSettingsBtn;
@@ -38,6 +41,7 @@ public class MyProfilePanel : MonoBehaviour
     {
         usernameField.text = UserProfile.Instance.userData.Username;
         emailField.text = UserProfile.Instance.userData.Email;
+        //phoneField.text = UserProfile.Instance.userData.Phone
     }
 
     private void TransitionToAvatarSettingsScene()

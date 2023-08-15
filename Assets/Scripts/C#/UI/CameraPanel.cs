@@ -5,13 +5,10 @@ using UnityEngine.UI;
 public class CameraPanel : Singleton<MonoBehaviour>
 {
     [SerializeField]
-    private GameObject cameraObj;
+    private RawImage cameraImage;
 
     [SerializeField]
     private Button CaptureBtn;
-
-    [SerializeField]
-    private Button backBtn;
 
     static WebCamTexture cameraTexture;
 
@@ -27,15 +24,15 @@ public class CameraPanel : Singleton<MonoBehaviour>
             cameraTexture = new WebCamTexture();
         }
 
-        var rawImage = cameraObj.GetComponent<RawImage>();
-        rawImage.texture = cameraTexture;
+        var aspectFitter = cameraImage.GetComponent<AspectRatioFitter>();
+        float webcamAspect = (float)cameraTexture.width / cameraTexture.height;
+        aspectFitter.aspectRatio = webcamAspect;
+
+        cameraImage.texture = cameraTexture;
 
         if (!cameraTexture.isPlaying)
             cameraTexture.Play();
 
-        float webcamAspect = (float)cameraTexture.width / cameraTexture.height;
-
-        rawImage.rectTransform.sizeDelta = new Vector2(rawImage.rectTransform.sizeDelta.y * webcamAspect, rawImage.rectTransform.sizeDelta.y);
     }
     private void OnDisable()
     {
@@ -64,6 +61,6 @@ public class CameraPanel : Singleton<MonoBehaviour>
         Destroy(photoTexture);
         Debug.Log("Photo Sent");
 
-        backBtn.onClick.Invoke();
+        // TODO login maybe?
     }
 }

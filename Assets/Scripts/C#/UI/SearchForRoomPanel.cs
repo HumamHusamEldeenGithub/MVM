@@ -25,6 +25,7 @@ public class SearchForRoomPanel : MonoBehaviour
 
     private async void SearchForRoom()
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         int childCount = roomsScrollView.childCount;
 
         for (int i = childCount - 1; i >= 0; i--)
@@ -47,6 +48,7 @@ public class SearchForRoomPanel : MonoBehaviour
 
             element.transform.SetParent(roomsScrollView);
         }
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 
     void JoinRoom(string roomId)
