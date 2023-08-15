@@ -15,6 +15,9 @@ public class FriendsPanel : MonoBehaviour
     private GameObject onlineUserPrefab;
 
     [SerializeField]
+    private Animator homeMenuPanel;
+
+    [SerializeField]
     private Animator publicProfilePanel;
 
     private void Awake()
@@ -54,8 +57,8 @@ public class FriendsPanel : MonoBehaviour
             element.GetComponentInChildren<TextMeshProUGUI>().text = user.Username;
             element.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
-                EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), user.Id, transform);
-                transform.parent.GetComponent<Animator>().SetTrigger("FadeOut");
+                EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), user.Id, homeMenuPanel);
+                homeMenuPanel.SetTrigger("FadeOut");
                 publicProfilePanel.SetTrigger("FadeIn");
             });
 

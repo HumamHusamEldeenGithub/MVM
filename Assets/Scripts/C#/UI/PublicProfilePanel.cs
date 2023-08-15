@@ -32,10 +32,10 @@ public class PublicProfilePanel : MonoBehaviour
 
     private void Awake()
     {
-        EventsPool.Instance.AddListener(typeof(ShowProfileEvent), new Action<string, Transform>(ShowProfile));
+        EventsPool.Instance.AddListener(typeof(ShowProfileEvent), new Action<string, Animator>(ShowProfile));
     }
 
-    public async void ShowProfile(string userId, Transform prevPanel)
+    public async void ShowProfile(string userId, Animator prevPanel)
     {
         var profile = await Server.GetProfile(userId);
         if (profile == null) return;
@@ -48,7 +48,7 @@ public class PublicProfilePanel : MonoBehaviour
         backBtn.onClick.AddListener(() =>
         {
             GetComponent<Animator>().SetTrigger("FadeOut");
-            prevPanel.GetComponent<Animator>().SetTrigger("FadeIn");
+            prevPanel.SetTrigger("FadeIn");
         });
     }
 

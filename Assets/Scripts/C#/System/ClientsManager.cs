@@ -44,11 +44,6 @@ public class ClientsManager : Singleton<ClientsManager>
         return newPeer;
     }
 
-    private void Update()
-    {
-        Debug.LogWarning(participantsRoomSpaces.Count);
-    }
-
     private RoomSpaceController InstantiateRoomSpace(string id)
     {
         var roomSpace = Instantiate(roomPrefab);

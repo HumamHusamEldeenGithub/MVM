@@ -67,7 +67,7 @@ public class NotificationsPanel : MonoBehaviour
     {
         if (notification.Type == 1 || notification.Type == 3)
         {
-            publicProfilePanel.ShowProfile(notification.FromUser, this.transform);
+            publicProfilePanel.ShowProfile(notification.FromUser, GetComponent<Animator>());
         }
         if (notification.Type == 2)
         {

@@ -51,7 +51,7 @@ public class SearchForUserPanel : MonoBehaviour
             btn.GetComponent<TMP_Text>().text = user.Username;
             btn.GetComponent<Button>().onClick.AddListener(() =>
             {
-                publicProfilePanel.ShowProfile(user.Id, this.transform);
+                publicProfilePanel.ShowProfile(user.Id, GetComponent<Animator>());
             });
             element.transform.SetParent(usersScrollView);
         }
