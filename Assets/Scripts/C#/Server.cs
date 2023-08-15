@@ -254,12 +254,18 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<GetNotificationsResponse>(res) : null;
     }
+    public static async Task<DeleteNotificationResponse> DeleteNotification(DeleteNotificationRequest req)
+    {
+        string res = await CreateDeleteCall("/notifications/delete_one", req);
 
-    public static async Task<DeleteNotificationResponse> DeleteNotifications()
+        return res != null ? JsonConvert.DeserializeObject<DeleteNotificationResponse>(res) : null;
+    }
+
+    public static async Task<DeleteNotificationsResponse> DeleteNotifications()
     {
         string res = await CreateDeleteCall("/notifications",new DeleteNotificationRequest { });
 
-        return res != null ? JsonConvert.DeserializeObject<DeleteNotificationResponse>(res) : null;
+        return res != null ? JsonConvert.DeserializeObject<DeleteNotificationsResponse>(res) : null;
     }
 
     #endregion

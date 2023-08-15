@@ -208,9 +208,16 @@ message GetNotificationsResponse {
     repeated Notification notifications = 1;
 }
 
-message DeleteNotificationRequest {}
+message DeleteNotificationRequest {
+    string notificationId = 1;
+}
 
 message DeleteNotificationResponse {}
+
+
+message DeleteNotificationsRequest {}
+
+message DeleteNotificationsResponse {}
 
 // Socket messages 
 

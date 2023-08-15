@@ -12,7 +12,10 @@ public class NotificationsPanel : MonoBehaviour
     private GameObject notificationRowPrefab;
 
     [SerializeField]
-    private PublicProfilePanel publicProfilePanel;
+    private Animator homeMenuPanel;
+
+    [SerializeField]
+    private Animator publicProfilePanel;
 
     [SerializeField]
     private Button clearBtn;
@@ -67,7 +70,9 @@ public class NotificationsPanel : MonoBehaviour
     {
         if (notification.Type == 1 || notification.Type == 3)
         {
-            publicProfilePanel.ShowProfile(notification.FromUser, GetComponent<Animator>());
+           /* EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), notification.FromUser, homeMenuPanel);
+            homeMenuPanel.SetTrigger("FadeOut");
+            publicProfilePanel.SetTrigger("FadeIn"); */
         }
         if (notification.Type == 2)
         {
