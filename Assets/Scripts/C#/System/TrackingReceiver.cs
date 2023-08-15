@@ -5,7 +5,7 @@ using System.Threading;
 using Mvm;
 using System.Collections;
 
-public class TrackingReceiver : Singleton<TrackingReceiver>
+public class TrackingReceiver : MonoBehaviour
 {
     #region Attributes
 
@@ -33,21 +33,16 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
     #region Monobehaviour
 
-    override protected void Awake()
+    private void Awake()
     {
-        base.Awake();
         Initialize();
-
         EventsPool.Instance.AddListener(typeof(RoomConnectedStatusEvent), new Action<bool>(StartReceiving));
+        EventsPool.Instance.AddListener(typeof(HangupEvent), new Action(StopReceiving));
     }
 
-    override protected void OnDestroy()
+    private void OnDestroy()
     {
-        threadRunning = false;
-        if (mainThread?.IsAlive == true)
-        {
-            mainThread.Join();
-        }
+        StopReceiving();
     }
 
     #endregion
@@ -62,10 +57,21 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         selfController = GetComponentInChildren<ClientsManager>();
     }
 
-    public void StartReceiving(bool success)
+    private void StopReceiving()
+    {
+        threadRunning = false;
+        if (mainThread?.IsAlive == true)
+        {
+            mainThread.Join();
+        }
+    }
+
+    private void StartReceiving(bool success)
     {
         if (!success)
             return;
+
+        Debug.Log("Receive");
         // Start Python server
         StartCoroutine(startReceivingCoroutine());
     }

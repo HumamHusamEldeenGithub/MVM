@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEditor.Build.Content;
+using UnityEngine.SceneManagement;
 
 public class EventsPool : Singleton<EventsPool>
 {
@@ -13,6 +15,7 @@ public class EventsPool : Singleton<EventsPool>
         base.Awake();
         eventsDictionary = new Dictionary<Type, Delegate>();
         eventsQueue = new Queue<Tuple<Delegate, object[]>>();
+        SceneManager.sceneUnloaded += ClearAll;
     }
     public void AddListener(Type eventType, Delegate listener)
     {
@@ -39,7 +42,6 @@ public class EventsPool : Singleton<EventsPool>
 
     public void InvokeEvent(Type eventType, params object[] args)
     {
-        UnityEngine.Debug.Log(eventType);
         Delegate thisEvent;
         if (eventsDictionary.TryGetValue(eventType, out thisEvent))
         {
@@ -56,5 +58,11 @@ public class EventsPool : Singleton<EventsPool>
             thisEvent.Item1.DynamicInvoke(thisEvent.Item2);
 
         }
+    }
+    private void ClearAll(Scene sc)
+    {
+        UnityEngine.Debug.Log("Clear");
+        eventsQueue.Clear();
+        eventsDictionary.Clear();
     }
 }

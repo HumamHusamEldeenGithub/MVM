@@ -25,7 +25,10 @@ public class FriendsPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        SetupOnlinePanel(SignalingServerController.Instance.usersOnlineStatus);
+        if (UserProfile.Instance.userData != null)
+        {
+            SetupOnlinePanel(SignalingServerController.Instance.usersOnlineStatus);
+        }
     }
 
     public void SetupOnlinePanel(OnlineStatuses statuses)

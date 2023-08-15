@@ -17,6 +17,15 @@ public class MyRoomsPanel : MonoBehaviour
     {
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
     }
+    private void OnEnable()
+    {
+
+        if (UserProfile.Instance.userData != null)
+        {
+            // already logged in
+            OnLogin(true);
+        }
+    }
 
     private void OnLogin(bool status)
     {

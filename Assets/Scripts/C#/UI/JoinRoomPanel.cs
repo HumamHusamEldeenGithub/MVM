@@ -15,11 +15,6 @@ public class JoinRoomPanel : MonoBehaviour
     [SerializeField]
     private GameObject roomPanel;
 
-    private void Awake()
-    {
-        EventsPool.Instance.AddListener(typeof(RoomConnectedStatusEvent), new Action<bool>(OnRoomConnected));
-    }
-
     private void OnEnable()
     {
         joinRoomBtn.onClick.AddListener(JoinRoom);
@@ -31,15 +26,6 @@ public class JoinRoomPanel : MonoBehaviour
         if (roomId.Length != 0)
         {
             SignalingServerController.Instance.ConnectToRoom(roomId);
-        }
-    }
-
-    private void OnRoomConnected(bool success)
-    {
-        if (success)
-        {
-            this.gameObject.SetActive(false);
-            roomPanel.SetActive(true);
         }
     }
 }

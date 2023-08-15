@@ -37,8 +37,6 @@ public class AvatarCustomizer : MonoBehaviour
         browsTextures = Resources.LoadAll<Texture>("Brows");
         skinImperfectionTextures = Resources.LoadAll<Texture>("SkinImperfection");
         tattooTextures = Resources.LoadAll<Texture>("Tattoo");
-
-        Debug.Log(skinImperfectionTextures.Length);
     }
     public void SetAvatarSettings(AvatarSettings avatarSettings)
     {
