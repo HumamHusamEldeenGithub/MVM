@@ -39,7 +39,7 @@ public class UIController : MonoBehaviour
             if (refreshToken != null && refreshToken != "")
             {
                 Debug.Log("RefreshToken found");
-                EventsPool.Instance.InvokeEvent(typeof(LoginWithRefreshTokenEvent), refreshToken);
+                EventsPool.Instance.InvokeEvent(typeof(SubmitLoginEvent), "","",refreshToken);
                 return;
             }
             else

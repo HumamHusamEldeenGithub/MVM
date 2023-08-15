@@ -207,6 +207,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         var newOnlineStatus = JsonConvert.DeserializeObject<OnlineStatus>((string)socketMessage.Data);
         Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
         UpdateUserOnlineStatus(newOnlineStatus);
+        EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
     }
 
     public static async Task SendMessageToServerAsync(SignalingMessage message)
@@ -249,6 +250,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         }
 
         usersOnlineStatus.Users.Add(newOnlineStatus);
+
     }
 }
 [Serializable]

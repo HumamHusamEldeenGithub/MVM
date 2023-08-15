@@ -131,11 +131,11 @@ public class Server : MonoBehaviour
 
         return res != null ? JsonConvert.DeserializeObject<LoginUserResponse>(res) : null;
     }
-    public static async Task<LoginByRefreshTokenResponse> LoginByRefreshToken(LoginByRefreshTokenRequest req)
+    public static async Task<LoginUserResponse> LoginByRefreshToken(LoginByRefreshTokenRequest req)
     {
         string res = await CreatePostCall("/refresh_token", req);
 
-        return res != null ? JsonConvert.DeserializeObject<LoginByRefreshTokenResponse>(res) : null;
+        return res != null ? JsonConvert.DeserializeObject<LoginUserResponse>(res) : null;
     }
     public static async Task<CreateUserResponse>CreateUser(CreateUserRequest req)
     {

@@ -52,6 +52,7 @@ public class FriendsPanel : MonoBehaviour
 
         foreach (var user in statuses.Users)
         {
+            if (!user.IsOnline) continue;
             var element = Instantiate(onlineUserPrefab);
 
             element.GetComponentInChildren<TextMeshProUGUI>().text = user.Username;

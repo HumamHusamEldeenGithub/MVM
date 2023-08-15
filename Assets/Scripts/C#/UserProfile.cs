@@ -14,17 +14,27 @@ public class UserProfile : Singleton<UserProfile>
     public string Username { get; private set; }
     public string Password { get; private set; }
 
-    private void LoginUser(string username, string password)
+    private void LoginUser(string username, string password, string refreshToken = "")
     {
         this.Username = username;
         this.Password = password;
 
         var runner = TaskPool.Instance;
 
-        async void login(string username, string password)
+        async void login(string username, string password, string refreshToken = "")
         {
             EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
-            LoginUserResponse res = await Server.Login(new LoginUserRequest { Username = username, Password = password });
+
+            LoginUserResponse res;
+            if (refreshToken != "")
+            {
+                res = await Server.LoginByRefreshToken(new LoginByRefreshTokenRequest { RefreshToken = refreshToken });
+            }
+            else
+            {
+                res = await Server.Login(new LoginUserRequest { Username = username, Password = password });
+            }
+             
 
             if (res == null)
             {
@@ -59,53 +69,7 @@ public class UserProfile : Singleton<UserProfile>
 
         runner.AddTasks(new List<Action<CancellationToken>>
             {
-                token => login(username, password),
-            },
-            out _
-        );
-    }
-
-    private void LoginUserWithRefreshToken(string refreshToken)
-    {
-        var runner = TaskPool.Instance; 
-
-        async void loginWithRefreshToken(string refreshToken)
-        {
-            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
-            LoginByRefreshTokenResponse res = await Server.LoginByRefreshToken(new LoginByRefreshTokenRequest { RefreshToken = refreshToken });
-
-            if (res == null)
-            {
-                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
-            }
-            else
-            {
-
-                userData = new UserData
-                {
-                    Id = res.Id,
-                    Token = res.Token,
-                    RefreshToken = res.RefreshToken,
-                };
-
-                Token = res.Token;
-                RefreshToken = res.RefreshToken;
-
-                RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
-
-                await GetMyProfile();
-                await GetMyFriends();
-                await GetMyNotifications();
-
-                EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
-            }
-
-            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
-        }
-
-        runner.AddTasks(new List<Action<CancellationToken>>
-            {
-                token => loginWithRefreshToken(refreshToken),
+                token => login(username, password,refreshToken),
             },
             out _
         );
@@ -233,8 +197,7 @@ public class UserProfile : Singleton<UserProfile>
     {
         base.Awake();
         EventsPool.Instance.AddListener(typeof(SubmitCreateUserEvent), new Action<string,string,string,string>(CreateUser));
-        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string>(LoginUser));
-        EventsPool.Instance.AddListener(typeof(LoginWithRefreshTokenEvent), new Action<string>(LoginUserWithRefreshToken));
+        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string,string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
     }
 

@@ -23,12 +23,6 @@ message LoginByRefreshTokenRequest {
     string refreshToken = 1;
 }
 
-message LoginByRefreshTokenResponse {
-    string id = 1;
-    string token = 2;
-    string refreshToken = 3;
-}
-
 message CreateUserRequest {
     string username = 1 ; 
     string email = 2 ; 
