@@ -197,7 +197,7 @@ public class UserProfile : Singleton<UserProfile>
     {
         base.Awake();
         EventsPool.Instance.AddListener(typeof(SubmitCreateUserEvent), new Action<string,string,string,string>(CreateUser));
-        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string,string>(LoginUser));
+        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string,string,string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
     }
 
