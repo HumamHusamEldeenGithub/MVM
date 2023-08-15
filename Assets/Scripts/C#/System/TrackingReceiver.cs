@@ -72,7 +72,6 @@ public class TrackingReceiver : MonoBehaviour
         if (!success)
             return;
 
-        Debug.Log("Receive");
         // Start Python server
         StartCoroutine(startReceivingCoroutine());
     }

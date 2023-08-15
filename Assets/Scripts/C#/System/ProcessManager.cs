@@ -155,6 +155,9 @@ public class ProcessManager : Singleton<ProcessManager>
             pyProcess?.Kill();
         }
 
+        pyStream = null;
+        pyClient = null;
+
     }
 
     #endregion
