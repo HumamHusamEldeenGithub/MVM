@@ -60,7 +60,7 @@ public class CameraPanel : Singleton<MonoBehaviour>
 
         byte[] bytes = photoTexture.EncodeToPNG();
 
-        var res = await Server.UploadFile(bytes);
+        var res = await Server.SendImageToAIPipeline(bytes);
 
         AIPipelineResponse aiPipelineResponse = DeserializeFlaskResponse(res);
 

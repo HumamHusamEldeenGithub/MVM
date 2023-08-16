@@ -19,7 +19,7 @@ public class WebRTCManager : Singleton<WebRTCManager>
     #endregion
 
     #region MonoBehaviour
-    private void Awake()
+    protected override void Awake()
     {
         syncContext = SynchronizationContext.Current;
 
@@ -131,7 +131,12 @@ public class WebRTCManager : Singleton<WebRTCManager>
         byte[] byteArray;
         using (var memoryStream = new MemoryStream())
         {
-            UserProfile.Instance.userData.AvatarSettings.WriteTo(memoryStream);
+            DataChannelMessage msg = new DataChannelMessage
+            {
+                Type = DataChannelMessageType.AvatarMessage,
+                AvatarMessage = UserProfile.Instance.userData.AvatarSettings
+            };
+            msg.WriteTo(memoryStream);
             byteArray = memoryStream.ToArray();
         }
         dataChannel.Send(byteArray);
@@ -143,7 +148,12 @@ public class WebRTCManager : Singleton<WebRTCManager>
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {
-                UserProfile.Instance.userData.AvatarSettings.WriteTo(memoryStream);
+                DataChannelMessage msg = new DataChannelMessage
+                {
+                    Type = DataChannelMessageType.AvatarMessage,
+                    AvatarMessage = UserProfile.Instance.userData.AvatarSettings
+                };
+                msg.WriteTo(memoryStream);
                 byteArray = memoryStream.ToArray();
             }
             foreach (WebRTCController peer in webRTCConnections.Values)

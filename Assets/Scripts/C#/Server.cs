@@ -9,8 +9,10 @@ public class Server : MonoBehaviour
 {
     #region Static
     public static string ServerUrl = "ec2-16-170-170-2.eu-north-1.compute.amazonaws.com";
-    public static string PythonServerUrl = "localhost";
     public static string Port = "3000";
+
+    public static string PythonServerUrl = "localhost";
+    public static string PythonServerPort = "5000";
     #endregion
 
     #region POST - GET - Delete
@@ -95,7 +97,7 @@ public class Server : MonoBehaviour
         }
     }
 
-    public static async Task<string> UploadFile(byte[] fileBytes)
+    public static async Task<string> SendImageToAIPipeline(byte[] fileBytes)
     {
         
         string fileName = "Photo_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".jpg";
@@ -107,7 +109,7 @@ public class Server : MonoBehaviour
             content.Headers.Add("Content-Disposition", $"form-data; name=\"file\"; filename=\"{fileName}\"");
             form.Add(content, "file", fileName);
 
-            HttpResponseMessage response = await httpClient.PostAsync(PythonServerUrl, form);
+            HttpResponseMessage response = await httpClient.PostAsync($"{PythonServerUrl}:{PythonServerPort}/predict" , form);
             response.EnsureSuccessStatusCode();
 
             string responseBody = await response.Content.ReadAsStringAsync();
