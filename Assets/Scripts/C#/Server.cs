@@ -98,7 +98,7 @@ public class Server : MonoBehaviour
     public static async Task<string> UploadFile(byte[] fileBytes)
     {
         
-        string fileName = "Photo_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".png";
+        string fileName = "Photo_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".jpg";
         using HttpClient httpClient = new HttpClient();
         try
         {
