@@ -30,6 +30,7 @@ public class UIController : MonoBehaviour
         EventsPool.Instance.AddListener(typeof(ToggleLoadingPanelEvent), new Action<bool>(OnToggleLoadingPanel));
 
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
+        EventsPool.Instance.AddListener(typeof(HangupEvent), new Action(OnHangup));
 
         popupPanel.SetActive(false);
 
@@ -60,6 +61,11 @@ public class UIController : MonoBehaviour
 
         if (panel_2 != null && panel_2.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
             panel_2?.SetTrigger("FadeIn");
+    }
+
+    private void OnHangup()
+    {
+        SwitchToPanel(roomPanel, mainPanel);
     }
 
     private void OnLogin(bool sucess)

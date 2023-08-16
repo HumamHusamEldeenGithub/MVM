@@ -58,6 +58,8 @@ public class EssentialsPanel : MonoBehaviour
         {
             ForceToPanel(mainPanel);
         }
+
+        EventsPool.Instance.AddListener(typeof(HangupEvent), new Action(() => ForceToPanel(mainPanel)));
     }
 
     public void ForceToPanel(Animator activePanel)

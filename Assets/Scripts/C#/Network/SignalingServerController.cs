@@ -220,8 +220,6 @@ class SignalingServerController : Singleton<SignalingServerController>
         switch (newSocketError.Type)
         {
             case (int)ErrorMessageType.RoomNotAuthorized:
-                // TODO : find a better way  
-                await Task.Delay(5000);
                 EventsPool.Instance.InvokeEvent(typeof(HangupEvent));
                 break;
         }
