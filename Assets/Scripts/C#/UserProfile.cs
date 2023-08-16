@@ -163,6 +163,21 @@ public class UserProfile : Singleton<UserProfile>
 
         }
     }
+
+    private void ChangeBackground()
+    {
+        int cur = 0;
+        int.TryParse(userData.AvatarSettings.RoomBackgroundColor, out cur);
+
+        cur++;
+
+        if (cur > 4)
+            cur = 0;
+
+        userData.AvatarSettings.RoomBackgroundColor = cur.ToString();
+        WebRTCManager.Instance.PublishAvatarSettingsToAll();
+    }
+
     public async Task GetMyNotifications()
     {
         var notifications = await Server.GetNotifications();
@@ -200,6 +215,7 @@ public class UserProfile : Singleton<UserProfile>
         EventsPool.Instance.AddListener(typeof(SubmitCreateUserEvent), new Action<string,string,string,string>(CreateUser));
         EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string,string,string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
+        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(ChangeBackground));
     }
 
     public static async Task<PeerData> GetPeerData(string peerId)

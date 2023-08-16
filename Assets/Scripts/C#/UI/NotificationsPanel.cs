@@ -12,9 +12,6 @@ public class NotificationsPanel : MonoBehaviour
     private GameObject notificationRowPrefab;
 
     [SerializeField]
-    private Animator homeMenuPanel;
-
-    [SerializeField]
     private Animator publicProfilePanel;
 
     [SerializeField]
@@ -34,6 +31,7 @@ public class NotificationsPanel : MonoBehaviour
             if (s)
                 Initialize();
         }));
+        EventsPool.Instance.AddListener(typeof(ReceivedNotificationEvent), new Action(Initialize));
     }
 
     private void DestroyPrevoiusNotifications()
@@ -70,9 +68,9 @@ public class NotificationsPanel : MonoBehaviour
     {
         if (notification.Type == 1 || notification.Type == 3)
         {
-           /* EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), notification.FromUser, homeMenuPanel);
-            homeMenuPanel.SetTrigger("FadeOut");
-            publicProfilePanel.SetTrigger("FadeIn"); */
+            EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), notification.FromUser, GetComponent<Animator>());
+            GetComponent<Animator>().SetTrigger("FadeOut");
+            publicProfilePanel.SetTrigger("FadeIn");
         }
         if (notification.Type == 2)
         {

@@ -7,4 +7,9 @@ public class RoomPanel : MonoBehaviour
     {
         EventsPool.Instance.InvokeEvent(typeof(HangupEvent));
     }
+
+    public void ChangeBackground()
+    {
+        EventsPool.Instance.InvokeEvent(typeof(UserChangeBackgroundEvent));
+    }
 }

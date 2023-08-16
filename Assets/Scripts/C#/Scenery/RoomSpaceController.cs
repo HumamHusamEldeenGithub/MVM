@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Unity.WebRTC;
 using UnityEngine;
@@ -20,6 +21,12 @@ public class RoomSpaceController : MonoBehaviour
     [SerializeField] TextMeshProUGUI usernameText;
 
     private GameObject decorationBackground;
+    private int backgroundIndex = 0;
+
+    private void Awake()
+    {
+        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(ChangeBackground));
+    }
 
 
     public RoomRenderTexture CurrentRoomRenderTexture
@@ -39,22 +46,30 @@ public class RoomSpaceController : MonoBehaviour
 
     private void SelfInitialize(string backgroundID)
     {
-        int id;
-        if (int.TryParse(backgroundID, out id)) {
-            id = Mathf.Clamp(id, 0, roomSpaces.Length - 1);
-            decorationBackground = Instantiate(roomSpaces[id]);
-            decorationBackground.transform.SetParent(transform, false);
-            decorationBackground.transform.localPosition = Vector3.zero;
+        if (int.TryParse(backgroundID, out backgroundIndex)) {
+            backgroundIndex = Mathf.Clamp(backgroundIndex, 0, roomSpaces.Length - 1);
         }
+
+        decorationBackground = Instantiate(roomSpaces[backgroundIndex]);
+        decorationBackground.transform.SetParent(transform, false);
+        decorationBackground.transform.localPosition = Vector3.zero;
 
         var rt = new RenderTexture(1920, 1080, 16);
         CurrentRoomRenderTexture = new RoomRenderTexture (ref rt);
         roomCamera.targetTexture = rt;
     }
 
-    private void ChangeRoomSpace()
+    private void ChangeBackground()
     {
-
+        backgroundIndex++;
+        if(backgroundIndex >= roomSpaces.Length)
+        {
+            backgroundIndex = 0;
+        }
+        Destroy(decorationBackground);
+        decorationBackground = Instantiate(roomSpaces[backgroundIndex]);
+        decorationBackground.transform.SetParent(transform, false);
+        decorationBackground.transform.localPosition = Vector3.zero;
     }
 
     private void OnDestroy()
