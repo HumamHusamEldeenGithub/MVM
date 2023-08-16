@@ -139,6 +139,9 @@ class SignalingServerController : Singleton<SignalingServerController>
                     case "notification":
                         HandleNotificationMessage(socketMessage);
                         break;
+                    case "error":
+                        HandleError(socketMessage);
+                        break;
 
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type + " No events assigned to this type");
@@ -184,7 +187,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}  -- {newNotification.Type}");
 
         UserProfile.Instance.userData.Notifications.Add(newNotification);
-        if (newNotification.Type == 1 || newNotification.Type == 3)
+        if (newNotification.Type == (int)NotificationType.FriendRequest || newNotification.Type == (int)NotificationType.AcceptRequest)
         {
             await UserProfile.Instance.GetMyFriends();
         }
@@ -208,6 +211,25 @@ class SignalingServerController : Singleton<SignalingServerController>
         Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
         UpdateUserOnlineStatus(newOnlineStatus);
         EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
+    }
+
+    private async void HandleError(SignalingMessage socketMessage)
+    {
+        var newSocketError = JsonConvert.DeserializeObject<ErrorMessage>((string)socketMessage.Data);
+        Debug.Log($"Socket Error {newSocketError.Error} StatusCode = {newSocketError.StatusCode} Type {newSocketError.Type}");
+        switch (newSocketError.Type)
+        {
+            case (int)ErrorMessageType.RoomNotAuthorized:
+                // TODO : find a better way  
+                await Task.Delay(5000);
+                EventsPool.Instance.InvokeEvent(typeof(HangupEvent));
+                break;
+        }
+        EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                newSocketError.Error,
+                3f,
+                Color.red
+            });
     }
 
     public static async Task SendMessageToServerAsync(SignalingMessage message)

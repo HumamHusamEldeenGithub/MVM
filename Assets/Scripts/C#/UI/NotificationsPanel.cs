@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Mvm;
 
 public class NotificationsPanel : MonoBehaviour
 {
@@ -55,9 +56,12 @@ public class NotificationsPanel : MonoBehaviour
         {
             var element = Instantiate(notificationRowPrefab);
 
-            element.transform.GetChild(0).GetComponent<TMP_Text>().text = notification.Message;
+            element.GetComponentInChildren<TMP_Text>().text = notification.Message;
             element.GetComponent<Button>().onClick.AddListener(() => {
                 OnClickNotification(notification);
+            });
+            element.GetComponentsInChildren<Button>()[1].onClick.AddListener(()=> {
+                OnClickDeleteNotification(element, notification.Id);
             });
 
             element.transform.SetParent(notificationsScrollView);
@@ -66,15 +70,21 @@ public class NotificationsPanel : MonoBehaviour
 
     void OnClickNotification(Mvm.Notification notification)
     {
-        if (notification.Type == 1 || notification.Type == 3)
+        if (notification.Type == (int)NotificationType.FriendRequest || notification.Type == (int)NotificationType.AcceptRequest)
         {
             EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), notification.FromUser, GetComponent<Animator>());
             GetComponent<Animator>().SetTrigger("FadeOut");
             publicProfilePanel.SetTrigger("FadeIn");
         }
-        if (notification.Type == 2)
+        if (notification.Type == (int)NotificationType.RoomInvitation)
         {
-            // TODO : add join room action
+            SignalingServerController.Instance.ConnectToRoom(notification.EntityId);
         }
+    }
+
+    async void OnClickDeleteNotification(GameObject gameObj , string notificationId)
+    {
+        await Server.DeleteNotification(new DeleteNotificationRequest { NotificationId=notificationId });
+        Destroy(gameObj);
     }
 }

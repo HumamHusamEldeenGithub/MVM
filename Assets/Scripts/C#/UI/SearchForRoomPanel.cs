@@ -44,7 +44,6 @@ public class SearchForRoomPanel : MonoBehaviour
 
             element.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Title;
             element.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Id));
-            // TODO activate join button
 
             element.transform.SetParent(roomsScrollView);
         }
