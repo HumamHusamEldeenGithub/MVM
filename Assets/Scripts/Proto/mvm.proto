@@ -263,10 +263,6 @@ enum DataChannelMessageType {
     AVATAR_MESSAGE = 3;
 }
 
-message ChatMessage {
-    string message = 1;
-}
-
 message DataChannelMessage {
     DataChannelMessageType type = 1 ; 
     optional TrackingMessage tracking_message = 2 ; 
@@ -333,4 +329,44 @@ message Notification{
     string fromUser = 4 ;
     optional string entityId = 5 ;
     optional string message = 6;
+}
+
+message Chat {
+    string id = 1 ; 
+    repeated string participants  = 2 ; 
+    repeated ChatMessage messages = 3;
+}
+
+message ChatMessage {
+    string userId = 1;
+    string message = 2 ; 
+}
+
+message CreateChatRequest {
+    string userId = 1;
+}
+
+message CreateChatResponse {
+    string chatId = 1;
+}
+
+message CreateChatMesageRequest {
+    string chatId = 1 ;
+    string message = 2;
+}
+
+message CreateChatMesageResponse {}
+
+message GetChatRequest {
+    string userId = 1 ; 
+}
+
+message GetChatResponse {
+    Chat chat = 1;
+}
+
+message SocketChatMessage {
+    string chatId = 1;
+    string userId = 2; 
+    string message = 3;
 }

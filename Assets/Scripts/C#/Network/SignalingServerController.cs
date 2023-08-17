@@ -142,6 +142,10 @@ class SignalingServerController : Singleton<SignalingServerController>
                     case "error":
                         HandleError(socketMessage);
                         break;
+                    case "chat_message":
+                        var chatMessage = JsonConvert.DeserializeObject<SocketChatMessage>((string)socketMessage.Data);
+                        Debug.Log($"Received chat message from {socketMessage.FromId} Message : {chatMessage.Message}");
+                        break;
 
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type + " No events assigned to this type");
@@ -271,6 +275,22 @@ class SignalingServerController : Singleton<SignalingServerController>
 
         usersOnlineStatus.Users.Add(newOnlineStatus);
 
+    }
+
+    public async void SendChatMessageMock()
+    {
+        var json = JsonConvert.SerializeObject(new SocketChatMessage
+        {
+            ChatId = "556677",
+            UserId = UserProfile.Instance.Token,
+            Message = "ks 25'tak"
+        });
+        await SendMessageToServerAsync(new SignalingMessage
+        {
+            Type = "chat_message",
+            ToId = "123",
+            Data = json
+        });
     }
 }
 [Serializable]
