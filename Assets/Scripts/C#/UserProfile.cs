@@ -109,6 +109,7 @@ public class UserProfile : Singleton<UserProfile>
 
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
+            EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
