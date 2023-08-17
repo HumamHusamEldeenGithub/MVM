@@ -277,18 +277,18 @@ class SignalingServerController : Singleton<SignalingServerController>
 
     }
 
-    public async void SendChatMessageMock()
+    public async void SendChatMessage(string chatId ,string toUserId, string message)
     {
         var json = JsonConvert.SerializeObject(new SocketChatMessage
         {
-            ChatId = "556677",
+            ChatId = chatId,
             UserId = UserProfile.Instance.userData.Id,
-            Message = "ks 25'tak"
+            Message = message
         });
         await SendMessageToServerAsync(new SignalingMessage
         {
             Type = "chat_message",
-            ToId = "123",
+            ToId = toUserId,
             Data = json
         });
     }

@@ -270,5 +270,12 @@ public class Server : MonoBehaviour
         return res != null ? JsonConvert.DeserializeObject<DeleteNotificationsResponse>(res) : null;
     }
 
+    public static async Task<GetChatResponse> GetChat(GetChatRequest req)
+    {
+        string res = await CreatePostCall("/user/features", req);
+
+        return res != null ? JsonConvert.DeserializeObject<GetChatResponse>(res) : null;
+    }
+
     #endregion
 }
