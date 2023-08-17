@@ -282,7 +282,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         var json = JsonConvert.SerializeObject(new SocketChatMessage
         {
             ChatId = "556677",
-            UserId = UserProfile.Instance.Token,
+            UserId = UserProfile.Instance.userData.Id,
             Message = "ks 25'tak"
         });
         await SendMessageToServerAsync(new SignalingMessage
