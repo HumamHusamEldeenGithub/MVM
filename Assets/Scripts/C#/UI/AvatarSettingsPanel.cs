@@ -9,6 +9,8 @@ public class AvatarSettingsPanel : MonoBehaviour
     [SerializeField]
     private Slider HeadStyleSlider;
     [SerializeField]
+    private Slider GlassesStyleSlider;
+    [SerializeField]
     private Button SkinColorPicker;
     [SerializeField]
     private Slider HairStyleSlider;
@@ -58,6 +60,7 @@ public class AvatarSettingsPanel : MonoBehaviour
         EyeColor = "#FFFFFFFF",
         HairColor = "#FFFFFFFF",
         Gender = "male",
+        Glasses = "0",
         RoomBackgroundColor = "#FFFFFFFF",
         SkinImperfection = "0",
         Tattoo = "0",
@@ -83,6 +86,7 @@ public class AvatarSettingsPanel : MonoBehaviour
             avatarSettings = UserProfile.Instance.userData.AvatarSettings;
 
         GenderSwitch.value = avatarSettings.Gender.ToLower() == "male" ? 0 : 1;
+        GlassesStyleSlider.value = float.Parse(avatarSettings.Glasses);
         HeadStyleSlider.value = float.Parse(avatarSettings.HeadStyle);
         HairStyleSlider.value = float.Parse(avatarSettings.HairStyle);
         EyesStyleSlider.value = float.Parse(avatarSettings.EyeStyle);
@@ -118,6 +122,7 @@ public class AvatarSettingsPanel : MonoBehaviour
         GenderSwitch.onValueChange.AddListener((int option) => { avatarSettings.Gender = option == 1 ? "female" : "male"; headCustomizer.SetSettings(avatarSettings); });
 
         HeadStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.HeadStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        GlassesStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.Glasses = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         HairStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.HairStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         EyesStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyeStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         EyesBrowsStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyebrowsStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });

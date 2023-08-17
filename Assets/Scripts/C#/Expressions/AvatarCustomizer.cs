@@ -9,7 +9,11 @@ public class AvatarCustomizer : MonoBehaviour
     [SerializeField]
     private SkinnedMeshRenderer skin_Renderer;
 
+    [SerializeField]
+    private GameObject glasses_Slot;
+
     private Mesh[] hairMeshes;
+    private GameObject[] glassesPrefabs;
     private Texture[] hairTextures;
     private Texture[] browsTextures;
     private Texture[] skinImperfectionTextures;
@@ -33,15 +37,19 @@ public class AvatarCustomizer : MonoBehaviour
         }
 
         hairMeshes = Resources.LoadAll<Mesh>("Hair/Mesh");
+        glassesPrefabs = Resources.LoadAll<GameObject>("Glasses/Prefabs");
         hairTextures = Resources.LoadAll<Texture>("Hair/Textures");
         browsTextures = Resources.LoadAll<Texture>("Brows");
         skinImperfectionTextures = Resources.LoadAll<Texture>("SkinImperfection");
         tattooTextures = Resources.LoadAll<Texture>("Tattoo");
+
+        Debug.Log(glassesPrefabs.Length);
     }
     public void SetAvatarSettings(AvatarSettings avatarSettings)
     {
         SetHeadStyle(int.Parse(avatarSettings.HeadStyle));
         SetHairStyle(int.Parse(avatarSettings.HairStyle));
+        SetGlassesStyle(int.Parse(avatarSettings.Glasses));
         SetBrowsStyle(int.Parse(avatarSettings.EyebrowsStyle));
         SetEyeStyle(int.Parse(avatarSettings.EyeStyle));
         SetNoseStyle(int.Parse(avatarSettings.NoseStyle));
@@ -89,6 +97,32 @@ public class AvatarCustomizer : MonoBehaviour
             if (hairTextures[i].name == hairStyleInd.ToString())
             {
                 skinMaterial.SetTexture("_HairTexture", hairTextures[i]);
+                break;
+            }
+        }
+    }
+
+    protected void SetGlassesStyle(int glassesStyleInd)
+    {
+        if (glasses_Slot.transform.childCount > 0)
+        {
+            Destroy(glasses_Slot.transform.GetChild(0).gameObject);
+        }
+
+        if (glassesStyleInd == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < glassesPrefabs.Length; i++)
+        {
+            if (glassesPrefabs[i].name == glassesStyleInd.ToString())
+            {
+                GameObject glasses = Instantiate(glassesPrefabs[i]);
+                glasses.transform.parent = glasses_Slot.transform;
+                glasses.transform.localPosition = Vector3.zero;
+                glasses.transform.localRotation = Quaternion.identity;
+                glasses.transform.localScale = Vector3.one;
                 break;
             }
         }
