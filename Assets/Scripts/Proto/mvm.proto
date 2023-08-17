@@ -202,6 +202,8 @@ message AvatarSettings{
     string eyeColor = 12;
     string gender = 13;
     string roomBackgroundColor = 14;
+    string beardStyle = 15;
+    string glasses = 16;
 }
 
 message GetNotificationsResponse {

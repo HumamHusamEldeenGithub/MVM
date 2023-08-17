@@ -77,60 +77,61 @@ namespace Mvm {
             "clByb2ZpbGVGZWF0dXJlc1JlcXVlc3QSCgoCaWQYASABKAkicAoeR2V0VXNl",
             "clByb2ZpbGVGZWF0dXJlc1Jlc3BvbnNlEiEKB3Byb2ZpbGUYASABKAsyEC5t",
             "dm0uVXNlclByb2ZpbGUSKwoOYXZhdGFyU2V0dGluZ3MYAiABKAsyEy5tdm0u",
-            "QXZhdGFyU2V0dGluZ3MiqQIKDkF2YXRhclNldHRpbmdzEhEKCWhlYWRTdHls",
+            "QXZhdGFyU2V0dGluZ3MizgIKDkF2YXRhclNldHRpbmdzEhEKCWhlYWRTdHls",
             "ZRgBIAEoCRIRCgloYWlyU3R5bGUYAiABKAkSFQoNZXllYnJvd3NTdHlsZRgD",
             "IAEoCRIQCghleWVTdHlsZRgEIAEoCRIRCglub3NlU3R5bGUYBSABKAkSEgoK",
             "bW91dGhTdHlsZRgGIAEoCRIYChBza2luSW1wZXJmZWN0aW9uGAcgASgJEg4K",
             "BnRhdHRvbxgIIAEoCRIRCgloYWlyQ29sb3IYCSABKAkSEgoKYnJvd3NDb2xv",
             "chgKIAEoCRIRCglza2luQ29sb3IYCyABKAkSEAoIZXllQ29sb3IYDCABKAkS",
-            "DgoGZ2VuZGVyGA0gASgJEhsKE3Jvb21CYWNrZ3JvdW5kQ29sb3IYDiABKAki",
-            "RAoYR2V0Tm90aWZpY2F0aW9uc1Jlc3BvbnNlEigKDW5vdGlmaWNhdGlvbnMY",
-            "ASADKAsyES5tdm0uTm90aWZpY2F0aW9uIjMKGURlbGV0ZU5vdGlmaWNhdGlv",
-            "blJlcXVlc3QSFgoObm90aWZpY2F0aW9uSWQYASABKAkiHAoaRGVsZXRlTm90",
-            "aWZpY2F0aW9uUmVzcG9uc2UiHAoaRGVsZXRlTm90aWZpY2F0aW9uc1JlcXVl",
-            "c3QiHQobRGVsZXRlTm90aWZpY2F0aW9uc1Jlc3BvbnNlIpMBCg1Tb2NrZXRN",
-            "ZXNzYWdlEiQKBHR5cGUYASABKA4yFi5tdm0uU29ja2V0TWVzc2FnZVR5cGUS",
-            "KAoMcm9vbV9tZXNzYWdlGAIgASgLMhAubXZtLlJvb21NZXNzYWdlSAASKgoN",
-            "ZXJyb3JfbWVzc2FnZRgDIAEoCzIRLm12bS5FcnJvck1lc3NhZ2VIAEIGCgRk",
-            "YXRhIlEKC1Jvb21NZXNzYWdlEhQKB21lc3NhZ2UYAiABKAlIAIgBARIgCglr",
-            "ZXlwb2ludHMYAyADKAsyDS5tdm0uS2V5cG9pbnRCCgoIX21lc3NhZ2UiQAoM",
-            "RXJyb3JNZXNzYWdlEhMKC3N0YXR1c19jb2RlGAEgASgDEg0KBWVycm9yGAIg",
-            "ASgJEgwKBHR5cGUYAyABKAUiHgoLQ2hhdE1lc3NhZ2USDwoHbWVzc2FnZRgB",
-            "IAEoCSLtAgoSRGF0YUNoYW5uZWxNZXNzYWdlEikKBHR5cGUYASABKA4yGy5t",
-            "dm0uRGF0YUNoYW5uZWxNZXNzYWdlVHlwZRIzChB0cmFja2luZ19tZXNzYWdl",
-            "GAIgASgLMhQubXZtLlRyYWNraW5nTWVzc2FnZUgAiAEBEisKDGNoYXRfbWVz",
-            "c2FnZRgDIAEoCzIQLm12bS5DaGF0TWVzc2FnZUgBiAEBEjAKDmF2YXRhcl9t",
-            "ZXNzYWdlGAQgASgLMhMubXZtLkF2YXRhclNldHRpbmdzSAKIAQESRQoVZmFj",
-            "ZV9yb3RhdGlvbl9tZXNzYWdlGAUgASgLMiEubXZtLkZhY2VSb3RhdGlvbktl",
-            "eXBvaW50c01lc3NhZ2VIA4gBAUITChFfdHJhY2tpbmdfbWVzc2FnZUIPCg1f",
-            "Y2hhdF9tZXNzYWdlQhEKD19hdmF0YXJfbWVzc2FnZUIYChZfZmFjZV9yb3Rh",
-            "dGlvbl9tZXNzYWdlIngKD1RyYWNraW5nTWVzc2FnZRINCgVpbmRleBgBIAEo",
-            "AxIlCgtibGVuZFNoYXBlcxgCIAEoCzIQLm12bS5CbGVuZFNoYXBlcxIhCglr",
-            "ZXlwb2ludHMYAyABKAsyDi5tdm0uS2V5cG9pbnRzEgwKBGRhdGUYBCABKAki",
-            "mgEKHEZhY2VSb3RhdGlvbktleXBvaW50c01lc3NhZ2USHQoGcG9pbnQxGAEg",
-            "ASgLMg0ubXZtLktleXBvaW50Eh0KBnBvaW50MhgCIAEoCzINLm12bS5LZXlw",
-            "b2ludBIdCgZwb2ludDMYAyABKAsyDS5tdm0uS2V5cG9pbnQSHQoGcG9pbnQ0",
-            "GAQgASgLMg0ubXZtLktleXBvaW50IisKCEtleXBvaW50EgkKAXgYASABKAIS",
-            "CQoBeRgCIAEoAhIJCgF6GAMgASgCIkEKCkJsZW5kU2hhcGUSDQoFaW5kZXgY",
-            "ASABKAMSDQoFc2NvcmUYAiABKAISFQoNY2F0ZWdvcnlfbmFtZRgDIAEoCSIz",
-            "CgtCbGVuZFNoYXBlcxIkCgtibGVuZFNoYXBlcxgBIAMoCzIPLm12bS5CbGVu",
-            "ZFNoYXBlIi0KCUtleXBvaW50cxIgCglrZXlwb2ludHMYASADKAsyDS5tdm0u",
-            "S2V5cG9pbnQiMgoOT25saW5lU3RhdHVzZXMSIAoFdXNlcnMYASADKAsyES5t",
-            "dm0uT25saW5lU3RhdHVzIj4KDE9ubGluZVN0YXR1cxIKCgJpZBgBIAEoCRIQ",
-            "Cgh1c2VybmFtZRgCIAEoCRIQCghpc09ubGluZRgDIAEoCCKQAQoMTm90aWZp",
-            "Y2F0aW9uEgoKAmlkGAEgASgJEg4KBnVzZXJJZBgCIAEoCRIMCgR0eXBlGAMg",
-            "ASgFEhAKCGZyb21Vc2VyGAQgASgJEhUKCGVudGl0eUlkGAUgASgJSACIAQES",
-            "FAoHbWVzc2FnZRgGIAEoCUgBiAEBQgsKCV9lbnRpdHlJZEIKCghfbWVzc2Fn",
-            "ZSpBChFTb2NrZXRNZXNzYWdlVHlwZRIQCgxST09NX01FU1NBR0UQABIPCgtV",
-            "U0VSX0pPSU5FRBABEgkKBUVSUk9SEAIqkAEKEEVycm9yTWVzc2FnZVR5cGUS",
-            "EQoNREVGQVVMVF9FUlJPUhAAEhcKE1JPT01fTk9UX0FVVEhPUklaRUQQARIV",
-            "ChFST09NX0lEX05PVF9GT1VORBACEhIKDlVTRVJfTk9UX0ZPVU5EEAMSEQoN",
-            "SU5WQUxJRF9UT0tFThAEEhIKDklOVEVSTkFMX0VSUk9SEAUqVAoWRGF0YUNo",
-            "YW5uZWxNZXNzYWdlVHlwZRIUChBUUkFDS0lOR19NRVNTQUdFEAASEAoMQ0hB",
-            "VF9NRVNTQUdFEAESEgoOQVZBVEFSX01FU1NBR0UQAypcChBOb3RpZmljYXRp",
-            "b25UeXBlEgsKB0RFRkFVTFQQABISCg5GUklFTkRfUkVRVUVTVBABEhMKD1JP",
-            "T01fSU5WSVRBVElPThACEhIKDkFDQ0VQVF9SRVFVRVNUEANCCVoHLi9tdm1Q",
-            "YmIGcHJvdG8z"));
+            "DgoGZ2VuZGVyGA0gASgJEhsKE3Jvb21CYWNrZ3JvdW5kQ29sb3IYDiABKAkS",
+            "EgoKYmVhcmRTdHlsZRgPIAEoCRIPCgdnbGFzc2VzGBAgASgJIkQKGEdldE5v",
+            "dGlmaWNhdGlvbnNSZXNwb25zZRIoCg1ub3RpZmljYXRpb25zGAEgAygLMhEu",
+            "bXZtLk5vdGlmaWNhdGlvbiIzChlEZWxldGVOb3RpZmljYXRpb25SZXF1ZXN0",
+            "EhYKDm5vdGlmaWNhdGlvbklkGAEgASgJIhwKGkRlbGV0ZU5vdGlmaWNhdGlv",
+            "blJlc3BvbnNlIhwKGkRlbGV0ZU5vdGlmaWNhdGlvbnNSZXF1ZXN0Ih0KG0Rl",
+            "bGV0ZU5vdGlmaWNhdGlvbnNSZXNwb25zZSKTAQoNU29ja2V0TWVzc2FnZRIk",
+            "CgR0eXBlGAEgASgOMhYubXZtLlNvY2tldE1lc3NhZ2VUeXBlEigKDHJvb21f",
+            "bWVzc2FnZRgCIAEoCzIQLm12bS5Sb29tTWVzc2FnZUgAEioKDWVycm9yX21l",
+            "c3NhZ2UYAyABKAsyES5tdm0uRXJyb3JNZXNzYWdlSABCBgoEZGF0YSJRCgtS",
+            "b29tTWVzc2FnZRIUCgdtZXNzYWdlGAIgASgJSACIAQESIAoJa2V5cG9pbnRz",
+            "GAMgAygLMg0ubXZtLktleXBvaW50QgoKCF9tZXNzYWdlIkAKDEVycm9yTWVz",
+            "c2FnZRITCgtzdGF0dXNfY29kZRgBIAEoAxINCgVlcnJvchgCIAEoCRIMCgR0",
+            "eXBlGAMgASgFIh4KC0NoYXRNZXNzYWdlEg8KB21lc3NhZ2UYASABKAki7QIK",
+            "EkRhdGFDaGFubmVsTWVzc2FnZRIpCgR0eXBlGAEgASgOMhsubXZtLkRhdGFD",
+            "aGFubmVsTWVzc2FnZVR5cGUSMwoQdHJhY2tpbmdfbWVzc2FnZRgCIAEoCzIU",
+            "Lm12bS5UcmFja2luZ01lc3NhZ2VIAIgBARIrCgxjaGF0X21lc3NhZ2UYAyAB",
+            "KAsyEC5tdm0uQ2hhdE1lc3NhZ2VIAYgBARIwCg5hdmF0YXJfbWVzc2FnZRgE",
+            "IAEoCzITLm12bS5BdmF0YXJTZXR0aW5nc0gCiAEBEkUKFWZhY2Vfcm90YXRp",
+            "b25fbWVzc2FnZRgFIAEoCzIhLm12bS5GYWNlUm90YXRpb25LZXlwb2ludHNN",
+            "ZXNzYWdlSAOIAQFCEwoRX3RyYWNraW5nX21lc3NhZ2VCDwoNX2NoYXRfbWVz",
+            "c2FnZUIRCg9fYXZhdGFyX21lc3NhZ2VCGAoWX2ZhY2Vfcm90YXRpb25fbWVz",
+            "c2FnZSJ4Cg9UcmFja2luZ01lc3NhZ2USDQoFaW5kZXgYASABKAMSJQoLYmxl",
+            "bmRTaGFwZXMYAiABKAsyEC5tdm0uQmxlbmRTaGFwZXMSIQoJa2V5cG9pbnRz",
+            "GAMgASgLMg4ubXZtLktleXBvaW50cxIMCgRkYXRlGAQgASgJIpoBChxGYWNl",
+            "Um90YXRpb25LZXlwb2ludHNNZXNzYWdlEh0KBnBvaW50MRgBIAEoCzINLm12",
+            "bS5LZXlwb2ludBIdCgZwb2ludDIYAiABKAsyDS5tdm0uS2V5cG9pbnQSHQoG",
+            "cG9pbnQzGAMgASgLMg0ubXZtLktleXBvaW50Eh0KBnBvaW50NBgEIAEoCzIN",
+            "Lm12bS5LZXlwb2ludCIrCghLZXlwb2ludBIJCgF4GAEgASgCEgkKAXkYAiAB",
+            "KAISCQoBehgDIAEoAiJBCgpCbGVuZFNoYXBlEg0KBWluZGV4GAEgASgDEg0K",
+            "BXNjb3JlGAIgASgCEhUKDWNhdGVnb3J5X25hbWUYAyABKAkiMwoLQmxlbmRT",
+            "aGFwZXMSJAoLYmxlbmRTaGFwZXMYASADKAsyDy5tdm0uQmxlbmRTaGFwZSIt",
+            "CglLZXlwb2ludHMSIAoJa2V5cG9pbnRzGAEgAygLMg0ubXZtLktleXBvaW50",
+            "IjIKDk9ubGluZVN0YXR1c2VzEiAKBXVzZXJzGAEgAygLMhEubXZtLk9ubGlu",
+            "ZVN0YXR1cyI+CgxPbmxpbmVTdGF0dXMSCgoCaWQYASABKAkSEAoIdXNlcm5h",
+            "bWUYAiABKAkSEAoIaXNPbmxpbmUYAyABKAgikAEKDE5vdGlmaWNhdGlvbhIK",
+            "CgJpZBgBIAEoCRIOCgZ1c2VySWQYAiABKAkSDAoEdHlwZRgDIAEoBRIQCghm",
+            "cm9tVXNlchgEIAEoCRIVCghlbnRpdHlJZBgFIAEoCUgAiAEBEhQKB21lc3Nh",
+            "Z2UYBiABKAlIAYgBAUILCglfZW50aXR5SWRCCgoIX21lc3NhZ2UqQQoRU29j",
+            "a2V0TWVzc2FnZVR5cGUSEAoMUk9PTV9NRVNTQUdFEAASDwoLVVNFUl9KT0lO",
+            "RUQQARIJCgVFUlJPUhACKpABChBFcnJvck1lc3NhZ2VUeXBlEhEKDURFRkFV",
+            "TFRfRVJST1IQABIXChNST09NX05PVF9BVVRIT1JJWkVEEAESFQoRUk9PTV9J",
+            "RF9OT1RfRk9VTkQQAhISCg5VU0VSX05PVF9GT1VORBADEhEKDUlOVkFMSURf",
+            "VE9LRU4QBBISCg5JTlRFUk5BTF9FUlJPUhAFKlQKFkRhdGFDaGFubmVsTWVz",
+            "c2FnZVR5cGUSFAoQVFJBQ0tJTkdfTUVTU0FHRRAAEhAKDENIQVRfTUVTU0FH",
+            "RRABEhIKDkFWQVRBUl9NRVNTQUdFEAMqXAoQTm90aWZpY2F0aW9uVHlwZRIL",
+            "CgdERUZBVUxUEAASEgoORlJJRU5EX1JFUVVFU1QQARITCg9ST09NX0lOVklU",
+            "QVRJT04QAhISCg5BQ0NFUFRfUkVRVUVTVBADQglaBy4vbXZtUGJiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Mvm.SocketMessageType), typeof(global::Mvm.ErrorMessageType), typeof(global::Mvm.DataChannelMessageType), typeof(global::Mvm.NotificationType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -179,7 +180,7 @@ namespace Mvm {
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetAvatarSettingsResponse), global::Mvm.GetAvatarSettingsResponse.Parser, new[]{ "Settings" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesRequest), global::Mvm.GetUserProfileFeaturesRequest.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetUserProfileFeaturesResponse), global::Mvm.GetUserProfileFeaturesResponse.Parser, new[]{ "Profile", "AvatarSettings" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.AvatarSettings), global::Mvm.AvatarSettings.Parser, new[]{ "HeadStyle", "HairStyle", "EyebrowsStyle", "EyeStyle", "NoseStyle", "MouthStyle", "SkinImperfection", "Tattoo", "HairColor", "BrowsColor", "SkinColor", "EyeColor", "Gender", "RoomBackgroundColor" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.AvatarSettings), global::Mvm.AvatarSettings.Parser, new[]{ "HeadStyle", "HairStyle", "EyebrowsStyle", "EyeStyle", "NoseStyle", "MouthStyle", "SkinImperfection", "Tattoo", "HairColor", "BrowsColor", "SkinColor", "EyeColor", "Gender", "RoomBackgroundColor", "BeardStyle", "Glasses" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.GetNotificationsResponse), global::Mvm.GetNotificationsResponse.Parser, new[]{ "Notifications" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.DeleteNotificationRequest), global::Mvm.DeleteNotificationRequest.Parser, new[]{ "NotificationId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Mvm.DeleteNotificationResponse), global::Mvm.DeleteNotificationResponse.Parser, null, null, null, null, null),
@@ -9247,6 +9248,8 @@ namespace Mvm {
       eyeColor_ = other.eyeColor_;
       gender_ = other.gender_;
       roomBackgroundColor_ = other.roomBackgroundColor_;
+      beardStyle_ = other.beardStyle_;
+      glasses_ = other.glasses_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -9424,6 +9427,30 @@ namespace Mvm {
       }
     }
 
+    /// <summary>Field number for the "beardStyle" field.</summary>
+    public const int BeardStyleFieldNumber = 15;
+    private string beardStyle_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string BeardStyle {
+      get { return beardStyle_; }
+      set {
+        beardStyle_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "glasses" field.</summary>
+    public const int GlassesFieldNumber = 16;
+    private string glasses_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Glasses {
+      get { return glasses_; }
+      set {
+        glasses_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -9453,6 +9480,8 @@ namespace Mvm {
       if (EyeColor != other.EyeColor) return false;
       if (Gender != other.Gender) return false;
       if (RoomBackgroundColor != other.RoomBackgroundColor) return false;
+      if (BeardStyle != other.BeardStyle) return false;
+      if (Glasses != other.Glasses) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -9474,6 +9503,8 @@ namespace Mvm {
       if (EyeColor.Length != 0) hash ^= EyeColor.GetHashCode();
       if (Gender.Length != 0) hash ^= Gender.GetHashCode();
       if (RoomBackgroundColor.Length != 0) hash ^= RoomBackgroundColor.GetHashCode();
+      if (BeardStyle.Length != 0) hash ^= BeardStyle.GetHashCode();
+      if (Glasses.Length != 0) hash ^= Glasses.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -9548,6 +9579,14 @@ namespace Mvm {
         output.WriteRawTag(114);
         output.WriteString(RoomBackgroundColor);
       }
+      if (BeardStyle.Length != 0) {
+        output.WriteRawTag(122);
+        output.WriteString(BeardStyle);
+      }
+      if (Glasses.Length != 0) {
+        output.WriteRawTag(130, 1);
+        output.WriteString(Glasses);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -9614,6 +9653,14 @@ namespace Mvm {
         output.WriteRawTag(114);
         output.WriteString(RoomBackgroundColor);
       }
+      if (BeardStyle.Length != 0) {
+        output.WriteRawTag(122);
+        output.WriteString(BeardStyle);
+      }
+      if (Glasses.Length != 0) {
+        output.WriteRawTag(130, 1);
+        output.WriteString(Glasses);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -9665,6 +9712,12 @@ namespace Mvm {
       }
       if (RoomBackgroundColor.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RoomBackgroundColor);
+      }
+      if (BeardStyle.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(BeardStyle);
+      }
+      if (Glasses.Length != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(Glasses);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -9719,6 +9772,12 @@ namespace Mvm {
       }
       if (other.RoomBackgroundColor.Length != 0) {
         RoomBackgroundColor = other.RoomBackgroundColor;
+      }
+      if (other.BeardStyle.Length != 0) {
+        BeardStyle = other.BeardStyle;
+      }
+      if (other.Glasses.Length != 0) {
+        Glasses = other.Glasses;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -9791,6 +9850,14 @@ namespace Mvm {
             RoomBackgroundColor = input.ReadString();
             break;
           }
+          case 122: {
+            BeardStyle = input.ReadString();
+            break;
+          }
+          case 130: {
+            Glasses = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -9860,6 +9927,14 @@ namespace Mvm {
           }
           case 114: {
             RoomBackgroundColor = input.ReadString();
+            break;
+          }
+          case 122: {
+            BeardStyle = input.ReadString();
+            break;
+          }
+          case 130: {
+            Glasses = input.ReadString();
             break;
           }
         }

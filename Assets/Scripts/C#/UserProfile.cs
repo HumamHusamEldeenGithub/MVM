@@ -249,6 +249,8 @@ public class UserProfile : Singleton<UserProfile>
             SkinColor = "#A8A08CFF",
             EyeColor = "#000000FF",
             Gender = "Male",
+            BeardStyle = "0",
+            Glasses = "0" ,
             RoomBackgroundColor= "#000000FF",
         };
         return new PeerData
