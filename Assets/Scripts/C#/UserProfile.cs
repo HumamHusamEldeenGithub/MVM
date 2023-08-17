@@ -166,14 +166,14 @@ public class UserProfile : Singleton<UserProfile>
     private void ChangeBackground()
     {
         int cur = 0;
-        int.TryParse(userData.AvatarSettings.RoomBackgroundColor, out cur);
+        int.TryParse(Instance.userData.AvatarSettings.RoomBackgroundColor, out cur);
 
         cur++;
 
         if (cur > 4)
             cur = 0;
 
-        userData.AvatarSettings.RoomBackgroundColor = cur.ToString();
+        Instance.userData.AvatarSettings.RoomBackgroundColor = cur.ToString();
         WebRTCManager.Instance.PublishAvatarSettingsToAll();
     }
 
