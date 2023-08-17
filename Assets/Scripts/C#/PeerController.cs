@@ -20,6 +20,7 @@ public class PeerController : MonoBehaviour
 
     private OrientationProcessor orProcessor;
     private AudioSource audioSource;
+    private RoomSpaceController roomSpaceController;
 
     private const float delayThreshold = 5.0f;
     private const int delayMaxcounter = 30;
@@ -32,6 +33,7 @@ public class PeerController : MonoBehaviour
     {
         orProcessor = GetComponent<OrientationProcessor>();
         audioSource = GetComponent<AudioSource>();
+        roomSpaceController = GetComponentInParent<RoomSpaceController>();
         EventsPool.Instance.AddListener(typeof(ReopenDatachannelEvent),
             new Action<string,RTCDataChannel>(ReopenDatachannel));
     }
@@ -128,6 +130,7 @@ public class PeerController : MonoBehaviour
 
                 if (responseMessage.AvatarMessage != null)
                 {
+                    roomSpaceController.ChangeBackground();
                     Debug.Log($"Received avatar message {responseMessage.AvatarMessage}");
                 }
                 else if (responseMessage.TrackingMessage != null)

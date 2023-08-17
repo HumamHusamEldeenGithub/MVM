@@ -25,7 +25,10 @@ public class RoomSpaceController : MonoBehaviour
 
     private void Awake()
     {
-        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(ChangeBackground));
+        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(() => {
+            if (peerController.peerID == "self")
+                ChangeBackground();
+            }));
     }
 
 
@@ -59,7 +62,7 @@ public class RoomSpaceController : MonoBehaviour
         roomCamera.targetTexture = rt;
     }
 
-    private void ChangeBackground()
+    public void ChangeBackground()
     {
         backgroundIndex++;
         if(backgroundIndex >= roomSpaces.Length)
