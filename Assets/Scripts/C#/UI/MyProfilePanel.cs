@@ -41,7 +41,7 @@ public class MyProfilePanel : MonoBehaviour
     {
         usernameField.text = UserProfile.Instance.userData.Username;
         emailField.text = UserProfile.Instance.userData.Email;
-        //phoneField.text = UserProfile.Instance.userData.Phone
+        phoneField.text = UserProfile.Instance.userData.PhoneNumber;
     }
 
     private void TransitionToAvatarSettingsScene()

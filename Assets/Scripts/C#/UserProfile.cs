@@ -85,7 +85,7 @@ public class UserProfile : Singleton<UserProfile>
 
         async void createUser(string username, string email, string phonenumber, string password)
         {
-            CreateUserResponse res = await Server.CreateUser(new CreateUserRequest { Username = username, Email = email, Password = password });
+            CreateUserResponse res = await Server.CreateUser(new CreateUserRequest { Username = username, Email = email, Password = password, Phonenumber = phonenumber });
 
             if (res == null)
             {
@@ -125,6 +125,7 @@ public class UserProfile : Singleton<UserProfile>
         userData.Id = userProfile.Profile.Id;
         userData.Username = userProfile.Profile.Username;
         userData.Email = userProfile.Profile.Email;
+        userData.PhoneNumber = userProfile.Profile.Phonenumber;
 
         if (userProfile.AvatarSettings == null)
         {
@@ -191,6 +192,7 @@ public class UserProfile : Singleton<UserProfile>
         public string Email { get; set; }
         public string Token { get; set; }
         public string RefreshToken { get; set; }
+        public string PhoneNumber { get; set; }
         public int Age { get; set; }
         public RepeatedField<Mvm.UserProfile>  Friends { get; set; }
         public RepeatedField<string> PendingFriendRequests { get; set; }

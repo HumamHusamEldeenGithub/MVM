@@ -130,6 +130,7 @@ public class AvatarSettingsPanel : MonoBehaviour
         BeardStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.BeardStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         EyesBrowsStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyebrowsStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         NoseStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.NoseStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        EyesStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyeStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         MouthStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.MouthStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         SkinImperfectionSlider.onValueChanged.AddListener((float option) => { avatarSettings.SkinImperfection = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         TattooSlider.onValueChanged.AddListener((float option) => { avatarSettings.Tattoo = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
