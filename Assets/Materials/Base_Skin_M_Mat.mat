@@ -24,8 +24,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7512f61aa89938947b3f4895f7a4a64e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BeardTexture:
+        m_Texture: {fileID: 2800000, guid: bc39fa44402a43f4980b9f152d736ec4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BrowsTexture:
-        m_Texture: {fileID: 2800000, guid: 435846e6c7f3f4d4f9a439fa7ee92eae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 686f7672aed53384e861e5f071403565, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:

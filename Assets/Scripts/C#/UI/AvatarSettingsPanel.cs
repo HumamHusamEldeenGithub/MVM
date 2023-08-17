@@ -17,6 +17,8 @@ public class AvatarSettingsPanel : MonoBehaviour
     [SerializeField]
     private Button HairColorPicker;
     [SerializeField]
+    private Slider BeardStyleSlider;
+    [SerializeField]
     private Slider EyesStyleSlider;
     [SerializeField]
     private Button EyesColorPicker;
@@ -89,6 +91,7 @@ public class AvatarSettingsPanel : MonoBehaviour
         GlassesStyleSlider.value = float.Parse(avatarSettings.Glasses);
         HeadStyleSlider.value = float.Parse(avatarSettings.HeadStyle);
         HairStyleSlider.value = float.Parse(avatarSettings.HairStyle);
+        BeardStyleSlider.value = float.Parse(avatarSettings.BeardStyle);
         EyesStyleSlider.value = float.Parse(avatarSettings.EyeStyle);
         EyesBrowsStyleSlider.value = float.Parse(avatarSettings.EyebrowsStyle);
         NoseStyleSlider.value = float.Parse(avatarSettings.NoseStyle);
@@ -124,7 +127,7 @@ public class AvatarSettingsPanel : MonoBehaviour
         HeadStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.HeadStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         GlassesStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.Glasses = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         HairStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.HairStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
-        EyesStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyeStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
+        BeardStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.BeardStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         EyesBrowsStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.EyebrowsStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         NoseStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.NoseStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });
         MouthStyleSlider.onValueChanged.AddListener((float option) => { avatarSettings.MouthStyle = ((int)option).ToString(); headCustomizer.SetSettings(avatarSettings); });

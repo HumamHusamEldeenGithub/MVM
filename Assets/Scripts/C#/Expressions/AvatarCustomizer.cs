@@ -18,6 +18,7 @@ public class AvatarCustomizer : MonoBehaviour
     private Texture[] browsTextures;
     private Texture[] skinImperfectionTextures;
     private Texture[] tattooTextures;
+    private Texture[] beardTextures;
 
     private Material eyesMaterial;
     private Material skinMaterial;
@@ -42,6 +43,7 @@ public class AvatarCustomizer : MonoBehaviour
         browsTextures = Resources.LoadAll<Texture>("Brows");
         skinImperfectionTextures = Resources.LoadAll<Texture>("SkinImperfection");
         tattooTextures = Resources.LoadAll<Texture>("Tattoo");
+        beardTextures = Resources.LoadAll<Texture>("Beard");
 
         Debug.Log(glassesPrefabs.Length);
     }
@@ -50,6 +52,7 @@ public class AvatarCustomizer : MonoBehaviour
         SetHeadStyle(int.Parse(avatarSettings.HeadStyle));
         SetHairStyle(int.Parse(avatarSettings.HairStyle));
         SetGlassesStyle(int.Parse(avatarSettings.Glasses));
+        SetBeardStyle(int.Parse(avatarSettings.BeardStyle));
         SetBrowsStyle(int.Parse(avatarSettings.EyebrowsStyle));
         SetEyeStyle(int.Parse(avatarSettings.EyeStyle));
         SetNoseStyle(int.Parse(avatarSettings.NoseStyle));
@@ -130,8 +133,6 @@ public class AvatarCustomizer : MonoBehaviour
 
     protected void SetBrowsStyle(int browsStyleInd)
     {
-        browsStyleInd = Mathf.Clamp(browsStyleInd, 0, browsTextures.Length - 1);
-
         skinMaterial.SetTexture("_BrowsTexture", null);
         for (int i = 0; i < browsTextures.Length; i++)
         {
@@ -184,8 +185,6 @@ public class AvatarCustomizer : MonoBehaviour
 
     protected void SetSkinImperfection(int skinImperfectionInd)
     {
-        skinImperfectionInd = Mathf.Clamp(skinImperfectionInd, 0, skinImperfectionTextures.Length - 1);
-
         skinMaterial.SetTexture("_FaceImperfectionTexture", null);
         for (int i = 0; i < skinImperfectionTextures.Length; i++)
         {
@@ -199,8 +198,6 @@ public class AvatarCustomizer : MonoBehaviour
 
     protected void SetTattoo(int tattooInd)
     {
-        tattooInd = Mathf.Clamp(tattooInd, 0, tattooTextures.Length - 1);
-
         skinMaterial.SetTexture("_FaceTattooTexture", null);
         for (int i = 0; i < tattooTextures.Length; i++)
         {
@@ -223,6 +220,18 @@ public class AvatarCustomizer : MonoBehaviour
         {
             hair_Renderer.material.color = color;
             skinMaterial.SetColor("_HairColor", color);
+        }
+    }
+    protected void SetBeardStyle(int beardStyleInd)
+    {
+        skinMaterial.SetTexture("_BeardTexture", null);
+        for (int i = 0; i < beardTextures.Length; i++)
+        {
+            if (beardTextures[i].name == beardStyleInd.ToString())
+            {
+                skinMaterial.SetTexture("_BeardTexture", beardTextures[i]);
+                break;
+            }
         }
     }
 
