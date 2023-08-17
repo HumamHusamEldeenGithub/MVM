@@ -16,15 +16,14 @@ public class MyRoomsPanel : MonoBehaviour
     private void Awake()
     {
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
+
+        EventsPool.Instance.AddListener(typeof(ProfileUpdatedEvent), new Action(Initialize));
     }
 
     private void OnEnable()
     {
         if (UserProfile.Instance.userData != null)
-        {
-            // already logged in
             OnLogin(true);
-        }
     }
 
     private void OnLogin(bool status)
@@ -33,6 +32,11 @@ public class MyRoomsPanel : MonoBehaviour
         {
             return;
         }
+        Initialize();
+    }
+
+    private void Initialize()
+    {
         int childCount = roomsScrollView.childCount;
 
         for (int i = childCount - 1; i >= 0; i--)

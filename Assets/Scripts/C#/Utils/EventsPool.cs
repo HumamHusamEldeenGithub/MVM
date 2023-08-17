@@ -46,6 +46,7 @@ public class EventsPool : Singleton<EventsPool>
         Delegate thisEvent;
         if (eventsDictionary.TryGetValue(eventType, out thisEvent))
         {
+            UnityEngine.Debug.Log(eventType);
             eventsQueue.Enqueue(new Tuple< Delegate, object[]>(thisEvent, args));
         }
     }

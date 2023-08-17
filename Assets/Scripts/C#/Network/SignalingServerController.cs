@@ -194,8 +194,10 @@ class SignalingServerController : Singleton<SignalingServerController>
         if (newNotification.Type == (int)NotificationType.FriendRequest || newNotification.Type == (int)NotificationType.AcceptRequest)
         {
             await UserProfile.Instance.GetMyFriends();
+            await SendRefreshFriendsEvent();
         }
         EventsPool.Instance.InvokeEvent(typeof(ReceivedNotificationEvent));
+
     }
 
     private void HandleGetUsersOnlineStatus(SignalingMessage socketMessage)
@@ -275,6 +277,14 @@ class SignalingServerController : Singleton<SignalingServerController>
 
         usersOnlineStatus.Users.Add(newOnlineStatus);
 
+    }
+
+    public async Task SendRefreshFriendsEvent()
+    {
+        await SignalingServerController.SendMessageToServerAsync(new SignalingMessage
+        {
+            Type = "refreshFriends"
+        });
     }
 
     public async void SendChatMessage(string chatId ,string toUserId, string message)

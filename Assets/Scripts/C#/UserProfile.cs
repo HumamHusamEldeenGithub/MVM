@@ -139,6 +139,7 @@ public class UserProfile : Singleton<UserProfile>
         {
             userData.Rooms = userProfile.UserRooms;
         }
+        EventsPool.Instance.InvokeEvent(typeof(ProfileUpdatedEvent));
     }
 
     public async Task GetMyFriends()
@@ -160,6 +161,7 @@ public class UserProfile : Singleton<UserProfile>
             },
                 out _
             );
+
 
         }
     }

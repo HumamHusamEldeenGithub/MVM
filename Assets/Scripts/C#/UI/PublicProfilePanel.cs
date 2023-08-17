@@ -71,17 +71,16 @@ public class PublicProfilePanel : MonoBehaviour
                 btnIcon.color = Color.red;
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
+                    EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
                     await Server.DeleteFriend(new Mvm.DeleteFriendRequest
                     {
                         FriendId = userId
                     });
-                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend has been deleted successfully");
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend has been deleted successfully", Color.black);
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
-                    await SignalingServerController.SendMessageToServerAsync(new SignalingMessage
-                    {
-                        Type = "refreshFriends"
-                    });
+                    await SignalingServerController.Instance.SendRefreshFriendsEvent();
+                    EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
                 });
                 yield break; 
             }
@@ -103,10 +102,7 @@ public class PublicProfilePanel : MonoBehaviour
                     EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been accepted successfully");
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
-                    await SignalingServerController.SendMessageToServerAsync(new SignalingMessage
-                    {
-                        Type = "refreshFriends"
-                    });
+                    await SignalingServerController.Instance.SendRefreshFriendsEvent();
                 });
                 yield break;
             }
@@ -117,6 +113,7 @@ public class PublicProfilePanel : MonoBehaviour
             if (req == userId)
             {
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
+                Debug.Log("wawawawawa");
                 btnIcon.iconUnicode = removeFriendIcon;
                 btnIcon.color = Color.red;
                 addRemoveBtn.onClick.AddListener(async () =>

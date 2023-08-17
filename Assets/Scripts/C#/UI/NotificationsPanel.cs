@@ -33,10 +33,13 @@ public class NotificationsPanel : MonoBehaviour
                 Initialize();
         }));
         EventsPool.Instance.AddListener(typeof(ReceivedNotificationEvent), new Action(Initialize));
+        EventsPool.Instance.AddListener(typeof(ProfileUpdatedEvent), new Action(Initialize));
     }
 
     private void DestroyPrevoiusNotifications()
     {
+        if (notificationsScrollView == null)
+            return;
         int childCount = notificationsScrollView.childCount;
 
         for (int i = childCount - 1; i >= 0; i--)
