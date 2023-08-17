@@ -109,7 +109,6 @@ public class UserProfile : Singleton<UserProfile>
 
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
-            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
@@ -238,16 +237,16 @@ public class UserProfile : Singleton<UserProfile>
         Mvm.AvatarSettings avatarSettings = new Mvm.AvatarSettings
         {
             HeadStyle = "0",
-            HairStyle = "0",
-            EyebrowsStyle = "0",
+            HairStyle = "19",
+            EyebrowsStyle = "1",
             EyeStyle = "0",
             NoseStyle = "0",
             MouthStyle = "0",
             SkinImperfection = "0",
             Tattoo = "0",
-            HairColor = "#000000FF",
+            HairColor = "#222222FF",
             BrowsColor = "#000000FF",
-            SkinColor = "#dbc488FF",
+            SkinColor = "#A8A08CFF",
             EyeColor = "#000000FF",
             Gender = "Male",
             RoomBackgroundColor= "#000000FF",

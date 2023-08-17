@@ -127,7 +127,6 @@ public class PeerController : MonoBehaviour
                 Debug.Log("Bytes size : " + bytes.Length);
 
                 DataChannelMessage responseMessage = DataChannelMessage.Parser.ParseFrom(bytes, 0, bytes.Length);
-
                 if (responseMessage.AvatarMessage != null)
                 {
                     roomSpaceController.ChangeBackground();

@@ -8,11 +8,11 @@ public class StandardColors : MonoBehaviour
     {
         return color switch
         {
-            "Black_Hair" => "#000000",
+            "Black_Hair" => "#222222",
             "Brown_Hair" => "#4F2903",
             "Blond_Hair" => "C89F73",
             "Gray_Hair" => "#505050",
-            _ => "#000000",
+            _ => "#222222",
         };
     }
 

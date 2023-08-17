@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,29 +18,44 @@ public class CameraPanel : Singleton<MonoBehaviour>
     protected override void Awake()
     {
         CaptureBtn.onClick.AddListener(CaptureAndSavePhoto);
+
+        EventsPool.Instance.AddListener(typeof(ShowTakePictuePanelEvent), new Action(Enable));
+
+        EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(Disable));
     }
 
-    void OnEnable()
+    private void Enable()
     {
-        if (cameraTexture == null)
+
+        IEnumerator enable()
         {
-            cameraTexture = new WebCamTexture();
+            if (cameraTexture == null)
+            {
+                cameraTexture = new WebCamTexture();
+            }
+
+            cameraImage.texture = cameraTexture;
+
+            if (!cameraTexture.isPlaying)
+                cameraTexture.Play();
+
+            Debug.Log(cameraTexture.width);
+            Debug.Log(cameraTexture.height);
+
+            var aspectFitter = cameraImage.GetComponent<AspectRatioFitter>();
+            float webcamAspect = (float)cameraTexture.width / (float)cameraTexture.height;
+            aspectFitter.aspectRatio = webcamAspect;
+            yield return null;
         }
 
-        var aspectFitter = cameraImage.GetComponent<AspectRatioFitter>();
-        float webcamAspect = (float)cameraTexture.width / cameraTexture.height;
-        aspectFitter.aspectRatio = webcamAspect;
-
-        cameraImage.texture = cameraTexture;
-
-        if (!cameraTexture.isPlaying)
-            cameraTexture.Play();
+        StartCoroutine(enable());
 
     }
 
-    private void OnDisable()
+    private void Disable(bool f)
     {
-        cameraTexture.Stop();
+        if(cameraTexture != null)
+            cameraTexture?.Stop();
     }
 
     public void ActiveEventListener()
@@ -71,11 +87,12 @@ public class CameraPanel : Singleton<MonoBehaviour>
                 HeadStyle = "0",
                 BrowsColor = StandardColors.GetStandardColors(aiPipelineResponse.HairColor),
                 EyeStyle = "0",
-                EyebrowsStyle = "0",
-                HairStyle = "0",
+                EyebrowsStyle = "1",
+                HairStyle = "1",
                 MouthStyle = "0",
                 NoseStyle = "0",
-                SkinColor = StandardColors.RGBToHex(aiPipelineResponse.SkinColorRGB[0] , aiPipelineResponse.SkinColorRGB[1], aiPipelineResponse.SkinColorRGB[2]),
+                // Anoos you had one job
+                SkinColor = StandardColors.RGBToHex(aiPipelineResponse.SkinColorRGB[2] , aiPipelineResponse.SkinColorRGB[1], aiPipelineResponse.SkinColorRGB[0]),
                 EyeColor = "#FFFFFFFF",
                 HairColor = StandardColors.GetStandardColors(aiPipelineResponse.HairColor),
                 Gender = aiPipelineResponse.Gender,
@@ -88,7 +105,12 @@ public class CameraPanel : Singleton<MonoBehaviour>
         Destroy(photoTexture);
         Debug.Log("Photo Sent");
 
-        // TODO Transition to main scene
+        EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+    }
+
+    public void Skip()
+    {
+        EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
     }
 
     AIPipelineResponse DeserializeFlaskResponse (string jsonString)

@@ -213,7 +213,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
     }
 
-    private async void HandleError(SignalingMessage socketMessage)
+    private void HandleError(SignalingMessage socketMessage)
     {
         var newSocketError = JsonConvert.DeserializeObject<ErrorMessage>((string)socketMessage.Data);
         Debug.Log($"Socket Error {newSocketError.Error} StatusCode = {newSocketError.StatusCode} Type {newSocketError.Type}");

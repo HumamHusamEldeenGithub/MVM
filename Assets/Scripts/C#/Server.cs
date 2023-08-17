@@ -106,10 +106,10 @@ public class Server : MonoBehaviour
         {
             using MultipartFormDataContent form = new MultipartFormDataContent();
             ByteArrayContent content = new ByteArrayContent(fileBytes);
-            content.Headers.Add("Content-Disposition", $"form-data; name=\"file\"; filename=\"{fileName}\"");
-            form.Add(content, "file", fileName);
+            content.Headers.Add("Content-Disposition", $"form-data; name=\"image\"; filename=\"{fileName}\"");
+            form.Add(content, "image", fileName);
 
-            HttpResponseMessage response = await httpClient.PostAsync($"{PythonServerUrl}:{PythonServerPort}/predict" , form);
+            HttpResponseMessage response = await httpClient.PostAsync($"http://{PythonServerUrl}:{PythonServerPort}/predict" , form);
             response.EnsureSuccessStatusCode();
 
             string responseBody = await response.Content.ReadAsStringAsync();

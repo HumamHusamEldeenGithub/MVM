@@ -12,7 +12,10 @@ public class LoginSignupPanel : MonoBehaviour
     private Animator loginPanel;
 
     [SerializeField]
-    private GameObject mainMenuPanel;
+    private Animator takePicturePanel;
+
+    [SerializeField]
+    private Animator createAccountPanel;
 
     [SerializeField]
     private TMP_InputField usernameInp;
@@ -66,6 +69,8 @@ public class LoginSignupPanel : MonoBehaviour
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
             new Action<bool>(OnLogin));
 
+        EventsPool.Instance.AddListener(typeof(ShowTakePictuePanelEvent), new Action(OnCreateAccountSuccess));
+
     }
 
     private void Login()
@@ -86,6 +91,12 @@ public class LoginSignupPanel : MonoBehaviour
 
         loginBtn.interactable = false;
 
+    }
+
+    private void OnCreateAccountSuccess()
+    {
+        createAccountPanel.SetTrigger("FadeOut");
+        takePicturePanel.SetTrigger("FadeIn");
     }
 
     private void OnLogin(bool success)
