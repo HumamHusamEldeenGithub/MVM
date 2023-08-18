@@ -5,13 +5,13 @@ using UnityEngine;
 public class OrientationProcessor : MonoBehaviour
 {
     [Range(0.1f, 1.0f)]
-    private float AveragingValue = 1f;
+    private float AveragingValue = 0.5f;
 
     private List<Vector3> points;
 
     private float FaceArea;
 
-    private float maxDistance = 0.1f;
+    private float maxDistance = 0.005f;
 
     public bool isReady
     {
@@ -50,9 +50,13 @@ public class OrientationProcessor : MonoBehaviour
                 float distance = Vector3.Distance(points[i], pt);
 
                 // If the distance is greater than the maximum distance, clamp the newPosition to be within the maximum distance from the originalPosition
-                if (distance > maxDistance)
+                if (distance <= maxDistance)
                 {
                     pt = points[i] + (pt - points[i]).normalized * maxDistance;
+                }
+                else
+                {
+                    Debug.LogWarning("Max distance reached");
                 }
 
                 // Set the position of the object to the new position
