@@ -5,13 +5,13 @@ using UnityEngine;
 public class OrientationProcessor : MonoBehaviour
 {
     [Range(0.1f, 1.0f)]
-    private float AveragingValue = 0.9f;
+    private float AveragingValue = 1f;
 
     private List<Vector3> points;
 
     private float FaceArea;
 
-    private float maxDistance = 0.05f;
+    private float maxDistance = 0.1f;
 
     public bool isReady
     {

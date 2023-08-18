@@ -25,6 +25,6 @@ public class HeadTargetController : MonoBehaviour
         var yangle = 1 - ((orientationProcessor.Y_ANGLE + 60) / 120);
 
         transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(Mathf.Lerp(-rightPos, rightPos, Mathf.Clamp01(yangle)),
-            transform.localPosition.y, Mathf.Lerp(-topPos, topPos, Mathf.Clamp01(xangle))), Time.deltaTime * 10);
+            transform.localPosition.y, Mathf.Lerp(-topPos, topPos, Mathf.Clamp01(xangle))), 1);
     }
 }

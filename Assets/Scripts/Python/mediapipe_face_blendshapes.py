@@ -32,7 +32,6 @@ async def BlendShapesDetector (reader,writer) :
             
             if (len(detection_result.face_landmarks) > 0) :
                 md_keypoints = detection_result.face_landmarks[0]
-            print(md_keypoints)
             # Encoding tracking message
             trackingMessage = encodeTrackingMessage(md_blendShapes , md_keypoints).SerializeToString()
             writer.write(trackingMessage)
