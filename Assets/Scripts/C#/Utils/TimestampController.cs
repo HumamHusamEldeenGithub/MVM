@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 public class TimestampController : MonoBehaviour
 {
-    private const string API_URL = "http://worldclockapi.com/api/json/est/now";
+    private const string API_URL = "https://timeapi.io/api/TimeZone/zone?timeZone=Asia/Damascus";
     public static DateTime apiDate;
 
     void Start()
@@ -35,7 +35,7 @@ public class TimestampController : MonoBehaviour
 
             TimeApiResponse jsonResponse = JsonUtility.FromJson<TimeApiResponse>(responseContent);
 
-            apiDate = DateTime.Parse(jsonResponse.currentDateTime);
+            apiDate = DateTime.Parse(jsonResponse.currentLocalTime);
 
             Debug.Log($"Current Date : {apiDate}");
         }
@@ -48,7 +48,7 @@ public class TimestampController : MonoBehaviour
     [System.Serializable]
     public class TimeApiResponse
     {
-        public string currentDateTime;
+        public string currentLocalTime;
         public string utc_offset;
     }
 }
