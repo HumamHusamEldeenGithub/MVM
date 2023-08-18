@@ -26,8 +26,6 @@ public class UIChatMessage : MonoBehaviour
 
             yield return null;
 
-            Debug.LogError(LayoutUtility.GetPreferredHeight(backgroundPanel));
-
             messageRectTransform.sizeDelta = new Vector2(messageRectTransform.sizeDelta.x, LayoutUtility.GetPreferredHeight(backgroundPanel));
         }
         StartCoroutine(set());

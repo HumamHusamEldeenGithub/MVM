@@ -66,7 +66,7 @@ public class PublicProfilePanel : MonoBehaviour
                 });
             }
         }
-
+        backBtn.onClick.RemoveAllListeners();
         backBtn.onClick.AddListener(() =>
         {
             GetComponent<Animator>().SetTrigger("FadeOut");

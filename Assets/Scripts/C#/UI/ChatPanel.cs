@@ -110,6 +110,7 @@ public class ChatPanel : MonoBehaviour
 
         });
 
+        backBtn.onClick.RemoveAllListeners();
         backBtn.onClick.AddListener(() =>
         {
             GetComponent<Animator>().SetTrigger("FadeOut");
