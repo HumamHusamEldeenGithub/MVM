@@ -1,8 +1,6 @@
-﻿using Google.MaterialDesign.Icons;
-using System;
+﻿using System;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +21,22 @@ public class ChatPanel : MonoBehaviour
     [SerializeField]
     private Button backBtn;
 
-    private string chatId ; 
+    [SerializeField]
+    private RectTransform scrollContent;
+
+    [SerializeField]
+    private UIChatMessage sentMessage;
+
+    [SerializeField]
+    private UIChatMessage receivedMessage;
+
+    [SerializeField]
+    private Scrollbar scrollbar;
+
+
+    private string chatId;
+
+    private bool isFocused = false;
 
     private void Awake()
     {
@@ -31,8 +44,24 @@ public class ChatPanel : MonoBehaviour
         EventsPool.Instance.AddListener(typeof(ChatMessageReceviedEvent), new Action<Mvm.SocketChatMessage>(UpdateChat));
     }
 
+    private void Update()
+    {
+        chatMessageField.onDeselect.AddListener((string s) => { isFocused = false; });
+        chatMessageField.onSelect.AddListener((string s) => { isFocused = true; });
+    }
+
     public async void ShowChat(string userId,string username, Animator prevPanel)
     {
+        GameObject temp = new GameObject(chatId);
+        int childCount = scrollContent.childCount;
+
+        for (int i = childCount - 1; i >= 0; i--)
+        {
+            Transform child = scrollContent.GetChild(i);
+            child.parent = temp.transform;
+        }
+
+        Destroy(temp);
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
 
         var res = await Server.GetChat(new Mvm.GetChatRequest { UserId = userId });
@@ -46,24 +75,39 @@ public class ChatPanel : MonoBehaviour
 
         foreach (var msg in res.Chat.Messages)
         {
-            // if receiverId == msg.UserId -> left 
-            // else  -> right (My messages)
+            if (receiverId == msg.UserId)
+            {
+                CreateReceivedMessage(msg.Message);
+            }
+            else
+            {
+                CreateSentMessage(msg.Message);
+            }
             Debug.Log($"{msg.UserId} -- {msg.Message}");
+            scrollbar.value = 0;
         }
 
         chatMessageField.onEndEdit.AddListener((text)=>
         {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (isFocused && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
             {
+                if (chatMessageField.text.Length <= 0)
+                    return;
                 SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
+                CreateSentMessage(chatMessageField.text);
                 chatMessageField.text = "";
             }
         });
 
         sendMessageBtn.onClick.AddListener(() =>
         {
+            if (chatMessageField.text.Length <= 0)
+                return;
+
             SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
+            CreateSentMessage(chatMessageField.text);
             chatMessageField.text = "";
+
         });
 
         backBtn.onClick.AddListener(() =>
@@ -78,6 +122,36 @@ public class ChatPanel : MonoBehaviour
     private void UpdateChat(Mvm.SocketChatMessage chatMessage)
     {
         if (chatMessage.ChatId != chatId) return;
-        // Append new message to scroll view 
+        CreateReceivedMessage(chatMessage.Message);
+    }
+
+    private void CreateSentMessage(string text)
+    {
+        IEnumerator run()
+        {
+            UIChatMessage chatMsg = Instantiate(sentMessage);
+            chatMsg.transform.parent = scrollContent.transform;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(scrollContent);
+            chatMsg.SetText(text);
+
+            yield return null;
+            scrollbar.value = 0;
+        }
+        StartCoroutine(run());
+    }
+
+    private void CreateReceivedMessage(string text)
+    {
+        IEnumerator run()
+        {
+            UIChatMessage chatMsg = Instantiate(receivedMessage);
+            chatMsg.transform.parent = scrollContent.transform;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(scrollContent);
+            chatMsg.SetText(text);
+
+            yield return null;
+            scrollbar.value = 0;
+        }
+        StartCoroutine(run());
     }
 }

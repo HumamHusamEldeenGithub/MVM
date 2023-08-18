@@ -90,6 +90,7 @@ public class PublicProfilePanel : MonoBehaviour
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
                 btnIcon.iconUnicode = removeFriendIcon;
                 btnIcon.color = Color.red;
+                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Remove friend";
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
                     EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
@@ -97,7 +98,7 @@ public class PublicProfilePanel : MonoBehaviour
                     {
                         FriendId = userId
                     });
-                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend has been deleted successfully", Color.black);
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend has been deleted successfully", 2, Color.black);
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
                     await SignalingServerController.Instance.SendRefreshFriendsEvent();
@@ -112,6 +113,8 @@ public class PublicProfilePanel : MonoBehaviour
             if (req == userId)
             {
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
+
+                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Remove request";
                 btnIcon.iconUnicode = addFriendIcon;
                 btnIcon.color = Color.green;
                 addRemoveBtn.onClick.AddListener(async () =>
@@ -120,7 +123,7 @@ public class PublicProfilePanel : MonoBehaviour
                     {
                         FriendId = userId
                     });
-                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been accepted successfully");
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been accepted successfully", 2, Color.black);
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
                     await SignalingServerController.Instance.SendRefreshFriendsEvent();
@@ -142,7 +145,7 @@ public class PublicProfilePanel : MonoBehaviour
                     {
                         FriendId = userId
                     });
-                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been deleted successfully");
+                    EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been deleted successfully", 2, Color.black);
                     await UserProfile.Instance.GetMyFriends();
                     StartCoroutine(SetUpAddRemoveFriendBtn(userId));
                 });
@@ -161,7 +164,7 @@ public class PublicProfilePanel : MonoBehaviour
                 FriendId = userId
             });
 
-            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been sent");
+            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Friend request has been sent", 2, Color.black);
             await UserProfile.Instance.GetMyFriends();
             StartCoroutine(SetUpAddRemoveFriendBtn(userId));
         });
