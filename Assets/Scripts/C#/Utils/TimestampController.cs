@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
+using System.Net.Http;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class TimestampController : MonoBehaviour
 {
-    private const string API_URL = "http://worldtimeapi.org/api/timezone/Asia/Damascus";
+    private const string API_URL = "http://worldclockapi.com/api/json/est/now";
     public static DateTime apiDate;
 
     void Start()
     {
-        StartCoroutine(GetTimeFromAPI());
+        GetTimeFromAPI();
     }
 
     private void Update()
@@ -21,33 +23,32 @@ public class TimestampController : MonoBehaviour
         }
     }
 
-    IEnumerator GetTimeFromAPI()
+    private async void GetTimeFromAPI()
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(API_URL))
+        using HttpClient client = new HttpClient();
+        try
         {
-            yield return webRequest.SendWebRequest();
+            HttpResponseMessage response = await client.GetAsync(API_URL);
+            response.EnsureSuccessStatusCode(); 
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string responseText = webRequest.downloadHandler.text;
+            string responseContent = await response.Content.ReadAsStringAsync();
 
-                TimeApiResponse jsonResponse = JsonUtility.FromJson<TimeApiResponse>(responseText);
+            TimeApiResponse jsonResponse = JsonUtility.FromJson<TimeApiResponse>(responseContent);
 
-                apiDate = DateTime.Parse(jsonResponse.datetime);
+            apiDate = DateTime.Parse(jsonResponse.currentDateTime);
 
-                Debug.Log("Current DateTime: " + apiDate.ToString());
-            }
+            Debug.Log($"Current Date : {apiDate}");
+        }
+        catch (HttpRequestException ex)
+        {
+            Debug.LogError($"Error retrieving data from API: {ex.Message}");
         }
     }
 
     [System.Serializable]
     public class TimeApiResponse
     {
-        public string datetime;
+        public string currentDateTime;
         public string utc_offset;
     }
 }

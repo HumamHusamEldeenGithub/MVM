@@ -35,7 +35,6 @@ public class Server : MonoBehaviour
         }
         catch (HttpRequestException ex)
         {
-            // handle exception
             Debug.LogError($"Error retrieving data from API: {ex.Message}");
             
             return null;
@@ -60,7 +59,6 @@ public class Server : MonoBehaviour
         }
         catch (HttpRequestException ex)
         {
-            // handle exception
             Debug.LogError($"Error retrieving data from API: {ex.Message}");
             
             return null;
@@ -90,7 +88,6 @@ public class Server : MonoBehaviour
         }
         catch (HttpRequestException ex)
         {
-            // handle exception
             Debug.LogError($"Error retrieving data from API: {ex.Message}");
             
             return null;
