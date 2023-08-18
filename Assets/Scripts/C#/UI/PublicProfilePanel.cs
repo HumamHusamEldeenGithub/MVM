@@ -90,7 +90,7 @@ public class PublicProfilePanel : MonoBehaviour
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
                 btnIcon.iconUnicode = removeFriendIcon;
                 btnIcon.color = Color.red;
-                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Remove friend";
+                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Unfriend";
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
                     EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
@@ -114,7 +114,7 @@ public class PublicProfilePanel : MonoBehaviour
             {
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
 
-                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Remove request";
+                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Ignore request";
                 btnIcon.iconUnicode = addFriendIcon;
                 btnIcon.color = Color.green;
                 addRemoveBtn.onClick.AddListener(async () =>
@@ -139,6 +139,7 @@ public class PublicProfilePanel : MonoBehaviour
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
                 btnIcon.iconUnicode = removeFriendIcon;
                 btnIcon.color = Color.red;
+                addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Cancel request";
                 addRemoveBtn.onClick.AddListener(async () =>
                 {
                     await Server.DeleteFriendRequest(new Mvm.DeleteFriendRequestRequest
@@ -156,6 +157,7 @@ public class PublicProfilePanel : MonoBehaviour
         var icon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
         icon.iconUnicode = addFriendIcon;
         icon.color = Color.white;
+        addRemoveBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Send request";
         addRemoveBtn.onClick.AddListener(async () =>
         {
 
