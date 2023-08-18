@@ -52,12 +52,20 @@ public class PublicProfilePanel : MonoBehaviour
         phonenumberField.text = profile.Profile.Phonenumber;
         StartCoroutine(SetUpAddRemoveFriendBtn(userId));
 
-        chatBtn.onClick.AddListener(()=>
+        chatBtn.gameObject.SetActive(false);
+        foreach (var friend in UserProfile.Instance.userData.Friends)
         {
-            EventsPool.Instance.InvokeEvent(typeof(ShowChatEvent), profile.Profile.Id , profile.Profile.Username , GetComponent<Animator>());
-            GetComponent<Animator>().SetTrigger("FadeOut");
-            chatPanelAnimator.SetTrigger("FadeIn");
-        });
+            if (friend.Id == profile.Profile.Id)
+            {
+                chatBtn.gameObject.SetActive(true);
+                chatBtn.onClick.AddListener(() =>
+                {
+                    EventsPool.Instance.InvokeEvent(typeof(ShowChatEvent), profile.Profile.Id, profile.Profile.Username, GetComponent<Animator>());
+                    GetComponent<Animator>().SetTrigger("FadeOut");
+                    chatPanelAnimator.SetTrigger("FadeIn");
+                });
+            }
+        }
 
         backBtn.onClick.AddListener(() =>
         {

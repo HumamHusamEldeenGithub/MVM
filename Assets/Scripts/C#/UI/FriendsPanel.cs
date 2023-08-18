@@ -50,9 +50,10 @@ public class FriendsPanel : MonoBehaviour
             return;
         }
 
+        statuses = AddOfflineFriends(statuses);
+
         foreach (var user in statuses.Users)
         {
-            if (!user.IsOnline) continue;
             var element = Instantiate(onlineUserPrefab);
 
             element.GetComponentInChildren<TextMeshProUGUI>().text = user.Username;
@@ -62,8 +63,36 @@ public class FriendsPanel : MonoBehaviour
                 homeMenuPanel.SetTrigger("FadeOut");
                 publicProfilePanel.SetTrigger("FadeIn");
             });
+            if (!user.IsOnline)
+            {
+                element.GetComponentsInChildren<Image>()[1].color = new Color(118,118,118);
+            }
 
             element.transform.SetParent(onlineUsersScrollView);
         }
+    }
+
+    public OnlineStatuses AddOfflineFriends(OnlineStatuses statuses)
+    {
+        var friends = UserProfile.Instance.userData.Friends;
+        foreach(var friend in friends)
+        {
+            bool found = false;
+            foreach (var status in statuses.Users)
+            {
+                if (status.Id == friend.Id)
+                {
+                    found = true;
+                    break; 
+                }
+            }
+            if (!found)
+            {
+                statuses.Users.Add(new OnlineStatus { Id = friend.Id, Username = friend.Username, IsOnline = false });
+            }
+        }
+
+        return statuses;
+
     }
 }
