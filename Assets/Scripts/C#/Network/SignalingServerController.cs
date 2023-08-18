@@ -143,8 +143,7 @@ class SignalingServerController : Singleton<SignalingServerController>
                         HandleError(socketMessage);
                         break;
                     case "chat_message":
-                        var chatMessage = JsonConvert.DeserializeObject<SocketChatMessage>((string)socketMessage.Data);
-                        Debug.Log($"Received chat message from {socketMessage.FromId} Message : {chatMessage.Message}");
+                        HandleChatMessageReceived(socketMessage);
                         break;
 
                     default:
@@ -217,6 +216,13 @@ class SignalingServerController : Singleton<SignalingServerController>
         Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
         UpdateUserOnlineStatus(newOnlineStatus);
         EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
+    }
+
+    private void HandleChatMessageReceived(SignalingMessage socketMessage)
+    {
+        var chatMessage = JsonConvert.DeserializeObject<SocketChatMessage>((string)socketMessage.Data);
+        Debug.Log($"Received chat message from {socketMessage.FromId} Message : {chatMessage.Message}");
+        EventsPool.Instance.InvokeEvent(typeof(ChatMessageReceviedEvent), chatMessage);
     }
 
     private void HandleError(SignalingMessage socketMessage)

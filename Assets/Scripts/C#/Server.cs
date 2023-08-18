@@ -272,7 +272,7 @@ public class Server : MonoBehaviour
 
     public static async Task<GetChatResponse> GetChat(GetChatRequest req)
     {
-        string res = await CreatePostCall("/user/features", req);
+        string res = await CreatePostCall("/chats/get_chat", req);
 
         return res != null ? JsonConvert.DeserializeObject<GetChatResponse>(res) : null;
     }

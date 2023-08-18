@@ -35,6 +35,9 @@ public class EssentialsPanel : MonoBehaviour
     [SerializeField]
     private Animator notificationPanel;
 
+    [SerializeField]
+    private Animator chatPanel;
+
     private List<Animator> animators;
 
     private void Awake()
@@ -52,6 +55,7 @@ public class EssentialsPanel : MonoBehaviour
             publicProfilePanel,
             takePicturePanel,
             notificationPanel,
+            chatPanel,
         };
 
         if (UserProfile.Instance.userData != null)

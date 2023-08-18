@@ -21,6 +21,12 @@ public class PublicProfilePanel : MonoBehaviour
     private Button addRemoveBtn;
 
     [SerializeField]
+    private Button chatBtn;
+
+    [SerializeField]
+    private Animator chatPanelAnimator;
+
+    [SerializeField]
     private string addFriendIcon;
     [SerializeField]
     private string removeFriendIcon;
@@ -45,6 +51,13 @@ public class PublicProfilePanel : MonoBehaviour
         emailField.text = profile.Profile.Email;
         phonenumberField.text = profile.Profile.Phonenumber;
         StartCoroutine(SetUpAddRemoveFriendBtn(userId));
+
+        chatBtn.onClick.AddListener(()=>
+        {
+            EventsPool.Instance.InvokeEvent(typeof(ShowChatEvent), profile.Profile.Id , profile.Profile.Username , GetComponent<Animator>());
+            GetComponent<Animator>().SetTrigger("FadeOut");
+            chatPanelAnimator.SetTrigger("FadeIn");
+        });
 
         backBtn.onClick.AddListener(() =>
         {
@@ -113,7 +126,6 @@ public class PublicProfilePanel : MonoBehaviour
             if (req == userId)
             {
                 var btnIcon = addRemoveBtn.GetComponentInChildren<MaterialIcon>();
-                Debug.Log("wawawawawa");
                 btnIcon.iconUnicode = removeFriendIcon;
                 btnIcon.color = Color.red;
                 addRemoveBtn.onClick.AddListener(async () =>
