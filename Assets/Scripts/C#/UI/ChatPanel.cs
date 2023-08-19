@@ -38,8 +38,11 @@ public class ChatPanel : MonoBehaviour
 
     private bool isFocused = false;
 
+    private bool isUpdating = false;
+
     private void Awake()
     {
+        chatMessageField.onValueChanged.AddListener(FixInputFieldArabic);
         EventsPool.Instance.AddListener(typeof(ShowChatEvent), new Action<string,string, Animator>(ShowChat));
         EventsPool.Instance.AddListener(typeof(ChatMessageReceviedEvent), new Action<Mvm.SocketChatMessage>(UpdateChat));
     }
@@ -48,6 +51,17 @@ public class ChatPanel : MonoBehaviour
     {
         chatMessageField.onDeselect.AddListener((string s) => { isFocused = false; });
         chatMessageField.onSelect.AddListener((string s) => { isFocused = true; });
+    }
+
+
+    private void FixInputFieldArabic(string s)
+    {
+        if (chatMessageField != null && !isUpdating)
+        {
+            isUpdating = true;
+            chatMessageField.text = s;
+            isUpdating = false;
+        }
     }
 
     public async void ShowChat(string userId,string username, Animator prevPanel)
@@ -100,6 +114,8 @@ public class ChatPanel : MonoBehaviour
                     SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
                     CreateSentMessage(chatMessageField.text);
                     chatMessageField.text = "";
+                    chatMessageField.Select();
+                    chatMessageField.ActivateInputField();
                 }
             });
 

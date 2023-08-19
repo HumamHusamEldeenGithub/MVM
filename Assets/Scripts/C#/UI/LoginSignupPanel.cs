@@ -85,7 +85,7 @@ public class LoginSignupPanel : MonoBehaviour
 
     private void Signup()
     {
-        //errorMsgGO.SetActive(false);
+        // TODO check password
         EventsPool.Instance.InvokeEvent(typeof(SubmitCreateUserEvent),
             new object[] { signupUsernameField.text,signupEmailField.text,signupPhonenumberField.text, signupPasswordField.text });
 

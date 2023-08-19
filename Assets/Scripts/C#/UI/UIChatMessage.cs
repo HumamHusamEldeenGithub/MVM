@@ -1,3 +1,4 @@
+using ArabicSupport;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class UIChatMessage : MonoBehaviour
         Debug.Log("Ya 5ra");
         IEnumerator set()
         {
-            textComponent.text = text;
+            textComponent.text = ArabicFixer.Fix(text);
 
             messageRectTransform = GetComponent<RectTransform>();
             LayoutRebuilder.ForceRebuildLayoutImmediate(backgroundPanel);

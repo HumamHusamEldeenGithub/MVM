@@ -39,9 +39,9 @@ public class CreateRoomPanel : MonoBehaviour
             if (res != null)
             {
                 UserProfile.Instance.GetMyProfile(true);
+                EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Room Created Sucessfully", 3, Color.black);
             }
             EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
-            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Room Created Sucessfully", 3, Color.black);
         }
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }

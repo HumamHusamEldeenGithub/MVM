@@ -55,7 +55,6 @@ public class EventsPool : Singleton<EventsPool>
         {
             var thisEvent = eventsQueue.Dequeue();
             thisEvent.Item1.DynamicInvoke(thisEvent.Item2);
-
         }
     }
     private void ClearAll(Scene sc)

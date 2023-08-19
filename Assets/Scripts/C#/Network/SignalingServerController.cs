@@ -35,8 +35,8 @@ class SignalingServerController : Singleton<SignalingServerController>
                 WebRTCManager.Instance.DisposeAllWebRTCConnections();
             }));
 
-        serverThread = new Thread(() => {
-            ConnectToSignalingServer();
+        serverThread = new Thread(async () => {
+            await ConnectToSignalingServer();
             ReceiveServerMessagesAsync();
         });
     }
@@ -62,7 +62,7 @@ class SignalingServerController : Singleton<SignalingServerController>
         serverThread?.Start();
     }
 
-    async void ConnectToSignalingServer()
+    async Task ConnectToSignalingServer()
     {
         // TODO throw err 
         string token = userProfile.userData.Token;
