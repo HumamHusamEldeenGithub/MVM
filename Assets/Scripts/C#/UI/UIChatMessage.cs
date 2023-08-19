@@ -16,7 +16,6 @@ public class UIChatMessage : MonoBehaviour
 
     public void SetText(string text)
     {
-        Debug.Log("Ya 5ra");
         IEnumerator set()
         {
             textComponent.text = ArabicFixer.Fix(text);

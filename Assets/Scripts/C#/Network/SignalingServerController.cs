@@ -10,13 +10,16 @@ using Mvm;
 class SignalingServerController : Singleton<SignalingServerController>
 {
     #region Properties
-    Thread serverThread = null;
-    SynchronizationContext syncContext;
-    bool threadRunning;
+    static Thread serverThread = null;
+    static SynchronizationContext syncContext;
+    static bool threadRunning;
 
-    UserProfile userProfile;
+    static UserProfile userProfile;
     static ClientWebSocket webSocket;
-    public OnlineStatuses usersOnlineStatus;
+    static public OnlineStatuses usersOnlineStatus;
+
+    static private CancellationTokenSource threadCancelationTokenSource;
+    static private CancellationToken threadCancelationToken;
 
     #endregion
 
@@ -24,6 +27,8 @@ class SignalingServerController : Singleton<SignalingServerController>
     protected override void Awake()
     {
         base.Awake();
+        threadCancelationTokenSource = new CancellationTokenSource();
+        threadCancelationToken = threadCancelationTokenSource.Token;
         syncContext = SynchronizationContext.Current;
         userProfile = GetComponent<UserProfile>();
         EventsPool.Instance.AddListener(typeof(ConnectToServerEvent),
@@ -34,24 +39,40 @@ class SignalingServerController : Singleton<SignalingServerController>
             {
                 WebRTCManager.Instance.DisposeAllWebRTCConnections();
             }));
-
-        serverThread = new Thread(async () => {
-            await ConnectToSignalingServer();
-            ReceiveServerMessagesAsync();
-        });
     }
 
-    private async void OnApplicationQuit()
+    private void OnApplicationQuit()
+    {
+        Dispose();
+    }
+
+    public async void Dispose()
     {
         threadRunning = false;
-
         WebRTCManager.Instance.DisposeAllWebRTCConnections();
+        Debug.Log(webSocket.State);
+        if (webSocket != null)
+        {
+            try
+            {
+                await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
 
-        if (serverThread?.IsAlive == true)
+                Debug.Log("Web Socket Shutdown");
+            }
+            catch(Exception e)
+            {
+                Debug.LogWarning(e);
+            }
+        }
+        webSocket = null;
+        try
+        {
             serverThread?.Join();
-
-        if (webSocket != null && webSocket?.State != WebSocketState.Closed)
-            await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
 
     #endregion
@@ -59,6 +80,14 @@ class SignalingServerController : Singleton<SignalingServerController>
     public void InitWebSocketConnection()
     {
         threadRunning = true;
+
+        threadCancelationTokenSource = new CancellationTokenSource();
+        threadCancelationToken = threadCancelationTokenSource.Token;
+
+        serverThread = new Thread(async () => {
+            await ConnectToSignalingServer();
+            ReceiveServerMessagesAsync();
+        });
         serverThread?.Start();
     }
 
@@ -78,10 +107,14 @@ class SignalingServerController : Singleton<SignalingServerController>
             webSocket = new ClientWebSocket();
             webSocket.Options.SetRequestHeader("Authorization", token);
 
+            Debug.Log(webSocket.GetHashCode());
+
             // Connect to the server
             await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
 
             EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+
+            Debug.Log("Connected Sucessfully");
         }
         catch (Exception e)
         {
@@ -98,7 +131,7 @@ class SignalingServerController : Singleton<SignalingServerController>
             try
             {
                 byte[] responseBuffer = new byte[9000];
-                WebSocketReceiveResult responseResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(responseBuffer), CancellationToken.None);
+                WebSocketReceiveResult responseResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(responseBuffer), threadCancelationToken);
 
                 string message = Encoding.UTF8.GetString(responseBuffer, 0, responseResult.Count);
                 SignalingMessage socketMessage = JsonConvert.DeserializeObject<SignalingMessage>(message);
@@ -148,14 +181,17 @@ class SignalingServerController : Singleton<SignalingServerController>
 
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type + " No events assigned to this type");
-                        break;
+                        return;
                 }
             }
             catch (Exception e)
             {
                 Debug.LogWarning(e.ToString());
+                Debug.Log(webSocket.GetHashCode());
             }
         }
+
+        Debug.Log("Thread has stopped");
     }
 
     private async Task HandleOfferMessage(SignalingMessage socketMessage)

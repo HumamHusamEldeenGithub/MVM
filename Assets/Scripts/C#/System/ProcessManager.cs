@@ -73,7 +73,7 @@ public class ProcessManager : Singleton<ProcessManager>
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = pyPath,
-                Arguments = projectPath + @"/Scripts/Python/Setup.py",
+                Arguments = projectPath + @"/StreamingAssets/Python/Setup.py",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true,
@@ -105,7 +105,7 @@ public class ProcessManager : Singleton<ProcessManager>
             {
                 SetupComplete = Status.NoMediapipe;
             }
-
+            UnityEngine.Debug.Log("Very important Log " + SetupComplete.ToString());
             process.Close();
         }
 
@@ -127,7 +127,7 @@ public class ProcessManager : Singleton<ProcessManager>
         DestroyPythonServer();
         pyProcess = new Process();
         pyProcess.StartInfo.FileName = pyPath;
-        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {0}" + $" {localPort}";
+        pyProcess.StartInfo.Arguments = projectPath + @"/StreamingAssets/Python/Server.py" + $" {0}" + $" {localPort}" + $" {projectPath}";
         pyProcess.StartInfo.UseShellExecute = true;
         pyProcess.StartInfo.RedirectStandardOutput = false;
         pyProcess.StartInfo.CreateNoWindow = true;

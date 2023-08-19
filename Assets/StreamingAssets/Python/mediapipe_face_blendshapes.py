@@ -10,7 +10,8 @@ from mvm_pb2 import DataChannelMessage,DataChannelMessageType
 
 async def BlendShapesDetector (reader,writer) :
     try:
-        base_options = python.BaseOptions(model_asset_path='./Assets/Scripts/Python/model/face_landmarker.task')
+        print(sys.argv)
+        base_options = python.BaseOptions(model_asset_path=sys.argv[3] + '/StreamingAssets/Python/model/face_landmarker.task')
         options = vision.FaceLandmarkerOptions(base_options=base_options,
                                             output_face_blendshapes=True,
                                             output_facial_transformation_matrixes=True,

@@ -28,4 +28,15 @@ public class RefreshTokenManager : Singleton<RefreshTokenManager>
         // TODO : use syncContext
         return PlayerPrefs.GetString(refreshTokenKey);
     }
+
+    public void ClearRefreshToken()
+    {
+        // Humam al mfzlak
+        syncContext.Post(new SendOrPostCallback(o =>
+        {
+            PlayerPrefs.DeleteKey(refreshTokenKey);
+            PlayerPrefs.Save();
+        }), null);
+
+    }
 }

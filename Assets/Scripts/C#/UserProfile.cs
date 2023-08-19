@@ -232,11 +232,17 @@ public class UserProfile : Singleton<UserProfile>
         EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string,string,string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
         EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(ChangeBackground));
+        EventsPool.Instance.AddListener(typeof(LogoutEvent), new Action(Logout));
+    }
+
+    private void Logout()
+    {
+        RefreshTokenManager.Instance.ClearRefreshToken();
+        SignalingServerController.Instance.Dispose();
     }
 
     public static async Task<PeerData> GetPeerData(string peerId)
     {
-        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         var userProfile = await Server.GetUserProfileFeatures(new GetUserProfileFeaturesRequest
         {
             Id = peerId,

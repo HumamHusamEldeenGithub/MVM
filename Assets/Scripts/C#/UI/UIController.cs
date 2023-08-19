@@ -32,6 +32,8 @@ public class UIController : MonoBehaviour
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
         EventsPool.Instance.AddListener(typeof(HangupEvent), new Action(OnHangup));
 
+        EventsPool.Instance.AddListener(typeof(LogoutEvent), new Action(OnLogout));
+
         popupPanel.SetActive(false);
 
         if (UserProfile.Instance.userData == null)
@@ -66,6 +68,11 @@ public class UIController : MonoBehaviour
     private void OnHangup()
     {
         SwitchToPanel(roomPanel, mainPanel);
+    }
+
+    private void OnLogout()
+    {
+        SwitchToPanel(mainPanel, loginPanel);
     }
 
     private void OnLogin(bool sucess)

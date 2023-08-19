@@ -30,7 +30,7 @@ public class FriendsPanel : MonoBehaviour
     {
         if (UserProfile.Instance.userData != null)
         {
-            SetupOnlinePanel(SignalingServerController.Instance.usersOnlineStatus);
+            SetupOnlinePanel(SignalingServerController.usersOnlineStatus);
         }
     }
 

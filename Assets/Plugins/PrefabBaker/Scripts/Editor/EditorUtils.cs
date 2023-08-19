@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -193,7 +194,7 @@ namespace PrefabLightMapBaker
             // Refresh and Save 
             UpdateAsset( copyFrom );
             var lightMapAsset = AssetDatabase.LoadAssetAtPath<Texture2D>( copyFrom );
-            var lightMapCopy = Object.Instantiate( lightMapAsset );
+            var lightMapCopy = UnityEngine.Object.Instantiate( lightMapAsset );
 
             try
             {
@@ -201,9 +202,9 @@ namespace PrefabLightMapBaker
 
                 AssetDatabase.CreateAsset( lightMapCopy, saveTo );
             }
-            catch
+            catch(Exception e)
             {
-                Debug.LogError( $"[PrefabBaker] Failed to created asset:\nfrom: {copyFrom}\nto: {saveTo}" );
+                Debug.LogError( $"[PrefabBaker] Failed to created asset:\nfrom: {copyFrom}\nto: {saveTo}" + e );
             }
 
             // Refresh
