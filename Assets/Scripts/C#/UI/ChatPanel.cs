@@ -134,6 +134,7 @@ public class ChatPanel : MonoBehaviour
         backBtn.onClick.RemoveAllListeners();
         backBtn.onClick.AddListener(() =>
         {
+            chatId = "";
             GetComponent<Animator>().SetTrigger("FadeOut");
             prevPanel.SetTrigger("FadeIn");
         });

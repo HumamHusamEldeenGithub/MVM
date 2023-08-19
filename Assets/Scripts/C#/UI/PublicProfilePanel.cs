@@ -46,6 +46,7 @@ public class PublicProfilePanel : MonoBehaviour
     {
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         chatBtn.gameObject.SetActive(false);
+        chatBtn.onClick.RemoveAllListeners();
         var profile = await Server.GetProfile(userId);
         if (profile != null)
         {

@@ -239,6 +239,9 @@ public class UserProfile : Singleton<UserProfile>
     {
         RefreshTokenManager.Instance.ClearRefreshToken();
         SignalingServerController.Instance.Dispose();
+        Token = "";
+        RefreshToken = "";
+        Instance.userData = null;
     }
 
     public static async Task<PeerData> GetPeerData(string peerId)
