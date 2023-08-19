@@ -60,55 +60,60 @@ public class ChatPanel : MonoBehaviour
             Transform child = scrollContent.GetChild(i);
             child.parent = temp.transform;
         }
+        sendMessageBtn.onClick.RemoveAllListeners();
+        chatMessageField.onEndEdit.RemoveAllListeners();
 
         Destroy(temp);
+
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
 
         var res = await Server.GetChat(new Mvm.GetChatRequest { UserId = userId });
-        if (res == null) return;
-
-        chatId = res.Chat.Id;
-        string receiverId = res.Chat.Participants[0] == UserProfile.Instance.userData.Id ?
-            res.Chat.Participants[1] : res.Chat.Participants[0];
-
-        usernameField.text = $"Chat with {username}";
-
-        foreach (var msg in res.Chat.Messages)
+        if (res != null)
         {
-            if (receiverId == msg.UserId)
-            {
-                CreateReceivedMessage(msg.Message);
-            }
-            else
-            {
-                CreateSentMessage(msg.Message);
-            }
-            Debug.Log($"{msg.UserId} -- {msg.Message}");
-            scrollbar.value = 0;
-        }
 
-        chatMessageField.onEndEdit.AddListener((text)=>
-        {
-            if (isFocused && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+            chatId = res.Chat.Id;
+            string receiverId = res.Chat.Participants[0] == UserProfile.Instance.userData.Id ?
+                res.Chat.Participants[1] : res.Chat.Participants[0];
+
+            usernameField.text = $"Chat with {username}";
+
+            foreach (var msg in res.Chat.Messages)
+            {
+                if (receiverId == msg.UserId)
+                {
+                    CreateReceivedMessage(msg.Message);
+                }
+                else
+                {
+                    CreateSentMessage(msg.Message);
+                }
+                Debug.Log($"{msg.UserId} -- {msg.Message}");
+                scrollbar.value = 0;
+            }
+
+            chatMessageField.onEndEdit.AddListener((text) =>
+            {
+                if (isFocused && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+                {
+                    if (chatMessageField.text.Length <= 0)
+                        return;
+                    SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
+                    CreateSentMessage(chatMessageField.text);
+                    chatMessageField.text = "";
+                }
+            });
+
+            sendMessageBtn.onClick.AddListener(() =>
             {
                 if (chatMessageField.text.Length <= 0)
                     return;
+
                 SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
                 CreateSentMessage(chatMessageField.text);
                 chatMessageField.text = "";
-            }
-        });
 
-        sendMessageBtn.onClick.AddListener(() =>
-        {
-            if (chatMessageField.text.Length <= 0)
-                return;
-
-            SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
-            CreateSentMessage(chatMessageField.text);
-            chatMessageField.text = "";
-
-        });
+            });
+        }
 
         backBtn.onClick.RemoveAllListeners();
         backBtn.onClick.AddListener(() =>

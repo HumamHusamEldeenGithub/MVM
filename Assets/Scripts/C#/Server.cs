@@ -18,19 +18,29 @@ public class Server : MonoBehaviour
     #region POST - GET - Delete
     private static async Task<string> CreateGetCall(string route)
     {
-        
-
         using HttpClient client = new HttpClient();
         try
         {
             // TODO : use userdata.token instead of the static token 
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Instance.Token);
             HttpResponseMessage response = await client.GetAsync("http://" + ServerUrl + ":" + Port + route );
-            response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
-
+            
             string responseContent = await response.Content.ReadAsStringAsync();
             Debug.Log(responseContent);
-            
+
+            var statusCode = (int)response.StatusCode;
+
+            if (statusCode >= 300 || statusCode < 200)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorMessage>(responseContent);
+                EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                    error.Error,
+                    3f,
+                    Color.red
+                });
+                return null;
+            }
+
             return responseContent;
         }
         catch (HttpRequestException ex)
@@ -50,11 +60,23 @@ public class Server : MonoBehaviour
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", UserProfile.Instance.Token);
             var jsonBody = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + ServerUrl + ":" + Port + route , jsonBody);
-            response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
-
+           
             string responseContent = await response.Content.ReadAsStringAsync();
             Debug.Log(responseContent);
-            
+
+            var statusCode = (int) response.StatusCode;
+
+            if (statusCode >= 300 || statusCode < 200)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorMessage>(responseContent);
+                EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                    error.Error,
+                    3f,
+                    Color.red
+                });
+                return null;
+            }
+
             return responseContent;
         }
         catch (HttpRequestException ex)
@@ -79,11 +101,23 @@ public class Server : MonoBehaviour
             };
 
             HttpResponseMessage response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode(); // throws exception if HTTP status code is not success (i.e. 200-299)
-
+            
             string responseContent = await response.Content.ReadAsStringAsync();
             Debug.Log(responseContent);
-            
+
+            var statusCode = (int)response.StatusCode;
+
+            if (statusCode >= 300 || statusCode < 200)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorMessage>(responseContent);
+                EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                    error.Error,
+                    3f,
+                    Color.red
+                });
+                return null;
+            }
+
             return responseContent;
         }
         catch (HttpRequestException ex)
@@ -93,10 +127,9 @@ public class Server : MonoBehaviour
             return null;
         }
     }
-
+    #endregion
     public static async Task<string> SendImageToAIPipeline(byte[] fileBytes)
     {
-        
         string fileName = "Photo_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".jpg";
         using HttpClient httpClient = new HttpClient();
         try
@@ -107,11 +140,22 @@ public class Server : MonoBehaviour
             form.Add(content, "image", fileName);
 
             HttpResponseMessage response = await httpClient.PostAsync($"http://{PythonServerUrl}:{PythonServerPort}/predict" , form);
-            response.EnsureSuccessStatusCode();
 
             string responseBody = await response.Content.ReadAsStringAsync();
-            Debug.Log("File upload successful. Response: " + responseBody);
-            
+            Debug.Log(responseBody);
+
+            var statusCode = (int)response.StatusCode;
+
+            if (statusCode >= 300 || statusCode < 200)
+            {
+                EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                    responseBody,
+                    3f,
+                    Color.red
+                });
+                return null;
+            }
+
             return responseBody;
         }
         catch (HttpRequestException ex)
@@ -121,7 +165,6 @@ public class Server : MonoBehaviour
             return null;
         }
     }
-    #endregion
 
     #region API
     public static async Task<LoginUserResponse> Login(LoginUserRequest req)

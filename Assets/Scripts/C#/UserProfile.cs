@@ -85,11 +85,14 @@ public class UserProfile : Singleton<UserProfile>
 
         async void createUser(string username, string email, string phonenumber, string password)
         {
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+
             CreateUserResponse res = await Server.CreateUser(new CreateUserRequest { Username = username, Email = email, Password = password, Phonenumber = phonenumber });
 
             if (res == null)
             {
                 EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
+                EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
                 return;
             }
             
@@ -106,10 +109,12 @@ public class UserProfile : Singleton<UserProfile>
             RefreshToken = res.RefreshToken;
 
             await GetMyProfile();
+            await GetMyFriends();
+            await GetMyNotifications();
 
             RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
             EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
-            EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
@@ -123,32 +128,39 @@ public class UserProfile : Singleton<UserProfile>
     async Task GetMyProfile()
     {
         var userProfile = await Server.GetProfile("");
-        userData.Id = userProfile.Profile.Id;
-        userData.Username = userProfile.Profile.Username;
-        userData.Email = userProfile.Profile.Email;
-        userData.PhoneNumber = userProfile.Profile.Phonenumber;
 
-        if (userProfile.AvatarSettings == null)
+        if (userProfile != null)
         {
-            userData.AvatarSettings = GetDefaultAvatarSettings().AvatarSettings;
+            userData.Id = userProfile.Profile.Id;
+            userData.Username = userProfile.Profile.Username;
+            userData.Email = userProfile.Profile.Email;
+            userData.PhoneNumber = userProfile.Profile.Phonenumber;
+
+            if (userProfile.AvatarSettings == null)
+            {
+                userData.AvatarSettings = GetDefaultAvatarSettings().AvatarSettings;
+            }
+            else
+            {
+                userData.AvatarSettings = userProfile.AvatarSettings;
+            }
+            if (userProfile.UserRooms != null)
+            {
+                userData.Rooms = userProfile.UserRooms;
+            }
+            EventsPool.Instance.InvokeEvent(typeof(ProfileUpdatedEvent));
         }
-        else
-        {
-            userData.AvatarSettings = userProfile.AvatarSettings;
-        }
-        if (userProfile.UserRooms != null)
-        {
-            userData.Rooms = userProfile.UserRooms;
-        }
-        EventsPool.Instance.InvokeEvent(typeof(ProfileUpdatedEvent));
     }
 
     public async Task GetMyFriends()
     {
         var friends = await Server.GetFriends();
-        userData.Friends = friends.Profiles;
-        userData.PendingFriendRequests = friends.Pending;
-        userData.SentFriendRequests = friends.SentRequests;
+        if (friends != null)
+        {
+            userData.Friends = friends.Profiles;
+            userData.PendingFriendRequests = friends.Pending;
+            userData.SentFriendRequests = friends.SentRequests;
+        }
     }
 
     public void GetMyProfile(bool loginStatus)
@@ -224,17 +236,23 @@ public class UserProfile : Singleton<UserProfile>
 
     public static async Task<PeerData> GetPeerData(string peerId)
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
         var userProfile = await Server.GetUserProfileFeatures(new GetUserProfileFeaturesRequest
         {
             Id = peerId,
         });
-        return new PeerData
+        PeerData peerData = null;
+        if(userProfile != null)
         {
-            Id = userProfile.Profile.Id,
-            Username = userProfile.Profile.Username,
-            Email = userProfile.Profile.Email,
-            AvatarSettings = userProfile.AvatarSettings
-        };
+            peerData = new PeerData
+            {
+                Id = userProfile.Profile.Id,
+                Username = userProfile.Profile.Username,
+                Email = userProfile.Profile.Email,
+                AvatarSettings = userProfile.AvatarSettings
+            };
+        }
+        return peerData;
     }
 
     public static PeerData GetDefaultAvatarSettings()

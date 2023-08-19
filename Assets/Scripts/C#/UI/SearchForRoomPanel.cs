@@ -38,14 +38,18 @@ public class SearchForRoomPanel : MonoBehaviour
 
         var rooms = await Server.GetRooms(searchQuery);
 
-        foreach (var room in rooms.Rooms)
+        if (rooms != null)
         {
-            var element = Instantiate(roomRowPrefab);
 
-            element.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Title;
-            element.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Id));
+            foreach (var room in rooms.Rooms)
+            {
+                var element = Instantiate(roomRowPrefab);
 
-            element.transform.SetParent(roomsScrollView);
+                element.transform.GetChild(0).GetComponent<TMP_Text>().text = room.Title;
+                element.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Id));
+
+                element.transform.SetParent(roomsScrollView);
+            }
         }
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }

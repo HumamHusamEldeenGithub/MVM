@@ -22,9 +22,13 @@ public class NotificationsPanel : MonoBehaviour
     {
         clearBtn.onClick.AddListener(async () =>
         {
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+
             DestroyPrevoiusNotifications();
             await Server.DeleteNotifications();
             UserProfile.Instance.userData.Notifications.Clear();
+
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
         });
 
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>((bool s) =>
@@ -87,7 +91,12 @@ public class NotificationsPanel : MonoBehaviour
 
     async void OnClickDeleteNotification(GameObject gameObj , string notificationId)
     {
+
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+
         await Server.DeleteNotification(new DeleteNotificationRequest { NotificationId=notificationId });
+
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
         Destroy(gameObj);
     }
 }

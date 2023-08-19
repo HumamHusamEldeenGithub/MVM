@@ -168,9 +168,13 @@ public class WebRTCManager : Singleton<WebRTCManager>
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            webRTCConnections[peerId].pc?.Close();
-            webRTCConnections[peerId].pc = null;
-            webRTCConnections.Remove(peerId);
+            WebRTCController ctrl;
+            if (webRTCConnections.TryGetValue(peerId, out ctrl))
+            {
+                webRTCConnections[peerId].pc?.Close();
+                webRTCConnections[peerId].pc = null;
+                webRTCConnections.Remove(peerId);
+            }
         }), null);
     }
 

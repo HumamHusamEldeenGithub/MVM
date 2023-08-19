@@ -29,15 +29,20 @@ public class CreateRoomPanel : MonoBehaviour
         string roomTitle = roomtitleField.text;
         if (roomTitle != "")
         {
-            await Server.CreateRoom(new Mvm.CreateRoomRequest
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+            var res = await Server.CreateRoom(new Mvm.CreateRoomRequest
             {
                 Title = roomTitle,
                 IsPrivate = privateToggle.GetComponent<Toggle>().isOn,
                 FriendsOnly = friendsOnlyToggle.GetComponent<Toggle>().isOn,
             });
-            UserProfile.Instance.GetMyProfile(true);
+            if (res != null)
+            {
+                UserProfile.Instance.GetMyProfile(true);
+            }
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
+            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Room Created Sucessfully", 3, Color.black);
         }
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
-        EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Room Created Sucessfully", 3, Color.black);
     }
 }

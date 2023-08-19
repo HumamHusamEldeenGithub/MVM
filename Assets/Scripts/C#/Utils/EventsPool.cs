@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Unity.VisualScripting;
-using UnityEditor.Build.Content;
 using UnityEngine.SceneManagement;
 
 public class EventsPool : Singleton<EventsPool>

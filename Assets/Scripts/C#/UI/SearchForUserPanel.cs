@@ -45,18 +45,21 @@ public class SearchForUserPanel : MonoBehaviour
             SearchInput = searchQuery
         });
 
-        foreach (var user in users.Users)
+        if (users != null)
         {
-            var element = Instantiate(userRowPrefab);
-            var btn = element.transform.GetChild(0);
-            btn.GetComponent<TMP_Text>().text = user.Username;
-            btn.GetComponent<Button>().onClick.AddListener(() =>
+            foreach (var user in users.Users)
             {
-                EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), user.Id, GetComponent<Animator>());
-                GetComponent<Animator>().SetTrigger("FadeOut");
-                publicProfilePanel.SetTrigger("FadeIn");
-            });
-            element.transform.SetParent(usersScrollView);
+                var element = Instantiate(userRowPrefab);
+                var btn = element.transform.GetChild(0);
+                btn.GetComponent<TMP_Text>().text = user.Username;
+                btn.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    EventsPool.Instance.InvokeEvent(typeof(ShowProfileEvent), user.Id, GetComponent<Animator>());
+                    GetComponent<Animator>().SetTrigger("FadeOut");
+                    publicProfilePanel.SetTrigger("FadeIn");
+                });
+                element.transform.SetParent(usersScrollView);
+            }
         }
         EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }

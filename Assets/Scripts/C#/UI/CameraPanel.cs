@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -70,6 +71,8 @@ public class CameraPanel : Singleton<MonoBehaviour>
 
     public async void CaptureAndSavePhoto()
     {
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+
         Texture2D photoTexture = new Texture2D(cameraTexture.width, cameraTexture.height);
         photoTexture.SetPixels(cameraTexture.GetPixels());
         photoTexture.Apply();
@@ -78,11 +81,10 @@ public class CameraPanel : Singleton<MonoBehaviour>
 
         var res = await Server.SendImageToAIPipeline(bytes);
 
-        AIPipelineResponse aiPipelineResponse = DeserializeFlaskResponse(res);
-
-        await Server.UpsertAvatarSettings(new Mvm.UpsertAvatarSettingsRequest
+        if(res != null)
         {
-            Settings = new Mvm.AvatarSettings
+            AIPipelineResponse aiPipelineResponse = DeserializeFlaskResponse(res);
+            Mvm.AvatarSettings settings = new Mvm.AvatarSettings
             {
                 HeadStyle = "0",
                 BrowsColor = StandardColors.GetStandardColors(aiPipelineResponse.HairColor),
@@ -91,30 +93,54 @@ public class CameraPanel : Singleton<MonoBehaviour>
                 HairStyle = "1",
                 MouthStyle = "0",
                 NoseStyle = "0",
-                // Anoos you had one job
-                SkinColor = StandardColors.RGBToHex(aiPipelineResponse.SkinColorRGB[2] , aiPipelineResponse.SkinColorRGB[1], aiPipelineResponse.SkinColorRGB[0]),
+                Glasses = aiPipelineResponse.Glasses ? "1" : "0",
+                BeardStyle = aiPipelineResponse.Beard.ToLower() == "beard" ? "2" : "0",
+                SkinColor = StandardColors.RGBToHex(aiPipelineResponse.SkinColorRGB[2], aiPipelineResponse.SkinColorRGB[1], aiPipelineResponse.SkinColorRGB[0]),
                 EyeColor = "#FFFFFFFF",
                 HairColor = StandardColors.GetStandardColors(aiPipelineResponse.HairColor),
                 Gender = aiPipelineResponse.Gender,
                 RoomBackgroundColor = "#FFFFFFFF",
                 SkinImperfection = "0",
                 Tattoo = "0",
-            }
-        });
+            };
 
-        Destroy(photoTexture);
-        Debug.Log("Photo Sent");
+            await Server.UpsertAvatarSettings(new Mvm.UpsertAvatarSettingsRequest
+            {
+                Settings = settings
+            });
 
-        EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+            UserProfile.Instance.userData.AvatarSettings = settings;
+
+            EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>((bool st) =>
+            {
+                if (st)
+                {
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+                }
+            }));
+
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+
+            EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
+
+
+            Destroy(photoTexture);
+            Debug.Log("Photo Sent");
+        }
+
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 
     public void Skip()
     {
         EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+        EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
     }
 
     AIPipelineResponse DeserializeFlaskResponse (string jsonString)
     {
+        if (jsonString == null || jsonString.Length <= 0)
+            return null;
         AIPipelineResponse res = JsonConvert.DeserializeObject<AIPipelineResponse>(jsonString);
 
         string pattern = @"\b\d+\b";

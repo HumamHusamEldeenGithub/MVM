@@ -103,13 +103,6 @@ public class LoginSignupPanel : MonoBehaviour
     {
         if (!success)
         {
-            Debug.Log("Active");
-            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
-                "An error has occured while logging in",
-                3f,
-                Color.red
-            });
-
             loginBtn.interactable = true;
         }
 
