@@ -18,10 +18,9 @@ public class UIChatMessage : MonoBehaviour
     {
         IEnumerator set()
         {
-            textComponent.text = ArabicFixer.Fix(text);
+            textComponent.text = ArabicFixer.Fix(text, false, false);
 
             messageRectTransform = GetComponent<RectTransform>();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(backgroundPanel);
 
             yield return null;
 

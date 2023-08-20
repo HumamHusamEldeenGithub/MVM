@@ -16,6 +16,6 @@ public class ContinuosInputFieldArabicFixer : MonoBehaviour
 
     void Fix(string s)
     {
-        textComponent.text = ArabicFixer.Fix(s);
+        textComponent.text = ArabicFixer.Fix(s, false, false);
     }
 }

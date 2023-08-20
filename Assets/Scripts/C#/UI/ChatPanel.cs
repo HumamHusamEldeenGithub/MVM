@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +30,9 @@ public class ChatPanel : MonoBehaviour
 
     [SerializeField]
     private UIChatMessage receivedMessage;
+
+    [SerializeField]
+    private ScrollRect scrollRect;
 
     [SerializeField]
     private Scrollbar scrollbar;
@@ -102,8 +106,8 @@ public class ChatPanel : MonoBehaviour
                     CreateSentMessage(msg.Message);
                 }
                 Debug.Log($"{msg.UserId} -- {msg.Message}");
-                scrollbar.value = 0;
             }
+            UpdateLayout();
 
             chatMessageField.onEndEdit.AddListener((text) =>
             {
@@ -112,7 +116,7 @@ public class ChatPanel : MonoBehaviour
                     if (chatMessageField.text.Length <= 0)
                         return;
                     SignalingServerController.Instance.SendChatMessage(chatId, receiverId, chatMessageField.text);
-                    CreateSentMessage(chatMessageField.text);
+                    CreateSentMessage(chatMessageField.text, true);
                     chatMessageField.text = "";
                     chatMessageField.Select();
                     chatMessageField.ActivateInputField();
@@ -145,36 +149,33 @@ public class ChatPanel : MonoBehaviour
     private void UpdateChat(Mvm.SocketChatMessage chatMessage)
     {
         if (chatMessage.ChatId != chatId) return;
-        CreateReceivedMessage(chatMessage.Message);
+        CreateReceivedMessage(chatMessage.Message, true);
     }
 
-    private void CreateSentMessage(string text)
+    private async void UpdateLayout()
     {
-        IEnumerator run()
-        {
-            UIChatMessage chatMsg = Instantiate(sentMessage);
-            chatMsg.transform.parent = scrollContent.transform;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(scrollContent);
-            chatMsg.SetText(text);
-
-            yield return null;
-            scrollbar.value = 0;
-        }
-        StartCoroutine(run());
+        await Task.Delay((int)(Time.deltaTime * 1000));
+        Canvas.ForceUpdateCanvases();
+        scrollContent.GetComponent<VerticalLayoutGroup>().CalculateLayoutInputVertical();
+        scrollContent.GetComponent<ContentSizeFitter>().SetLayoutVertical();
+        scrollRect.verticalNormalizedPosition = 0;
     }
 
-    private void CreateReceivedMessage(string text)
+    private void CreateSentMessage(string text, bool update = false)
     {
-        IEnumerator run()
-        {
-            UIChatMessage chatMsg = Instantiate(receivedMessage);
-            chatMsg.transform.parent = scrollContent.transform;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(scrollContent);
-            chatMsg.SetText(text);
+        UIChatMessage chatMsg = Instantiate(sentMessage);
+        chatMsg.transform.parent = scrollContent.transform;
+        chatMsg.SetText(text);
+        if(update)
+            UpdateLayout();
+    }
 
-            yield return null;
-            scrollbar.value = 0;
-        }
-        StartCoroutine(run());
+    private void CreateReceivedMessage(string text,bool update = false)
+    {
+        UIChatMessage chatMsg = Instantiate(receivedMessage);
+        chatMsg.transform.parent = scrollContent.transform;
+        chatMsg.SetText(text);
+        if (update)
+            UpdateLayout();
     }
 }
