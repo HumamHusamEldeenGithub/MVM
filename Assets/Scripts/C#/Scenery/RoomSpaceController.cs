@@ -23,12 +23,16 @@ public class RoomSpaceController : MonoBehaviour
     private GameObject decorationBackground;
     private int backgroundIndex = 0;
 
+    private Action changeBackgroundAction;
+
     private void Awake()
     {
-        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(() => {
+        changeBackgroundAction = new Action(() => {
             if (peerController.peerID == "self")
                 ChangeBackground();
-            }));
+        });
+
+        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), changeBackgroundAction);
     }
 
 
@@ -75,15 +79,12 @@ public class RoomSpaceController : MonoBehaviour
         decorationBackground.transform.localPosition = Vector3.zero;
     }
 
-    private void OnDestroy()
-    {
-        CurrentRoomRenderTexture.renderTexture.Release();
-    }
-
     public void Dispose()
     {
         CurrentRoomRenderTexture.renderTexture.Release();
+        EventsPool.Instance.RemoveListener(typeof(UserChangeBackgroundEvent), changeBackgroundAction);
         EventsPool.Instance.InvokeEvent(typeof(RemoveScreenEvent), CurrentRoomRenderTexture);
+        CurrentRoomRenderTexture.renderTexture.Release();
         Destroy(gameObject);
     }
 }
