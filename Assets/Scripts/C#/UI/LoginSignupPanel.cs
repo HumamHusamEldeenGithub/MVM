@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LoginSignupPanel : MonoBehaviour
@@ -71,6 +70,8 @@ public class LoginSignupPanel : MonoBehaviour
 
         EventsPool.Instance.AddListener(typeof(ShowTakePictuePanelEvent), new Action(OnCreateAccountSuccess));
 
+        EventsPool.Instance.AddListener(typeof(LogoutEvent), new Action(OnLogout));
+
     }
 
     private void Login()
@@ -85,7 +86,12 @@ public class LoginSignupPanel : MonoBehaviour
 
     private void Signup()
     {
-        // TODO check password
+        if(signupPasswordField.text != signipPasswordConfirmationField.text)
+        {
+            EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), "Passwords do not match", 2, Color.black);
+            return;
+        }
+
         EventsPool.Instance.InvokeEvent(typeof(SubmitCreateUserEvent),
             new object[] { signupUsernameField.text,signupEmailField.text,signupPhonenumberField.text, signupPasswordField.text });
 
@@ -105,6 +111,21 @@ public class LoginSignupPanel : MonoBehaviour
         {
             loginBtn.interactable = true;
         }
+    }
+
+    private void OnLogout()
+    {
+        if (loginPanel != null && loginPanel.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
+            loginPanel.SetTrigger("FadeIn");
+
+        if (createAccountPanel != null && createAccountPanel.GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
+            createAccountPanel.SetTrigger("FadeOut");
+
+        if (takePicturePanel != null && takePicturePanel.GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
+            takePicturePanel.SetTrigger("FadeOut");
+
+        loginBtn.interactable = true;
+        signupBtn.interactable = true;
 
     }
 }
