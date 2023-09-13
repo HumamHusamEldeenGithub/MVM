@@ -10,6 +10,8 @@ public class WebRTCController : MonoBehaviour
 
     public string peerId;
 
+    UserProfile.PeerData userData;
+
     public RTCPeerConnection pc;
 
     RTCDataChannel peerDataChannel;
@@ -22,6 +24,13 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Init Peer
+
+    private void Awake()
+    {
+        EventsPool.Instance.AddListener(typeof(MaxDelayPacketsReachedEvent), 
+            new Action<string>(DropAndReopenCurrentDataChannel));
+    }
+
     RTCConfiguration GetSelectedSdpSemantics()
     {
         Debug.Log("GetSelectedSdpSemantics");
@@ -37,6 +46,7 @@ public class WebRTCController : MonoBehaviour
     public void InitPeerConnection(AudioStreamTrack localAudioStream, string peerId , UserProfile.PeerData userData)
     {
         this.peerId = peerId;
+        this.userData = userData;
 
         var configuration = GetSelectedSdpSemantics();
         pc = new RTCPeerConnection(ref configuration);
@@ -46,11 +56,10 @@ public class WebRTCController : MonoBehaviour
         pc.OnIceConnectionChange = OnIceConnectionChange;
         pc.OnDataChannel = channel =>
         {
-            Debug.Log("Call onDataChannel");
             this.peerDataChannel = channel;
 
-            // TODO send user profile
             this.peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
+
             Debug.Log("Call Audio Stream in onDataChannel");
             if (this.remoteStreamTrack != null)
             {
@@ -294,8 +303,8 @@ public class WebRTCController : MonoBehaviour
                 Debug.Log($"IceConnectionState: Connected");
                 if (peerDataChannel != null)
                 {
-                    peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel).PeerController;
-                    WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel);
+                    peerController = ClientsManager.Instance.CreateNewRoomSpace(peerId, peerDataChannel, userData).PeerController;
+                    peerDataChannel.OnOpen += () => { WebRTCManager.PublishAvatarSettingsToPeer(peerDataChannel); };
                 }
                 break;
             case RTCIceConnectionState.Disconnected:
@@ -317,8 +326,6 @@ public class WebRTCController : MonoBehaviour
     #endregion
 
     #region Data Channel
-
-    // TODO : check null bug 
     public void SendMessageToDataChannel(string message)
     {
         if (peerDataChannel != null && peerDataChannel.ReadyState == RTCDataChannelState.Open)
@@ -344,6 +351,27 @@ public class WebRTCController : MonoBehaviour
             Debug.Log("Audio Stream Not Null");
             OnAddTrack(this.remoteStreamTrack);
         }
+    }
+
+    private void DropAndReopenCurrentDataChannel(string id)
+    {
+        if (id == peerId)
+        {
+            peerDataChannel.Close();
+        }
+
+        RTCDataChannelInit conf = new RTCDataChannelInit
+        {
+            ordered = true,
+            maxRetransmits = 0,
+        };
+
+        RTCDataChannel dataChannel = pc.CreateDataChannel("data", conf);
+        dataChannel.OnOpen = OnDataChannelOpened;
+
+        peerDataChannel = dataChannel;
+
+        EventsPool.Instance.InvokeEvent(typeof(ReopenDatachannelEvent), peerId,peerDataChannel);
     }
 
     #endregion

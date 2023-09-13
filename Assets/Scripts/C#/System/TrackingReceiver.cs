@@ -5,7 +5,7 @@ using System.Threading;
 using Mvm;
 using System.Collections;
 
-public class TrackingReceiver : Singleton<TrackingReceiver>
+public class TrackingReceiver : MonoBehaviour
 {
     #region Attributes
 
@@ -17,9 +17,7 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
     #region CachedVars
 
     NetworkStream pyStream;
-    WebRTCManager webRTCManager;
     ClientsManager selfController;
-    OrientationProcessor selfOrProcessor;
 
     #endregion
 
@@ -35,21 +33,16 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
 
     #region Monobehaviour
 
-    override protected void Awake()
+    private void Awake()
     {
-        base.Awake();
         Initialize();
-
         EventsPool.Instance.AddListener(typeof(RoomConnectedStatusEvent), new Action<bool>(StartReceiving));
+        EventsPool.Instance.AddListener(typeof(HangupEvent), new Action(StopReceiving));
     }
 
-    override protected void OnDestroy()
+    private void OnDestroy()
     {
-        threadRunning = false;
-        if (mainThread?.IsAlive == true)
-        {
-            mainThread.Join();
-        }
+        StopReceiving();
     }
 
     #endregion
@@ -61,15 +54,24 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
         blendShapesReadyEvent = new BlendShapesReadyEvent();
         processManager = ProcessManager.Instance;
 
-        selfOrProcessor = GetComponentInChildren<OrientationProcessor>();
         selfController = GetComponentInChildren<ClientsManager>();
-        webRTCManager = GetComponentInChildren<WebRTCManager>();
     }
 
-    public void StartReceiving(bool success)
+    private void StopReceiving()
+    {
+        threadRunning = false;
+        if (mainThread?.IsAlive == true)
+        {
+            mainThread.Join();
+        }
+        processManager.DestroyPythonServer();
+    }
+
+    private void StartReceiving(bool success)
     {
         if (!success)
             return;
+
         // Start Python server
         StartCoroutine(startReceivingCoroutine());
     }
@@ -126,8 +128,19 @@ public class TrackingReceiver : Singleton<TrackingReceiver>
                 if (bytes == 0) return;
 
                 DataChannelMessage response = DataChannelMessage.Parser.ParseFrom(messageData, 0, bytes);
+
+                response.FaceRotationMessage = new FaceRotationKeypointsMessage
+                {
+                    Point1 = response.TrackingMessage.Keypoints.Keypoints_[234],
+                    Point2 = response.TrackingMessage.Keypoints.Keypoints_[152],
+                    Point3 = response.TrackingMessage.Keypoints.Keypoints_[454],
+                    Point4 = response.TrackingMessage.Keypoints.Keypoints_[10]
+                };
+
+                response.TrackingMessage.Keypoints = null;
+
                 peerController.SetTrackingData(response);
-                webRTCManager.SendMessageToDataChannel(response);
+                WebRTCManager.Instance.SendMessageToDataChannel(response);
             }
         }
     }

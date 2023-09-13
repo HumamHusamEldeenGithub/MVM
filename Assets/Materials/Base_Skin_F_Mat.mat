@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7512f61aa89938947b3f4895f7a4a64e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BeardTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BrowsTexture:
         m_Texture: {fileID: 2800000, guid: 435846e6c7f3f4d4f9a439fa7ee92eae, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -60,8 +64,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FaceImperfectionTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _FaceTattoo:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FaceTattooTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HairTexture:
+        m_Texture: {fileID: 2800000, guid: 244df51a7bef8a04da5b626754587328, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _IrisTexture:
@@ -140,8 +156,9 @@ Material:
     - _BrowsColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HairColor: {r: 0.14901961, g: 0.11372549, b: 0.09411765, a: 1}
     - _IrisColor: {r: 0, g: 0, b: 0, a: 0}
-    - _SkinColor: {r: 0.8301887, g: 0.67041653, b: 0.59053046, a: 1}
+    - _SkinColor: {r: 0.7924528, g: 0.68546945, b: 0.5562121, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5718126738628735212

@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Production/UIDesign.unity
+    guid: 0ac6c104f24a42f44bc3c1389f22bed0
+  - enabled: 1
+    path: Assets/Scenes/Production/AvatarDesign.unity
+    guid: c1fe26a742c03c04bb05d9743f34e22b
   m_configObjects: {}

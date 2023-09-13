@@ -10,7 +10,7 @@ using Google.Protobuf;
 using System.IO;
 using System.Threading.Tasks;
 
-public class WebRTCManager : MonoBehaviour
+public class WebRTCManager : Singleton<WebRTCManager>
 {
     #region Properties
     SynchronizationContext syncContext;
@@ -19,7 +19,7 @@ public class WebRTCManager : MonoBehaviour
     #endregion
 
     #region MonoBehaviour
-    private void Awake()
+    protected override void Awake()
     {
         syncContext = SynchronizationContext.Current;
 
@@ -109,11 +109,7 @@ public class WebRTCManager : MonoBehaviour
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            DateTime now = DateTime.Now;
-            DateTime unixEpoch = new DateTime(2023, 7, 27, 16, 0, 0, DateTimeKind.Utc);
-
-            float seconds = (float)(now - unixEpoch).TotalSeconds;
-            message.TrackingMessage.Date = seconds;
+            message.TrackingMessage.Date = TimestampController.apiDate.ToString();
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {
@@ -131,10 +127,16 @@ public class WebRTCManager : MonoBehaviour
 
     public static void PublishAvatarSettingsToPeer(RTCDataChannel dataChannel)
     {
+
         byte[] byteArray;
         using (var memoryStream = new MemoryStream())
         {
-            UserProfile.Instance.userData.AvatarSettings.WriteTo(memoryStream);
+            DataChannelMessage msg = new DataChannelMessage
+            {
+                Type = DataChannelMessageType.AvatarMessage,
+                AvatarMessage = UserProfile.Instance.userData.AvatarSettings
+            };
+            msg.WriteTo(memoryStream);
             byteArray = memoryStream.ToArray();
         }
         dataChannel.Send(byteArray);
@@ -146,7 +148,12 @@ public class WebRTCManager : MonoBehaviour
             byte[] byteArray;
             using (var memoryStream = new MemoryStream())
             {
-                UserProfile.Instance.userData.AvatarSettings.WriteTo(memoryStream);
+                DataChannelMessage msg = new DataChannelMessage
+                {
+                    Type = DataChannelMessageType.AvatarMessage,
+                    AvatarMessage = UserProfile.Instance.userData.AvatarSettings
+                };
+                msg.WriteTo(memoryStream);
                 byteArray = memoryStream.ToArray();
             }
             foreach (WebRTCController peer in webRTCConnections.Values)
@@ -161,9 +168,13 @@ public class WebRTCManager : MonoBehaviour
     {
         syncContext.Post(new SendOrPostCallback(o =>
         {
-            webRTCConnections[peerId].pc?.Close();
-            webRTCConnections[peerId].pc = null;
-            webRTCConnections.Remove(peerId);
+            WebRTCController ctrl;
+            if (webRTCConnections.TryGetValue(peerId, out ctrl))
+            {
+                webRTCConnections[peerId].pc?.Close();
+                webRTCConnections[peerId].pc = null;
+                webRTCConnections.Remove(peerId);
+            }
         }), null);
     }
 
@@ -173,6 +184,7 @@ public class WebRTCManager : MonoBehaviour
         {
             foreach (string key in webRTCConnections.Keys)
             {
+                Debug.Log(key);
                 DisposeWebRTCConnection(key);
             }
         }), null);

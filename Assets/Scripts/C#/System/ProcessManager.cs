@@ -2,12 +2,8 @@ using UnityEngine;
 using System;
 using System.Diagnostics;
 using System.Net.Sockets;
-using System.Collections;
-using System.Threading.Tasks;
-using Unity.VisualScripting.Antlr3.Runtime;
 using System.Threading;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 
 public class ProcessManager : Singleton<ProcessManager>
 {
@@ -77,7 +73,7 @@ public class ProcessManager : Singleton<ProcessManager>
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = pyPath,
-                Arguments = projectPath + @"/Scripts/Python/Setup.py",
+                Arguments = projectPath + @"/StreamingAssets/Python/Setup.py",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true,
@@ -109,7 +105,7 @@ public class ProcessManager : Singleton<ProcessManager>
             {
                 SetupComplete = Status.NoMediapipe;
             }
-
+            UnityEngine.Debug.Log("Very important Log " + SetupComplete.ToString());
             process.Close();
         }
 
@@ -123,6 +119,7 @@ public class ProcessManager : Singleton<ProcessManager>
             },
             out _
         );
+        
     }
 
     public void CreatePythonServer(int localPort)
@@ -130,9 +127,9 @@ public class ProcessManager : Singleton<ProcessManager>
         DestroyPythonServer();
         pyProcess = new Process();
         pyProcess.StartInfo.FileName = pyPath;
-        pyProcess.StartInfo.Arguments = projectPath + @"/Scripts/Python/Server.py" + $" {0}" + $" {localPort}";
-        pyProcess.StartInfo.UseShellExecute = false;
-        pyProcess.StartInfo.RedirectStandardOutput = true;
+        pyProcess.StartInfo.Arguments = projectPath + @"/StreamingAssets/Python/Server.py" + $" {0}" + $" {localPort}" + $" {projectPath}";
+        pyProcess.StartInfo.UseShellExecute = true;
+        pyProcess.StartInfo.RedirectStandardOutput = false;
         pyProcess.StartInfo.CreateNoWindow = true;
         pyProcess.Start();
 
@@ -141,12 +138,11 @@ public class ProcessManager : Singleton<ProcessManager>
 
     private void StartPythonStream(int localPort)
     {
-
         pyClient = new TcpClient("localhost", localPort);
         pyStream = pyClient.GetStream();
     }
 
-    private void DestroyPythonServer()
+    public void DestroyPythonServer()
     {
         pyStream?.Dispose();
         pyStream?.Close();
@@ -158,6 +154,9 @@ public class ProcessManager : Singleton<ProcessManager>
         {
             pyProcess?.Kill();
         }
+
+        pyStream = null;
+        pyClient = null;
 
     }
 

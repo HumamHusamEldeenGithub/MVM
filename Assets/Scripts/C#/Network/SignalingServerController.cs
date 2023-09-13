@@ -7,57 +7,91 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Mvm;
 
-class SignalingServerController : MonoBehaviour
+class SignalingServerController : Singleton<SignalingServerController>
 {
     #region Properties
-    Thread serverThread = null;
-    SynchronizationContext syncContext;
-    bool threadRunning;
+    static Thread serverThread = null;
+    static SynchronizationContext syncContext;
+    static bool threadRunning;
 
-    UserProfile userProfile;
+    static UserProfile userProfile;
     static ClientWebSocket webSocket;
-    OnlineStatuses usersOnlineStatus;
+    static public OnlineStatuses usersOnlineStatus;
 
-    public WebRTCManager webRTCManager;
+    static private CancellationTokenSource threadCancelationTokenSource;
+    static private CancellationToken threadCancelationToken;
+
     #endregion
 
     #region MonoBehaviour
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        threadCancelationTokenSource = new CancellationTokenSource();
+        threadCancelationToken = threadCancelationTokenSource.Token;
         syncContext = SynchronizationContext.Current;
         userProfile = GetComponent<UserProfile>();
-        EventsPool.Instance.AddListener(typeof(LoginStatusEvent),
-            new Action<bool>(InitWebSocketConnection));
+        EventsPool.Instance.AddListener(typeof(ConnectToServerEvent),
+            new Action(InitWebSocketConnection));
 
-        serverThread = new Thread(() => {
-            ConnectToSignalingServer();
-            ReceiveServerMessagesAsync();
-        });
+        EventsPool.Instance.AddListener(typeof(HangupEvent),
+            new Action(() =>
+            {
+                WebRTCManager.Instance.DisposeAllWebRTCConnections();
+            }));
     }
-    async void OnDestroy()
+
+    private void OnApplicationQuit()
+    {
+        Dispose();
+    }
+
+    public async void Dispose()
     {
         threadRunning = false;
-
-        webRTCManager.DisposeAllWebRTCConnections();
-
-        if (serverThread?.IsAlive == true)
-            serverThread?.Join();
-
-        if (webSocket != null && webSocket?.State != WebSocketState.Closed)
-            await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
-    }
-    #endregion
-
-    public void InitWebSocketConnection(bool isLoggedIn)
-    {
-        if (isLoggedIn)
+        WebRTCManager.Instance.DisposeAllWebRTCConnections();
+        Debug.Log(webSocket.State);
+        if (webSocket != null)
         {
-            threadRunning = true;
-            serverThread?.Start();
+            try
+            {
+                await webSocket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutting down the socket", CancellationToken.None);
+
+                Debug.Log("Web Socket Shutdown");
+            }
+            catch(Exception e)
+            {
+                Debug.LogWarning(e);
+            }
+        }
+        webSocket = null;
+        try
+        {
+            serverThread?.Join();
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
         }
     }
 
-    async void ConnectToSignalingServer()
+    #endregion
+
+    public void InitWebSocketConnection()
+    {
+        threadRunning = true;
+
+        threadCancelationTokenSource = new CancellationTokenSource();
+        threadCancelationToken = threadCancelationTokenSource.Token;
+
+        serverThread = new Thread(async () => {
+            await ConnectToSignalingServer();
+            ReceiveServerMessagesAsync();
+        });
+        serverThread?.Start();
+    }
+
+    async Task ConnectToSignalingServer()
     {
         // TODO throw err 
         string token = userProfile.userData.Token;
@@ -73,15 +107,19 @@ class SignalingServerController : MonoBehaviour
             webSocket = new ClientWebSocket();
             webSocket.Options.SetRequestHeader("Authorization", token);
 
+            Debug.Log(webSocket.GetHashCode());
+
             // Connect to the server
             await webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
 
-            Debug.Log("Connected to MVM server");
-            
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+
+            Debug.Log("Connected Sucessfully");
         }
         catch (Exception e)
         {
             Console.WriteLine("Exception: {0}", e);
+            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
         }
     }
 
@@ -93,7 +131,7 @@ class SignalingServerController : MonoBehaviour
             try
             {
                 byte[] responseBuffer = new byte[9000];
-                WebSocketReceiveResult responseResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(responseBuffer), CancellationToken.None);
+                WebSocketReceiveResult responseResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(responseBuffer), threadCancelationToken);
 
                 string message = Encoding.UTF8.GetString(responseBuffer, 0, responseResult.Count);
                 SignalingMessage socketMessage = JsonConvert.DeserializeObject<SignalingMessage>(message);
@@ -101,25 +139,19 @@ class SignalingServerController : MonoBehaviour
                 switch (socketMessage.Type)
                 {
                     case "offer":
-                        Debug.Log("Received Offer from " + socketMessage.FromId);
-                        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
-                        webRTCManager.ReceiveOffer(socketMessage.FromId, socketMessage);
+                        await HandleOfferMessage(socketMessage);
                         break;
 
                     case "answer":
-                        Debug.Log("Received answer from " + socketMessage.FromId);
-                        webRTCManager.ReceiveAnswer(socketMessage.FromId, socketMessage);
+                        HandleAnswerMessage(socketMessage);
                         break;
 
                     case "ice":
-                        Debug.Log("Received Ice from " + socketMessage.FromId);
-                        webRTCManager.ReceiveICE(socketMessage.FromId, socketMessage);
+                        HandleICEMessage(socketMessage);
                         break;
 
                     case "user_enter":
-                        Debug.Log("user enter with id " + socketMessage.FromId);
-                        await webRTCManager.CreateNewWebRTCConnection(socketMessage.FromId);
-                        webRTCManager.SendOffer(socketMessage.FromId);
+                        HandleUserEnterMessage(socketMessage);
                         break;
 
                     case "leave_room":
@@ -130,30 +162,120 @@ class SignalingServerController : MonoBehaviour
                         break;
 
                     case "get_users_online_status_list":
-                        Debug.Log("get user online status  " + socketMessage.Data);
-                        usersOnlineStatus = JsonConvert.DeserializeObject<OnlineStatuses>((string)socketMessage.Data);
-                        foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
-                        {
-                            Debug.Log($"User: {onlineStatus.Id} -- + IsOnline:{onlineStatus.IsOnline}");
-                        }
+                        HandleGetUsersOnlineStatus(socketMessage);
                         break;
 
                     case "user_status_changed":
-                        var newOnlineStatus = JsonConvert.DeserializeObject<OnlineStatus>((string)socketMessage.Data);
-                        Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
-                        UpdateUserOnlineStatus(newOnlineStatus);
+                        HandleUserStatusChanged(socketMessage);
+                        break;
+
+                    case "notification":
+                        HandleNotificationMessage(socketMessage);
+                        break;
+                    case "error":
+                        HandleError(socketMessage);
+                        break;
+                    case "chat_message":
+                        HandleChatMessageReceived(socketMessage);
                         break;
 
                     default:
                         Debug.Log("Received message type : " + socketMessage.Type + " No events assigned to this type");
-                        break;
+                        return;
                 }
             }
             catch (Exception e)
             {
                 Debug.LogWarning(e.ToString());
+                Debug.Log(webSocket.GetHashCode());
             }
         }
+
+        Debug.Log("Thread has stopped");
+    }
+
+    private async Task HandleOfferMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("Received Offer from " + socketMessage.FromId);
+        await WebRTCManager.Instance.CreateNewWebRTCConnection(socketMessage.FromId);
+        WebRTCManager.Instance.ReceiveOffer(socketMessage.FromId, socketMessage);
+    }
+
+    private void HandleAnswerMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("Received answer from " + socketMessage.FromId);
+        WebRTCManager.Instance.ReceiveAnswer(socketMessage.FromId, socketMessage);
+    }
+
+    private void HandleICEMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("Received Ice from " + socketMessage.FromId);
+        WebRTCManager.Instance.ReceiveICE(socketMessage.FromId, socketMessage);
+    }
+
+    private async void HandleUserEnterMessage(SignalingMessage socketMessage)
+    {
+        Debug.Log("user enter with id " + socketMessage.FromId);
+        await WebRTCManager.Instance.CreateNewWebRTCConnection(socketMessage.FromId);
+        WebRTCManager.Instance.SendOffer(socketMessage.FromId);
+    }
+
+    private async void HandleNotificationMessage(SignalingMessage socketMessage)
+    {
+        var newNotification = JsonConvert.DeserializeObject<Mvm.Notification>((string)socketMessage.Data);
+        Debug.Log($"Notification from {socketMessage.FromId} {newNotification.Message}  -- {newNotification.Type}");
+
+        UserProfile.Instance.userData.Notifications.Add(newNotification);
+        if (newNotification.Type == (int)NotificationType.FriendRequest || newNotification.Type == (int)NotificationType.AcceptRequest)
+        {
+            await UserProfile.Instance.GetMyFriends();
+            await SendRefreshFriendsEvent();
+        }
+        EventsPool.Instance.InvokeEvent(typeof(ReceivedNotificationEvent));
+
+    }
+
+    private void HandleGetUsersOnlineStatus(SignalingMessage socketMessage)
+    {
+        Debug.Log("get user online status  " + socketMessage.Data);
+        usersOnlineStatus = JsonConvert.DeserializeObject<OnlineStatuses>((string)socketMessage.Data);
+        foreach (OnlineStatus onlineStatus in usersOnlineStatus.Users)
+        {
+            Debug.Log($"ID: {onlineStatus.Id} -- Username: {onlineStatus.Username} -- + IsOnline:{onlineStatus.IsOnline}");
+        }
+        EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
+    }
+
+    private void HandleUserStatusChanged(SignalingMessage socketMessage)
+    {
+        var newOnlineStatus = JsonConvert.DeserializeObject<OnlineStatus>((string)socketMessage.Data);
+        Debug.Log($"User {socketMessage.FromId} has changed his status to {newOnlineStatus.IsOnline}");
+        UpdateUserOnlineStatus(newOnlineStatus);
+        EventsPool.Instance.InvokeEvent(typeof(UsersOnlineStatusEvent), usersOnlineStatus);
+    }
+
+    private void HandleChatMessageReceived(SignalingMessage socketMessage)
+    {
+        var chatMessage = JsonConvert.DeserializeObject<SocketChatMessage>((string)socketMessage.Data);
+        Debug.Log($"Received chat message from {socketMessage.FromId} Message : {chatMessage.Message}");
+        EventsPool.Instance.InvokeEvent(typeof(ChatMessageReceviedEvent), chatMessage);
+    }
+
+    private void HandleError(SignalingMessage socketMessage)
+    {
+        var newSocketError = JsonConvert.DeserializeObject<ErrorMessage>((string)socketMessage.Data);
+        Debug.Log($"Socket Error {newSocketError.Error} StatusCode = {newSocketError.StatusCode} Type {newSocketError.Type}");
+        switch (newSocketError.Type)
+        {
+            case (int)ErrorMessageType.RoomNotAuthorized:
+                EventsPool.Instance.InvokeEvent(typeof(HangupEvent));
+                break;
+        }
+        EventsPool.Instance.InvokeEvent(typeof(ShowPopupEvent), new object[] {
+                newSocketError.Error,
+                3f,
+                Color.red
+            });
     }
 
     public static async Task SendMessageToServerAsync(SignalingMessage message)
@@ -163,7 +285,7 @@ class SignalingServerController : MonoBehaviour
         await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    public async void SendJoinRoomEvent(string roomId)
+    public async Task SendJoinRoomEvent(string roomId)
     {
         var message = new SignalingMessage
         {
@@ -173,11 +295,15 @@ class SignalingServerController : MonoBehaviour
         await SendMessageToServerAsync(message);
     }
 
-    public void ConnectToRoom(string roomId)
+    public async void ConnectToRoom(string roomId)
     {
-        SendJoinRoomEvent(roomId);
-        webRTCManager.CaptureAudio();
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+        await SendJoinRoomEvent(roomId);
+        WebRTCManager.Instance.CaptureAudio();
         EventsPool.Instance.InvokeEvent(typeof(RoomConnectedStatusEvent), true);
+
+        await Task.Delay(2000);
+        EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
     }
 
     private void UpdateUserOnlineStatus(OnlineStatus newOnlineStatus)
@@ -192,6 +318,31 @@ class SignalingServerController : MonoBehaviour
         }
 
         usersOnlineStatus.Users.Add(newOnlineStatus);
+
+    }
+
+    public async Task SendRefreshFriendsEvent()
+    {
+        await SignalingServerController.SendMessageToServerAsync(new SignalingMessage
+        {
+            Type = "refreshFriends"
+        });
+    }
+
+    public async void SendChatMessage(string chatId ,string toUserId, string message)
+    {
+        var json = JsonConvert.SerializeObject(new SocketChatMessage
+        {
+            ChatId = chatId,
+            UserId = UserProfile.Instance.userData.Id,
+            Message = message
+        });
+        await SendMessageToServerAsync(new SignalingMessage
+        {
+            Type = "chat_message",
+            ToId = toUserId,
+            Data = json
+        });
     }
 }
 [Serializable]

@@ -16,34 +16,31 @@ message LoginUserRequest{
 message LoginUserResponse{
     string id = 1;
     string token = 2;
-    string refresh_token = 3;
+    string refreshToken = 3;
 }
 
 message LoginByRefreshTokenRequest {
-    string refresh_token = 1;
-}
-
-message LoginByRefreshTokenResponse {
-    string id = 1;
-    string token = 2;
-    string refresh_token = 3;
+    string refreshToken = 1;
 }
 
 message CreateUserRequest {
     string username = 1 ; 
     string email = 2 ; 
-    string password = 3 ;
+    string phonenumber = 3;
+    string password = 4 ;
 }
 
 message CreateUserResponse {
     string id = 1 ;
+    string token = 2;
+    string refreshToken = 3;
 }
 
 message GetProfileRequest {}
 
 message GetProfileResponse {
     UserProfile profile = 1;
-    repeated Room user_rooms = 2;
+    repeated Room userRooms = 2;
     AvatarSettings avatarSettings = 3 ; 
 }
 
@@ -53,29 +50,29 @@ message GetUserByUsernameRequest {
 
 message GetUserByUsernameResponse {
     UserProfile profile = 1;
-    repeated Room user_rooms = 2;
+    repeated Room userRooms = 2;
 }
 
 message CreateFriendRequestRequest {
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message CreateFriendRequestResponse {}
 
 message DeleteFriendRequestRequest {
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message DeleteFriendRequestResponse {}
 
 message AddFriendRequest {
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message AddFriendResponse {}
 
 message DeleteFriendRequest{
-    string friend_id = 1 ; 
+    string friendId = 1 ; 
 }
 
 message DeleteFriendResponse {}
@@ -84,6 +81,8 @@ message GetFriendsRequest {}
 
 message GetFriendsResponse {
     repeated UserProfile profiles = 1;
+    repeated string pending = 2;
+    repeated string sentRequests = 3;
 }
 
 message GetPendingFriendsRequest {}
@@ -93,7 +92,7 @@ message GetPendingFriendsResponse {
 }
 
 message SearchForUsersRequest {
-    string search_input = 1 ;
+    string searchInput = 1 ;
 }
 
 message SearchForUsersResponse {
@@ -102,7 +101,7 @@ message SearchForUsersResponse {
 
 message CreateRoomRequest{
     string title  = 1 ; 
-    bool is_private = 2; 
+    bool isPrivate = 2; 
     bool friends_only = 3;
 }
 
@@ -117,7 +116,7 @@ message GetRoomsResponse {
 }
 
 message GetUserRoomsRequest {
-    string user_id = 1;
+    string userId = 1;
 }
 
 message GetUserRoomsResponse {
@@ -125,23 +124,23 @@ message GetUserRoomsResponse {
 }
 
 message DeleteRoomRequest {
-    string room_id = 1 ; 
+    string roomId = 1 ; 
 }
 
 message DeleteRoomResponse {
-    string room_id = 1 ; 
+    string roomId = 1 ; 
 }
 
 message CreateRoomInvitationRequest {
-    string room_id = 1 ;
-    string user_id = 2 ;
+    string roomId = 1 ;
+    string userId = 2 ;
 }
 
 message CreateRoomInvitationResponse {}
 
 message DeleteRoomInvitationRequest {
-    string room_id = 1 ;
-    string user_id = 2 ;
+    string roomId = 1 ;
+    string userId = 2 ;
 }
 
 message DeleteRoomInvitationResponse {}
@@ -150,6 +149,7 @@ message UserProfile {
     string id = 1 ; 
     string username = 2;
     string email = 3;
+    string phonenumber = 4;
 }
 
 message GetIceResponse{
@@ -158,11 +158,11 @@ message GetIceResponse{
 
 message Room {
     string id = 1;
-    string owner_id = 2 ; 
+    string ownerId = 2 ; 
     string title  = 3 ; 
     repeated string users = 4;
-    bool is_private = 5; 
-    bool friends_only = 6 ;
+    bool isPrivate = 5; 
+    bool friendsOnly = 6 ;
     repeated string invitations = 7 ;
 }
 
@@ -201,8 +201,25 @@ message AvatarSettings{
     string skinColor = 11;
     string eyeColor = 12;
     string gender = 13;
-    string roomBackground = 14;
+    string roomBackgroundColor = 14;
+    string beardStyle = 15;
+    string glasses = 16;
 }
+
+message GetNotificationsResponse {
+    repeated Notification notifications = 1;
+}
+
+message DeleteNotificationRequest {
+    string notificationId = 1;
+}
+
+message DeleteNotificationResponse {}
+
+
+message DeleteNotificationsRequest {}
+
+message DeleteNotificationsResponse {}
 
 // Socket messages 
 
@@ -228,6 +245,16 @@ message RoomMessage {
 message ErrorMessage {
     int64 status_code = 1 ; 
     string error = 2 ;
+    int32 type = 3;
+}
+
+enum ErrorMessageType {
+    DEFAULT_ERROR = 0;
+    ROOM_NOT_AUTHORIZED = 1;
+    ROOM_ID_NOT_FOUND = 2;
+    USER_NOT_FOUND = 3;
+    INVALID_TOKEN = 4;
+    INTERNAL_ERROR = 5;
 }
 
 enum DataChannelMessageType {
@@ -236,29 +263,26 @@ enum DataChannelMessageType {
     AVATAR_MESSAGE = 3;
 }
 
-message ChatMessage {
-    string message = 1;
-}
-
 message DataChannelMessage {
     DataChannelMessageType type = 1 ; 
     optional TrackingMessage tracking_message = 2 ; 
     optional ChatMessage chat_message = 3 ; 
     optional AvatarSettings avatar_message = 4;
-    optional FaceRotationMessage face_rotation_message = 5;
+    optional FaceRotationKeypointsMessage face_rotation_message = 5;
 }
 
 message TrackingMessage{
     int64 index = 1 ; 
     BlendShapes blendShapes = 2 ; 
     Keypoints keypoints = 3 ; 
-    float date = 4 ; 
+    string date = 4 ; 
 }
 
-message FaceRotationMessage {
-    float rotationX = 1 ;
-    float rotationY = 2 ; 
-    float rotationZ = 3 ;  
+message FaceRotationKeypointsMessage {
+    Keypoint point1 = 1 ;
+    Keypoint point2 = 2 ;
+    Keypoint point3 = 3 ;
+    Keypoint point4 = 4 ;
 }
 
 message Keypoint {
@@ -287,5 +311,62 @@ message OnlineStatuses {
 
 message OnlineStatus {
     string id = 1 ; 
-    bool isOnline = 2 ;
+    string username = 2;
+    bool isOnline = 3 ;
+}
+
+enum NotificationType{
+    DEFAULT = 0 ;
+    FRIEND_REQUEST = 1 ;
+    ROOM_INVITATION = 2 ;
+    ACCEPT_REQUEST = 3 ;
+}
+
+message Notification{
+    string id = 1;
+    string userId = 2;
+    int32 type = 3;
+    string fromUser = 4 ;
+    optional string entityId = 5 ;
+    optional string message = 6;
+}
+
+message Chat {
+    string id = 1 ; 
+    repeated string participants  = 2 ; 
+    repeated ChatMessage messages = 3;
+}
+
+message ChatMessage {
+    string userId = 1;
+    string message = 2 ; 
+}
+
+message CreateChatRequest {
+    string userId = 1;
+}
+
+message CreateChatResponse {
+    string chatId = 1;
+}
+
+message CreateChatMesageRequest {
+    string chatId = 1 ;
+    string message = 2;
+}
+
+message CreateChatMesageResponse {}
+
+message GetChatRequest {
+    string userId = 1 ; 
+}
+
+message GetChatResponse {
+    Chat chat = 1;
+}
+
+message SocketChatMessage {
+    string chatId = 1;
+    string userId = 2; 
+    string message = 3;
 }

@@ -3,37 +3,99 @@ using Mvm;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf.Collections;
+using UnityEngine;
 
 public class UserProfile : Singleton<UserProfile>
 {
     public UserData userData;
     public string Token, RefreshToken;
 
-    public string Username
-    {
-        get; private set;
-    }
-    public string Password
-    {
-        get; private set;
-    }
+    public string Username { get; private set; }
+    public string Password { get; private set; }
 
-    private void LoginUser(string username, string password)
+    private void LoginUser(string username, string password, string refreshToken = "")
     {
         this.Username = username;
         this.Password = password;
 
         var runner = TaskPool.Instance;
 
-        async void login(string username, string password)
+        async void login(string username, string password, string refreshToken = "")
         {
-            LoginUserResponse res = await Server.Login(new LoginUserRequest { Username = username, Password = password });
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+
+            LoginUserResponse res;
+            if (refreshToken != "")
+            {
+                res = await Server.LoginByRefreshToken(new LoginByRefreshTokenRequest { RefreshToken = refreshToken });
+            }
+            else
+            {
+                res = await Server.Login(new LoginUserRequest { Username = username, Password = password });
+            }
+             
 
             if (res == null)
             {
-                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false); 
+                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
+                EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
                 return;
             }
+            else
+            {
+                userData = new UserData
+                {
+                    Id = res.Id,
+                    Username = username,
+                    Password = password,
+                    Token = res.Token,
+                    RefreshToken = res.RefreshToken,
+                };
+
+                Token = res.Token;
+                RefreshToken = res.RefreshToken;
+
+                RefreshTokenManager.Instance.StoreRefreshToken(res.RefreshToken);
+
+                await GetMyProfile();
+                await GetMyFriends();
+                await GetMyNotifications();
+
+                EventsPool.Instance.InvokeEvent(typeof(ConnectToServerEvent));
+            }
+
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
+        }
+
+        runner.AddTasks(new List<Action<CancellationToken>>
+            {
+                token => login(username, password,refreshToken),
+            },
+            out _
+        );
+    }
+
+    private void CreateUser(string username,string email,string phonenumber, string password)
+    {
+        this.Username = username;
+        this.Password = password;
+
+        var runner = TaskPool.Instance;
+
+        async void createUser(string username, string email, string phonenumber, string password)
+        {
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), true);
+
+            CreateUserResponse res = await Server.CreateUser(new CreateUserRequest { Username = username, Email = email, Password = password, Phonenumber = phonenumber });
+
+            if (res == null)
+            {
+                EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), false);
+                EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
+                return;
+            }
+            
             userData = new UserData
             {
                 Id = res.Id,
@@ -46,48 +108,97 @@ public class UserProfile : Singleton<UserProfile>
             Token = res.Token;
             RefreshToken = res.RefreshToken;
 
-            EventsPool.Instance.InvokeEvent(typeof(LoginStatusEvent), true);
+            await GetMyProfile();
+            await GetMyFriends();
+            await GetMyNotifications();
+
+            RefreshTokenManager.Instance.StoreRefreshToken(RefreshToken);
+            EventsPool.Instance.InvokeEvent(typeof(ShowTakePictuePanelEvent));
+            EventsPool.Instance.InvokeEvent(typeof(ToggleLoadingPanelEvent), false);
         }
 
         runner.AddTasks(new List<Action<CancellationToken>>
             {
-                token => login(username, password),
+                token => createUser(username,email,phonenumber, password),
             },
             out _
         );
     }
 
-    private void GetMyProfile(bool loginStatus)
+    async Task GetMyProfile()
+    {
+        var userProfile = await Server.GetProfile("");
+
+        if (userProfile != null)
+        {
+            userData.Id = userProfile.Profile.Id;
+            userData.Username = userProfile.Profile.Username;
+            userData.Email = userProfile.Profile.Email;
+            userData.PhoneNumber = userProfile.Profile.Phonenumber;
+
+            if (userProfile.AvatarSettings == null)
+            {
+                userData.AvatarSettings = GetDefaultAvatarSettings().AvatarSettings;
+            }
+            else
+            {
+                userData.AvatarSettings = userProfile.AvatarSettings;
+            }
+            if (userProfile.UserRooms != null)
+            {
+                userData.Rooms = userProfile.UserRooms;
+            }
+            EventsPool.Instance.InvokeEvent(typeof(ProfileUpdatedEvent));
+        }
+    }
+
+    public async Task GetMyFriends()
+    {
+        var friends = await Server.GetFriends();
+        if (friends != null)
+        {
+            userData.Friends = friends.Profiles;
+            userData.PendingFriendRequests = friends.Pending;
+            userData.SentFriendRequests = friends.SentRequests;
+        }
+    }
+
+    public void GetMyProfile(bool loginStatus)
     {
         if (loginStatus)
         {
             var runner = TaskPool.Instance;
-
-            async void getMyProfile()
-            {
-                var userProfile = await Server.GetProfile();
-                userData.Id = userProfile.Profile.Id;
-                userData.Email = userProfile.Profile.Email;
-                
-                if (userProfile.AvatarSettings == null)
-                {
-                    userData.AvatarSettings = GetDefaultAvatarSettings().AvatarSettings;
-                } 
-                else
-                {
-                    userData.AvatarSettings = userProfile.AvatarSettings;
-                }
-                // TODO : add rooms to userData
-            }
             runner.AddTasks(new List<Action<CancellationToken>>
             {
-                token => getMyProfile(),
+                token => GetMyProfile(),
             },
                 out _
             );
 
+
         }
     }
+
+    private void ChangeBackground()
+    {
+        int cur = 0;
+        int.TryParse(Instance.userData.AvatarSettings.RoomBackgroundColor, out cur);
+
+        cur++;
+
+        if (cur > 4)
+            cur = 0;
+
+        Instance.userData.AvatarSettings.RoomBackgroundColor = cur.ToString();
+        WebRTCManager.Instance.PublishAvatarSettingsToAll();
+    }
+
+    public async Task GetMyNotifications()
+    {
+        var notifications = await Server.GetNotifications();
+        userData.Notifications = notifications.Notifications;
+    }
+
     public class UserData
     {
         public string Id { get; set; }
@@ -96,10 +207,14 @@ public class UserProfile : Singleton<UserProfile>
         public string Email { get; set; }
         public string Token { get; set; }
         public string RefreshToken { get; set; }
-        public FacialFeatures UserFeatures { get; set; }
-        public Gender UserGender { get; set; }
+        public string PhoneNumber { get; set; }
         public int Age { get; set; }
+        public RepeatedField<Mvm.UserProfile>  Friends { get; set; }
+        public RepeatedField<string> PendingFriendRequests { get; set; }
+        public RepeatedField<string> SentFriendRequests { get; set; }
+        public RepeatedField<Mvm.Notification> Notifications { get; set; }
         public Mvm.AvatarSettings AvatarSettings { get; set; }
+        public RepeatedField<Room> Rooms { get; set; }
     }
 
     public class PeerData
@@ -113,8 +228,20 @@ public class UserProfile : Singleton<UserProfile>
     override protected void Awake()
     {
         base.Awake();
-        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string, string>(LoginUser));
+        EventsPool.Instance.AddListener(typeof(SubmitCreateUserEvent), new Action<string,string,string,string>(CreateUser));
+        EventsPool.Instance.AddListener(typeof(SubmitLoginEvent), new Action<string,string,string>(LoginUser));
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent),new Action<bool>(GetMyProfile));
+        EventsPool.Instance.AddListener(typeof(UserChangeBackgroundEvent), new Action(ChangeBackground));
+        EventsPool.Instance.AddListener(typeof(LogoutEvent), new Action(Logout));
+    }
+
+    private void Logout()
+    {
+        RefreshTokenManager.Instance.ClearRefreshToken();
+        SignalingServerController.Instance.Dispose();
+        Token = "";
+        RefreshToken = "";
+        Instance.userData = null;
     }
 
     public static async Task<PeerData> GetPeerData(string peerId)
@@ -123,33 +250,40 @@ public class UserProfile : Singleton<UserProfile>
         {
             Id = peerId,
         });
-        return new PeerData
+        PeerData peerData = null;
+        if(userProfile != null)
         {
-            Id = userProfile.Profile.Id,
-            Username = userProfile.Profile.Username,
-            Email = userProfile.Profile.Email,
-            AvatarSettings = userProfile.AvatarSettings
-        };
+            peerData = new PeerData
+            {
+                Id = userProfile.Profile.Id,
+                Username = userProfile.Profile.Username,
+                Email = userProfile.Profile.Email,
+                AvatarSettings = userProfile.AvatarSettings
+            };
+        }
+        return peerData;
     }
 
     public static PeerData GetDefaultAvatarSettings()
     {
         Mvm.AvatarSettings avatarSettings = new Mvm.AvatarSettings
         {
-            HeadStyle = "0" , 
-            HairStyle = "0",
-            EyebrowsStyle = "0" , 
-            EyeStyle="0",
+            HeadStyle = "0",
+            HairStyle = "19",
+            EyebrowsStyle = "1",
+            EyeStyle = "0",
             NoseStyle = "0",
-            MouthStyle="0",
-            SkinImperfection="0",
-            Tattoo ="0" , 
-            HairColor = "#000000FF" , 
+            MouthStyle = "0",
+            SkinImperfection = "0",
+            Tattoo = "0",
+            HairColor = "#222222FF",
             BrowsColor = "#000000FF",
-            SkinColor = "#dbc488FF",
+            SkinColor = "#A8A08CFF",
             EyeColor = "#000000FF",
             Gender = "Male",
-            RoomBackground= "#000000FF",
+            BeardStyle = "0",
+            Glasses = "0" ,
+            RoomBackgroundColor= "#000000FF",
         };
         return new PeerData
         {

@@ -7,7 +7,6 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mvm_pb2 import DataChannelMessage,DataChannelMessageType
 
-mp_face_mesh = mp.solutions.face_mesh
 
 async def BlendShapesDetector (reader,writer) :
     try:
@@ -16,12 +15,7 @@ async def BlendShapesDetector (reader,writer) :
                                             output_face_blendshapes=True,
                                             output_facial_transformation_matrixes=True,
                                             num_faces=1)
-        blendShapesDetector = vision.FaceLandmarker.create_from_options(options)
-        face_mesh = mp.solutions.face_mesh.FaceMesh(
-            max_num_faces=1,
-            refine_landmarks=True,
-            min_detection_confidence=0.5,
-            min_tracking_confidence=0.5)
+        detector = vision.FaceLandmarker.create_from_options(options)
         
         cap = cv2.VideoCapture(int(sys.argv[1]))
 
@@ -30,19 +24,14 @@ async def BlendShapesDetector (reader,writer) :
             md_keypoints = None
             success, image = cap.read()
             # BlendShapes 
-            image_1 = mp.Image(image_format=mp.ImageFormat.SRGB, data=image)
-            blendShapes_detection_result = blendShapesDetector.detect(image_1)
-            if (len(blendShapes_detection_result.face_blendshapes) > 0) : 
+            image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image)
+            detection_result = detector.detect(image)
+            if (len(detection_result.face_blendshapes) > 0) : 
                 # Pack the serialized data and send it over the socket
-                md_blendShapes = blendShapes_detection_result.face_blendshapes[0]
+                md_blendShapes = detection_result.face_blendshapes[0]
             
-            # Keypoints 
-            image.flags.writeable = False
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            results = face_mesh.process(image)
-            if (len(results.multi_face_landmarks) > 0) :
-                md_keypoints = results.multi_face_landmarks[0].landmark
-    
+            if (len(detection_result.face_landmarks) > 0) :
+                md_keypoints = detection_result.face_landmarks[0]
             # Encoding tracking message
             trackingMessage = encodeTrackingMessage(md_blendShapes , md_keypoints).SerializeToString()
             writer.write(trackingMessage)

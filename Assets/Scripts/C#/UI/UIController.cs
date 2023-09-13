@@ -1,31 +1,89 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject loginPanel;
+    private Animator loginPanel;
 
     [SerializeField]
-    private GameObject mainPanel;
+    private Animator mainPanel;
 
     [SerializeField]
-    private GameObject roomPanel;
+    private Animator roomPanel;
+
+    [SerializeField]
+    private Animator loadingPanel;
+
+    [SerializeField]
+    private GameObject popupPanel;
 
     private void Awake()
     {
-        loginPanel.SetActive(true);
-        mainPanel.SetActive(false);
         EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
         EventsPool.Instance.AddListener(typeof(RoomConnectedStatusEvent), new Action<bool>(OnRoomConnected));
+
+        EventsPool.Instance.AddListener(typeof(ShowPopupEvent), new Action<string, float, Color>(OnShowPopup));
+        EventsPool.Instance.AddListener(typeof(ToggleLoadingPanelEvent), new Action<bool>(OnToggleLoadingPanel));
+
+        EventsPool.Instance.AddListener(typeof(LoginStatusEvent), new Action<bool>(OnLogin));
+        EventsPool.Instance.AddListener(typeof(HangupEvent), new Action(OnHangup));
+
+        EventsPool.Instance.AddListener(typeof(LogoutEvent), new Action(OnLogout));
+
+        popupPanel.SetActive(false);
+
+        if (UserProfile.Instance.userData == null)
+        {
+            var refreshToken = RefreshTokenManager.Instance.GetRefreshToken();
+            if (refreshToken != null && refreshToken != "")
+            {
+                Debug.Log("RefreshToken found");
+                EventsPool.Instance.InvokeEvent(typeof(SubmitLoginEvent), "","",refreshToken);
+                return;
+            }
+            else
+            {
+                SwitchToPanel(null, loginPanel);
+            }
+        }
+        else
+        {
+            SwitchToPanel(loginPanel, mainPanel);
+        }
+    }
+
+    private void SwitchToPanel(Animator panel_1, Animator panel_2)
+    {
+        if (panel_1 != null && panel_1.GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
+            panel_1?.SetTrigger("FadeOut");
+
+        if (panel_2 != null && panel_2.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
+            panel_2?.SetTrigger("FadeIn");
+    }
+
+    private void OnHangup()
+    {
+        SwitchToPanel(roomPanel, mainPanel);
+    }
+
+    private void OnLogout()
+    {
+        SwitchToPanel(mainPanel, loginPanel);
     }
 
     private void OnLogin(bool sucess)
     {
         if (sucess)
         {
-            loginPanel.SetActive(false);
-            mainPanel.SetActive(true);
+            SwitchToPanel(loginPanel, mainPanel);
+        }
+        else
+        {
+            SwitchToPanel(null, loginPanel);
         }
     }
 
@@ -33,8 +91,31 @@ public class UIController : MonoBehaviour
     {
         if(success)
         {
-            roomPanel.SetActive(true);
-            mainPanel.SetActive(false);
+            SwitchToPanel(mainPanel, roomPanel);
         }
+    }
+
+    private void OnToggleLoadingPanel(bool status)
+    {
+        if (loadingPanel == null) return;
+        loadingPanel.SetTrigger(status == false ? "FadeOut" : "FadeIn");
+    }
+
+
+    public void OnShowPopup(string popupText, float seconds, Color color)
+    {
+        if (popupPanel == null) return;
+        var tmp = popupPanel.GetComponentInChildren<TMP_Text>();
+        tmp.color = color;
+        tmp.text = popupText;
+        popupPanel.SetActive(true);
+        StopAllCoroutines();
+        StartCoroutine(HidePopup(seconds));
+    }
+
+    private IEnumerator HidePopup(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        popupPanel.SetActive(false);
     }
 }
